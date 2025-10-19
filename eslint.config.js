@@ -50,6 +50,7 @@ export default defineConfig([
         "warn",
         {
           groups: ["builtin", "external", "internal"],
+          // "newlines-between": "ignore",
           pathGroups: [
             {
               pattern: "@/**",
@@ -101,7 +102,8 @@ export default defineConfig([
         { args: "none", varsIgnorePattern: "^_" },
       ],
       // 🧠 Sort imports for readability
-      "perfectionist/sort-imports": ["error", { tsconfigRootDir: "." }],
+      // "perfectionist/sort-imports": ["error", { tsconfigRootDir: "." }],
+      "perfectionist/sort-imports": "off",
 
       // 📁 Enforce consistent file naming
       "unicorn/filename-case": [

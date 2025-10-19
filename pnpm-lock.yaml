@@ -7,9 +7,15 @@ settings:
 importers:
   .:
     dependencies:
+      "@ionic/react":
+        specifier: ^8.7.7
+        version: 8.7.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       "@tailwindcss/vite":
         specifier: ^4.1.14
         version: 4.1.14(vite@7.1.10(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      ionicons:
+        specifier: ^8.0.13
+        version: 8.0.13
       react:
         specifier: ^19.1.1
         version: 19.2.0
@@ -587,6 +593,21 @@ packages:
       }
     engines: { node: ">=18.18" }
 
+  "@ionic/core@8.7.7":
+    resolution:
+      {
+        integrity: sha512-XMvVkiRiB9I1Jc63RqderjHzxxiyr6KM2vBDzYBQS6rk7Fb4wC/ZyUuFgnrYKk71r1mgwYTPMy/2qrCShNXgXQ==,
+      }
+
+  "@ionic/react@8.7.7":
+    resolution:
+      {
+        integrity: sha512-X/olNPQrITyVbKkZRrhauC6cKXO+C6ISCnoDJFxH34TLphSrpOFOpVD/c+a17QMD8RMxe5/zsQ8oY/DOH8pC6w==,
+      }
+    peerDependencies:
+      react: ">=16.8.6"
+      react-dom: ">=16.8.6"
+
   "@isaacs/fs-minipass@4.0.1":
     resolution:
       {
@@ -675,12 +696,28 @@ packages:
     cpu: [arm64]
     os: [android]
 
+  "@rollup/rollup-darwin-arm64@4.34.9":
+    resolution:
+      {
+        integrity: sha512-0CY3/K54slrzLDjOA7TOjN1NuLKERBgk9nY5V34mhmuu673YNb+7ghaDUs6N0ujXR7fz5XaS5Aa6d2TNxZd0OQ==,
+      }
+    cpu: [arm64]
+    os: [darwin]
+
   "@rollup/rollup-darwin-arm64@4.52.5":
     resolution:
       {
         integrity: sha512-takF3CR71mCAGA+v794QUZ0b6ZSrgJkArC+gUiG6LB6TQty9T0Mqh3m2ImRBOxS2IeYBo4lKWIieSvnEk2OQWA==,
       }
     cpu: [arm64]
+    os: [darwin]
+
+  "@rollup/rollup-darwin-x64@4.34.9":
+    resolution:
+      {
+        integrity: sha512-eOojSEAi/acnsJVYRxnMkPFqcxSMFfrw7r2iD9Q32SGkb/Q9FpUY1UlAu1DH9T7j++gZ0lHjnm4OyH2vCI7l7Q==,
+      }
+    cpu: [x64]
     os: [darwin]
 
   "@rollup/rollup-darwin-x64@4.52.5":
@@ -723,10 +760,26 @@ packages:
     cpu: [arm]
     os: [linux]
 
+  "@rollup/rollup-linux-arm64-gnu@4.34.9":
+    resolution:
+      {
+        integrity: sha512-6TZjPHjKZUQKmVKMUowF3ewHxctrRR09eYyvT5eFv8w/fXarEra83A2mHTVJLA5xU91aCNOUnM+DWFMSbQ0Nxw==,
+      }
+    cpu: [arm64]
+    os: [linux]
+
   "@rollup/rollup-linux-arm64-gnu@4.52.5":
     resolution:
       {
         integrity: sha512-a+3wVnAYdQClOTlyapKmyI6BLPAFYs0JM8HRpgYZQO02rMR09ZcV9LbQB+NL6sljzG38869YqThrRnfPMCDtZg==,
+      }
+    cpu: [arm64]
+    os: [linux]
+
+  "@rollup/rollup-linux-arm64-musl@4.34.9":
+    resolution:
+      {
+        integrity: sha512-LD2fytxZJZ6xzOKnMbIpgzFOuIKlxVOpiMAXawsAZ2mHBPEYOnLRK5TTEsID6z4eM23DuO88X0Tq1mErHMVq0A==,
       }
     cpu: [arm64]
     os: [linux]
@@ -779,10 +832,26 @@ packages:
     cpu: [s390x]
     os: [linux]
 
+  "@rollup/rollup-linux-x64-gnu@4.34.9":
+    resolution:
+      {
+        integrity: sha512-FwBHNSOjUTQLP4MG7y6rR6qbGw4MFeQnIBrMe161QGaQoBQLqSUEKlHIiVgF3g/mb3lxlxzJOpIBhaP+C+KP2A==,
+      }
+    cpu: [x64]
+    os: [linux]
+
   "@rollup/rollup-linux-x64-gnu@4.52.5":
     resolution:
       {
         integrity: sha512-hXGLYpdhiNElzN770+H2nlx+jRog8TyynpTVzdlc6bndktjKWyZyiCsuDAlpd+j+W+WNqfcyAWz9HxxIGfZm1Q==,
+      }
+    cpu: [x64]
+    os: [linux]
+
+  "@rollup/rollup-linux-x64-musl@4.34.9":
+    resolution:
+      {
+        integrity: sha512-cYRpV4650z2I3/s6+5/LONkjIz8MBeqrk+vPXV10ORBnshpn8S32bPqQ2Utv39jCiDcO2eJTuSlPXpnvmaIgRA==,
       }
     cpu: [x64]
     os: [linux]
@@ -802,6 +871,14 @@ packages:
       }
     cpu: [arm64]
     os: [openharmony]
+
+  "@rollup/rollup-win32-arm64-msvc@4.34.9":
+    resolution:
+      {
+        integrity: sha512-z4mQK9dAN6byRA/vsSgQiPeuO63wdiDxZ9yg9iyX2QTzKuQM7T4xlBoeUP/J8uiFkqxkcWndWi+W7bXdPbt27Q==,
+      }
+    cpu: [arm64]
+    os: [win32]
 
   "@rollup/rollup-win32-arm64-msvc@4.52.5":
     resolution:
@@ -827,6 +904,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  "@rollup/rollup-win32-x64-msvc@4.34.9":
+    resolution:
+      {
+        integrity: sha512-AyleYRPU7+rgkMWbEh71fQlrzRfeP6SyMnRf9XX4fCdDPAJumdSBqYEcWPMzVQ4ScAl7E4oFfK0GUVn77xSwbw==,
+      }
+    cpu: [x64]
+    os: [win32]
+
   "@rollup/rollup-win32-x64-msvc@4.52.5":
     resolution:
       {
@@ -840,6 +925,22 @@ packages:
       {
         integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==,
       }
+
+  "@stencil/core@4.38.0":
+    resolution:
+      {
+        integrity: sha512-oC3QFKO0X1yXVvETgc8OLY525MNKhn9vISBrbtKnGoPlokJ6rI8Vk1RK22TevnNrHLI4SExNLbcDnqilKR35JQ==,
+      }
+    engines: { node: ">=16.0.0", npm: ">=7.10.0" }
+    hasBin: true
+
+  "@stencil/core@4.38.2":
+    resolution:
+      {
+        integrity: sha512-opyjA+DYAtaKmaSnuC8Bb/PH7nuO+1GhVn6amsN8XT+TlT9biptlcpz4YWETwYZ+XxtX+nLdxWbW0TVafrqsvQ==,
+      }
+    engines: { node: ">=16.0.0", npm: ">=7.10.0" }
+    hasBin: true
 
   "@tailwindcss/node@4.1.14":
     resolution:
@@ -2279,6 +2380,12 @@ packages:
       }
     engines: { node: ">= 0.4" }
 
+  ionicons@8.0.13:
+    resolution:
+      {
+        integrity: sha512-2QQVyG2P4wszne79jemMjWYLp0DBbDhr4/yFroPCxvPP1wtMxgdIV3l5n+XZ5E9mgoXU79w7yTWpm2XzJsISxQ==,
+      }
+
   is-array-buffer@3.0.5:
     resolution:
       {
@@ -3497,6 +3604,12 @@ packages:
         integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==,
       }
 
+  tslib@2.8.1:
+    resolution:
+      {
+        integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==,
+      }
+
   type-check@0.4.0:
     resolution:
       {
@@ -3956,6 +4069,20 @@ snapshots:
 
   "@humanwhocodes/retry@0.4.3": {}
 
+  "@ionic/core@8.7.7":
+    dependencies:
+      "@stencil/core": 4.38.0
+      ionicons: 8.0.13
+      tslib: 2.8.1
+
+  "@ionic/react@8.7.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)":
+    dependencies:
+      "@ionic/core": 8.7.7
+      ionicons: 8.0.13
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      tslib: 2.8.1
+
   "@isaacs/fs-minipass@4.0.1":
     dependencies:
       minipass: 7.1.2
@@ -4001,7 +4128,13 @@ snapshots:
   "@rollup/rollup-android-arm64@4.52.5":
     optional: true
 
+  "@rollup/rollup-darwin-arm64@4.34.9":
+    optional: true
+
   "@rollup/rollup-darwin-arm64@4.52.5":
+    optional: true
+
+  "@rollup/rollup-darwin-x64@4.34.9":
     optional: true
 
   "@rollup/rollup-darwin-x64@4.52.5":
@@ -4019,7 +4152,13 @@ snapshots:
   "@rollup/rollup-linux-arm-musleabihf@4.52.5":
     optional: true
 
+  "@rollup/rollup-linux-arm64-gnu@4.34.9":
+    optional: true
+
   "@rollup/rollup-linux-arm64-gnu@4.52.5":
+    optional: true
+
+  "@rollup/rollup-linux-arm64-musl@4.34.9":
     optional: true
 
   "@rollup/rollup-linux-arm64-musl@4.52.5":
@@ -4040,13 +4179,22 @@ snapshots:
   "@rollup/rollup-linux-s390x-gnu@4.52.5":
     optional: true
 
+  "@rollup/rollup-linux-x64-gnu@4.34.9":
+    optional: true
+
   "@rollup/rollup-linux-x64-gnu@4.52.5":
+    optional: true
+
+  "@rollup/rollup-linux-x64-musl@4.34.9":
     optional: true
 
   "@rollup/rollup-linux-x64-musl@4.52.5":
     optional: true
 
   "@rollup/rollup-openharmony-arm64@4.52.5":
+    optional: true
+
+  "@rollup/rollup-win32-arm64-msvc@4.34.9":
     optional: true
 
   "@rollup/rollup-win32-arm64-msvc@4.52.5":
@@ -4058,10 +4206,35 @@ snapshots:
   "@rollup/rollup-win32-x64-gnu@4.52.5":
     optional: true
 
+  "@rollup/rollup-win32-x64-msvc@4.34.9":
+    optional: true
+
   "@rollup/rollup-win32-x64-msvc@4.52.5":
     optional: true
 
   "@rtsao/scc@1.1.0": {}
+
+  "@stencil/core@4.38.0":
+    optionalDependencies:
+      "@rollup/rollup-darwin-arm64": 4.34.9
+      "@rollup/rollup-darwin-x64": 4.34.9
+      "@rollup/rollup-linux-arm64-gnu": 4.34.9
+      "@rollup/rollup-linux-arm64-musl": 4.34.9
+      "@rollup/rollup-linux-x64-gnu": 4.34.9
+      "@rollup/rollup-linux-x64-musl": 4.34.9
+      "@rollup/rollup-win32-arm64-msvc": 4.34.9
+      "@rollup/rollup-win32-x64-msvc": 4.34.9
+
+  "@stencil/core@4.38.2":
+    optionalDependencies:
+      "@rollup/rollup-darwin-arm64": 4.34.9
+      "@rollup/rollup-darwin-x64": 4.34.9
+      "@rollup/rollup-linux-arm64-gnu": 4.34.9
+      "@rollup/rollup-linux-arm64-musl": 4.34.9
+      "@rollup/rollup-linux-x64-gnu": 4.34.9
+      "@rollup/rollup-linux-x64-musl": 4.34.9
+      "@rollup/rollup-win32-arm64-msvc": 4.34.9
+      "@rollup/rollup-win32-x64-msvc": 4.34.9
 
   "@tailwindcss/node@4.1.14":
     dependencies:
@@ -5113,6 +5286,10 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.1.0
 
+  ionicons@8.0.13:
+    dependencies:
+      "@stencil/core": 4.38.2
+
   is-array-buffer@3.0.5:
     dependencies:
       call-bind: 1.0.8
@@ -5854,6 +6031,8 @@ snapshots:
       json5: 1.0.2
       minimist: 1.2.8
       strip-bom: 3.0.0
+
+  tslib@2.8.1: {}
 
   type-check@0.4.0:
     dependencies:
