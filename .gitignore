@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ESLint cache
+.eslintcache
+
+# If you also enable Prettier cache
+.prettiercache
+
+
+# Other common cache files you might want to ignore
+*.tsbuildinfo
+.turbo
+.next
+.cache
+build/
+coverage/
