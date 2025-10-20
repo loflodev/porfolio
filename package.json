@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "prepare": "husky",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "@ionic/react": "^8.7.7",
@@ -53,11 +53,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix --max-warnings=0 --cache",
-      "prettier --write --ignore-unknown"
+      "eslint --fix --max-warnings=0 --cache --cache-strategy=content"
     ],
-    "*.{css,md,json}": [
-      "prettier --write --ignore-unknown"
+    "*.{js,jsx,ts,tsx,css,md,json}": [
+      "prettier --write --ignore-unknown --cache"
     ]
   }
 }
