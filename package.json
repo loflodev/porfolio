@@ -18,6 +18,7 @@
     "ionicons": "^8.0.13",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.4",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
@@ -52,11 +53,11 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "pnpm lint:fix",
-      "pnpm format"
+      "eslint --fix --max-warnings=0 --cache",
+      "prettier --write --ignore-unknown"
     ],
     "*.{css,md,json}": [
-      "pnpm format"
+      "prettier --write --ignore-unknown"
     ]
   }
 }

@@ -4,9 +4,9 @@ import Sidebar from '../components/layouts/Sidebar';
 
 const Home: FC = () => {
   return (
-    <>
+    <main>
       <Sidebar />
-    </>
+    </main>
   );
 };
 

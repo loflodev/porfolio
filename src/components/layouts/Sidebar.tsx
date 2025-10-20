@@ -9,6 +9,7 @@ import {
   phonePortraitOutline,
 } from 'ionicons/icons';
 import { type FC } from 'react';
+import { Link } from 'react-router-dom';
 
 import avatar from '@/assets/image/my-avatar.png';
 
@@ -96,21 +97,21 @@ const Sidebar: FC = () => {
 
         <ul className="social-list">
           <li className="social-item">
-            <a href="#" className="social-link">
+            <Link to="#" className="social-link">
               <IonIcon className="socials-icons" icon={logoFacebook} />
-            </a>
+            </Link>
           </li>
 
           <li className="social-item">
-            <a href="#" className="social-link">
+            <Link to="#" className="social-link">
               <IonIcon className="socials-icons" icon={logoTwitter} />
-            </a>
+            </Link>
           </li>
 
           <li className="social-item">
-            <a href="#" className="social-link">
+            <Link to="#" className="social-link">
               <IonIcon className="socials-icons" icon={logoInstagram} />
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
