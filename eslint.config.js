@@ -107,6 +107,7 @@ export default defineConfig([
             kebabCase: true,
             snakeCase: true,
             pascalCase: true,
+            camelCase: true,
           },
           ignore: ['README.md', 'vite-env.d.ts'],
         },
