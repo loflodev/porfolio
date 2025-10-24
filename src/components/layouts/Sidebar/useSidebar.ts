@@ -16,6 +16,7 @@ const useSidebar = () => {
   const toggleMenu = () => setShowMenu((prev) => !prev);
 
   const isActive = (): string => (showMenu ? 'active' : '');
+
   return { showMenu, setShowMenu, isActive, toggleMenu };
 };
 

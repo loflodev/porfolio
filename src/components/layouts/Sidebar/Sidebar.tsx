@@ -9,12 +9,12 @@ import {
   phonePortraitOutline,
 } from 'ionicons/icons';
 import { type FC } from 'react';
-import { Link } from 'react-router-dom';
 
 import avatar from '@/assets/image/my-avatar.png';
 
 import SidebarInfo from './SidebarInfo';
 import SidebarMenu from './SidebarMenu';
+import SidebarSocialIcon from './SidebarSocialIcon';
 import useSidebar, { type SidebarMenuType } from './useSidebar';
 
 const Sidebar: FC = () => {
@@ -50,6 +50,30 @@ const Sidebar: FC = () => {
     },
   ];
 
+  const socialIconList: SidebarMenuType[] = [
+    {
+      icon: <IonIcon className="socials-icons" icon={logoFacebook} />,
+      label: 'Facebok',
+      title: 'facebook',
+      to: '#',
+      itemType: 'link',
+    },
+    {
+      icon: <IonIcon className="socials-icons" icon={logoTwitter} />,
+      label: 'Twitter',
+      title: 'twitter',
+      to: '#',
+      itemType: 'link',
+    },
+    {
+      icon: <IonIcon className="socials-icons" icon={logoInstagram} />,
+      label: 'Instagram',
+      title: 'instagram',
+      to: '#',
+      itemType: 'link',
+    },
+  ];
+
   return (
     <aside className={`sidebar ${isActive()}`} data-sidebar>
       <SidebarInfo
@@ -66,25 +90,7 @@ const Sidebar: FC = () => {
 
         <div className="separator"></div>
 
-        <ul className="social-list">
-          <li className="social-item">
-            <Link to="#" className="social-link">
-              <IonIcon className="socials-icons" icon={logoFacebook} />
-            </Link>
-          </li>
-
-          <li className="social-item">
-            <Link to="#" className="social-link">
-              <IonIcon className="socials-icons" icon={logoTwitter} />
-            </Link>
-          </li>
-
-          <li className="social-item">
-            <Link to="#" className="social-link">
-              <IonIcon className="socials-icons" icon={logoInstagram} />
-            </Link>
-          </li>
-        </ul>
+        <SidebarSocialIcon socialIconList={socialIconList} />
       </div>
     </aside>
   );
