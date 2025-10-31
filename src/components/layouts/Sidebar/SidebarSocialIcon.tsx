@@ -10,8 +10,8 @@ interface SidebarSocialIconProps {
 const SidebarSocialIcon = ({ socialIconList }: SidebarSocialIconProps) => {
   return (
     <ul className="social-list">
-      {socialIconList.map((item) => (
-        <li className="social-item">
+      {socialIconList.map((item, index) => (
+        <li key={`social-icon-${index}`} className="social-item">
           <Link to={item.to} className="social-link">
             {item.icon}
           </Link>

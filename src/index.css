@@ -195,10 +195,6 @@
   }
 
   article {
-    display: none;
-  }
-
-  article.active {
     display: block;
     animation: fade 0.5s ease backwards;
   }

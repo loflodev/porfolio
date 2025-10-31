@@ -10,8 +10,8 @@ interface SidebarMenuProps {
 const SidebarMenu = ({ menuList }: SidebarMenuProps) => {
   return (
     <ul className="contacts-list">
-      {menuList.map((menu) => (
-        <li className="contact-item">
+      {menuList.map((menu, index) => (
+        <li key={`sidebarmenu-${index}`} className="contact-item">
           <div className="icon-box">{menu.icon}</div>
 
           <div className="contact-info">
