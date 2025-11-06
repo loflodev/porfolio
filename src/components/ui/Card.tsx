@@ -1,20 +1,11 @@
-// import type { modalInfoType } from '../../pages/About';
-
-import type { modalInfoType } from '../../pages/About';
-
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
+import type { CardType } from '../../types';
+
 interface CardProps {
   cards: CardType[];
   type?: 'service' | 'testimony';
-  handleModalInfo?: (info: modalInfoType) => void;
+  handleModalInfo?: (info: CardType) => void;
 }
-export type CardType = {
-  alt: string;
-  title: string;
-  picture: string;
-  description: string;
-  date?: string;
-};
 
 interface ServiceCardProps {
   cards: CardType[];
@@ -22,7 +13,7 @@ interface ServiceCardProps {
 
 interface TestimonyCardProps {
   cards: CardType[];
-  handleModalInfo?: (info: modalInfoType) => void;
+  handleModalInfo?: (info: CardType) => void;
 }
 
 export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
@@ -39,10 +30,10 @@ export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
 export const ServiceCard = ({ cards }: ServiceCardProps) => {
   return (
     <ul className="service-list">
-      {cards.map((item) => (
-        <li className="service-item">
+      {cards.map((item, index) => (
+        <li key={`card -${index}`} className="service-item">
           <div className="service-icon-box">
-            <img src={item.picture} alt={item.alt} width="40" />
+            <img src={item.image} alt={item.alt} width="40" />
           </div>
 
           <div className="service-content-box">
@@ -60,13 +51,14 @@ export const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) =>
   return (
     handleModalInfo && (
       <ul className="testimonials-list has-scrollbar">
-        {cards.map((item) => (
+        {cards.map((item, index) => (
           <li
+            key={`testimony-${index}`}
             className="testimonials-item"
             onClick={() =>
               handleModalInfo({
                 alt: item.alt,
-                image: item.picture,
+                image: item.image,
                 title: item.title,
                 date: item.date,
                 description: item.description,
@@ -75,7 +67,7 @@ export const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) =>
           >
             <div className="content-card" data-testimonials-item>
               <figure className="testimonials-avatar-box">
-                <img src={item.picture} alt={item.alt} width="60" data-testimonials-avatar />
+                <img src={item.image} alt={item.alt} width="60" data-testimonials-avatar />
               </figure>
 
               <h4 className="h4 testimonials-item-title" data-testimonials-title>

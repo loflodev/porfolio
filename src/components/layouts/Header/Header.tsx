@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Navbar from '../../Navbar/Navbar';
+import Navbar from '../Navbar/Navbar';
 
 const DEFAULT_ACTIVE_MENU = 0;
 
