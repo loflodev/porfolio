@@ -5,10 +5,10 @@ interface NavbarProps {
     to: string;
   }>;
   activeIndex: number;
-  onClick: (value: number, to: string) => void;
+  handleTopMenu: (value: number, to: string) => void;
 }
 
-const Navbar = ({ navbarMenu, onClick, activeIndex }: NavbarProps) => {
+const Navbar = ({ navbarMenu, handleTopMenu, activeIndex }: NavbarProps) => {
   return (
     <nav className="navbar">
       <ul className="navbar-list">
@@ -16,7 +16,7 @@ const Navbar = ({ navbarMenu, onClick, activeIndex }: NavbarProps) => {
           <li key={`topmemnu-${index}`} className="navbar-item">
             <button
               className={`navbar-link  ${activeIndex === index ? 'active' : ''}`}
-              onClick={() => onClick(index, item.to)}
+              onClick={() => handleTopMenu(index, item.to)}
               data-nav-link
             >
               {item.label}

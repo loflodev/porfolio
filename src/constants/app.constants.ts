@@ -1,4 +1,35 @@
-import type { CardType, ClientSectionType, SkillType, TimelineType } from '../types';
+/* eslint-disable sonarjs/no-duplicate-string */
+import type { CardType, ClientSectionType, PortfolioType, SkillType, TimelineType } from '../types';
+
+export const DEFAULT_STATE_NUMBER = 0;
+
+export const TOP_MENU = [
+  {
+    label: 'About',
+    to: '/',
+    index: false,
+  },
+  {
+    label: 'Resume',
+    to: '/resume',
+    index: false,
+  },
+  {
+    label: 'Portfolio',
+    to: '/portfolio',
+    index: false,
+  },
+  {
+    label: 'Blog',
+    to: '/blog',
+    index: false,
+  },
+  {
+    label: 'Contact',
+    to: '/contact',
+    index: false,
+  },
+];
 
 export const SERVICES: CardType[] = [
   {
@@ -143,4 +174,70 @@ export const SKILLS: SkillType[] = [
   { title: 'Web design', progress: '70', width: 'w-[70%]' },
   { title: 'Branding', progress: '50', width: 'w-[50%]' },
   { title: 'Wordpress', progress: '90', width: 'w-[90%]' },
+];
+
+export const PORTFOLIO: PortfolioType[] = [
+  {
+    to: '#',
+    image: '/src/assets/images/project-1.jpg',
+    title: 'Finance',
+    category: 'Web development',
+    alt: 'finance',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-2.png',
+    title: 'Orizon',
+    category: 'Web development',
+    alt: 'orizon',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-3.jpg',
+    title: 'Orizon',
+    category: 'Web design',
+    alt: 'fundo',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-4.png',
+    title: 'Brawlhalla',
+    category: 'Applications',
+    alt: 'brawlhalla',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-5.png',
+    title: 'DSM.',
+    category: 'Web design',
+    alt: 'dsm.',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-6.png',
+    title: 'MetaSpark',
+    category: 'Web design',
+    alt: 'metaspark',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-7.png',
+    title: 'Summary',
+    category: 'Web development',
+    alt: 'summary',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-8.jpg',
+    title: 'Task Manager',
+    category: 'Applications',
+    alt: 'task manager',
+  },
+  {
+    to: '#',
+    image: '/src/assets/images/project-9.png',
+    title: 'Arrival',
+    category: 'Applications',
+    alt: 'Web development',
+  },
 ];

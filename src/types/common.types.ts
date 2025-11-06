@@ -1,3 +1,9 @@
+export type TopMenuType = {
+  label: string;
+  to: string;
+  index: boolean;
+};
+
 export type CardType = {
   title: string;
   image: string;
@@ -22,4 +28,17 @@ export type SkillType = {
   title: string;
   progress: string;
   width: string;
+};
+
+export type PortfolioType = {
+  title: string;
+  category: string;
+  image: string;
+  alt: string;
+  to: string;
+};
+
+export type TabType = {
+  title: string;
+  index: boolean;
 };
