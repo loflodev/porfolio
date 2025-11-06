@@ -3,7 +3,7 @@ import { IonIcon } from '@ionic/react';
 import { eyeOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
 
-import { EMPTY_ARRAY } from '../../constants';
+import { DEFAULT_STATE_NUMBER } from '../../constants';
 import type { PortfolioType } from '../../types';
 
 interface ThumbnailCardProps {
@@ -16,7 +16,7 @@ const ThumbnailCard = ({ data, category }: ThumbnailCardProps) => {
     (item) => item.category.toLocaleLowerCase() === category.toLocaleLowerCase()
   );
 
-  const tabCategory = filterdData.length === EMPTY_ARRAY ? data : filterdData;
+  const tabCategory = filterdData.length === DEFAULT_STATE_NUMBER ? data : filterdData;
   return (
     <ul className="project-list">
       {tabCategory.map((item, index) => (

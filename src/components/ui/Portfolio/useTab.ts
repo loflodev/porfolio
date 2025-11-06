@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { DEFAULT_ACTIVE_TAB, PORTFOLIO } from '../../../constants';
+import { DEFAULT_STATE_NUMBER, PORTFOLIO } from '../../../constants';
 import type { TabType } from '../../../types';
 
 const useTab = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_ACTIVE_TAB);
+  const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_STATE_NUMBER);
 
   const filteredCategory: TabType[] = [...new Set(PORTFOLIO.map((item) => item.category))].map(
     (cat) => ({
