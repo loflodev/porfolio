@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import type { CardType } from '../../types';
+import type { CardType, ModalType } from '../../types';
 
 interface CardProps {
   cards: CardType[];
   type?: 'service' | 'testimony';
-  handleModalInfo?: (info: CardType) => void;
+  handleModalInfo?: (info: ModalType) => void;
 }
 
 interface ServiceCardProps {
@@ -13,7 +13,7 @@ interface ServiceCardProps {
 
 interface TestimonyCardProps {
   cards: CardType[];
-  handleModalInfo?: (info: CardType) => void;
+  handleModalInfo?: (info: ModalType) => void;
 }
 
 export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
@@ -57,8 +57,7 @@ export const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) =>
             className="testimonials-item"
             onClick={() =>
               handleModalInfo({
-                alt: item.alt,
-                image: item.image,
+                icon: item.image,
                 title: item.title,
                 date: item.date,
                 description: item.description,

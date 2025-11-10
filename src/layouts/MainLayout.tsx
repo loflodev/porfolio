@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from '../components/layouts/Footer/Footer';
 import Header from '../components/layouts/Header/Header';
 import Sidebar from '../components/layouts/Sidebar/Sidebar';
+import MainProvider from '../context/MainProvider';
 
 const MainLayout = () => {
   return (
@@ -10,7 +11,9 @@ const MainLayout = () => {
       <Sidebar />
       <div className="main-content">
         <Header />
-        <Outlet />
+        <MainProvider>
+          <Outlet />
+        </MainProvider>
         <Footer />
       </div>
     </main>

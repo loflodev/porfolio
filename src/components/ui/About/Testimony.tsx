@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 import { TESTIMONIES } from '../../../constants';
-import type { CardType } from '../../../types';
+import type { ModalType } from '../../../types';
 import { Card } from '../Card';
 import Section from '../Section';
 
 interface testimonyProps {
-  handleTestimonyData?: (info: CardType) => void;
+  handleTestimonyData?: (info: ModalType) => void;
 }
 
 const Testimony = ({ handleTestimonyData }: testimonyProps) => {

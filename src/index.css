@@ -1324,9 +1324,10 @@
       --fs-2: 24px;
       --fs-3: 26px;
       --fs-4: 18px;
-      --fs-6: 15px;
-      --fs-7: 15px;
-      --fs-8: 12px;
+      --fs-5: 15px;
+      --fs-6: 14px;
+      --fs-7: 13px;
+      --fs-8: 11px;
     }
 
     /**
@@ -1733,6 +1734,9 @@
     .form-btn {
       width: max-content;
       margin-left: auto;
+    }
+    .max-input-heigth {
+      max-height: 53px;
     }
   }
   /* @endsection */
