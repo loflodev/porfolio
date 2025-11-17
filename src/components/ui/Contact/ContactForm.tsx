@@ -2,6 +2,7 @@ import { IonIcon } from '@ionic/react';
 import { paperPlane } from 'ionicons/icons';
 import type { ChangeEvent, FormEvent } from 'react';
 
+import useTranslation from '../../../hooks/useTransalation';
 import type { ContactFormInputType } from '../../../types';
 
 type ContactFormProps = {
@@ -19,9 +20,10 @@ const ContactForm = ({
   handleIsDisabled,
   isDisabled,
 }: ContactFormProps) => {
+  const { t } = useTranslation();
   return (
     <section className="contact-form">
-      <h3 className="h3 form-title">Contact Form</h3>
+      <h3 className="h3 form-title">{t('contactForm')}</h3>
 
       <form action="#" className="form" data-form onSubmit={handleSubmit}>
         <div className="input-wrapper">
@@ -32,7 +34,7 @@ const ContactForm = ({
               value={data.fullName}
               onChange={handleChange}
               className="form-input max-input-heigth"
-              placeholder="Full name"
+              placeholder={t('fullName')}
               data-form-input
             />
             {data.errorMessage.fullName && <p className="pl-4">{data.errorMessage.fullName}</p>}
@@ -44,7 +46,7 @@ const ContactForm = ({
               value={data.email}
               onChange={handleChange}
               className="form-input max-input-heigth"
-              placeholder="Email address"
+              placeholder={t('email')}
               data-form-input
             />
             {data.errorMessage.email && <p className="pl-4">{data.errorMessage.email}</p>}
@@ -59,14 +61,14 @@ const ContactForm = ({
             handleChange(e);
             handleIsDisabled();
           }}
-          placeholder="Your Message"
+          placeholder={t('yourMessage')}
           data-form-input
         ></textarea>
         {data.errorMessage.yourMessage && <p className="pl-4">{data.errorMessage.yourMessage}</p>}
 
         <button className="form-btn" type="submit" disabled={!isDisabled} data-form-btn>
           <IonIcon icon={paperPlane} />
-          <span>Send Message</span>
+          <span>{t('sendMessage')}</span>
         </button>
       </form>
     </section>

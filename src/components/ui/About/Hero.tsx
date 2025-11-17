@@ -5,9 +5,9 @@ const Hero = () => {
   const { t } = useTranslation();
   return (
     <Section className="about-text">
-      <p>{t('about.description1')}</p>
+      <p>{t('aboutPage.description1')}</p>
 
-      <p>{t('about.description2')}</p>
+      <p>{t('aboutPage.description2')}</p>
     </Section>
   );
 };

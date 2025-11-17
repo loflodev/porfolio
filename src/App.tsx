@@ -4,8 +4,8 @@ import MainLayout from './layouts/MainLayout';
 import About from './pages/About/About';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact/Contact';
-import Portfolio from './pages/Portfolio';
-import Resume from './pages/Resume';
+import Portfolio from './pages/Portfolio/Portfolio';
+import Resume from './pages/Resume/Resume';
 
 function App() {
   return (

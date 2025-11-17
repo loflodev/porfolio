@@ -2,14 +2,7 @@
 export const DEFAULT_STATE_NUMBER = 0;
 export const INPUT_MININUM_CHARATER = 3;
 
-import type {
-  ClientSectionType,
-  ContactFormInputType,
-  PortfolioType,
-  PostType,
-  SkillType,
-  TimelineType,
-} from '../types';
+import type { ClientSectionType, ContactFormInputType, PostType } from '../types';
 
 export const CLIENTS: ClientSectionType[] = [
   {
@@ -36,120 +29,6 @@ export const CLIENTS: ClientSectionType[] = [
     to: '#',
     image: '/src/assets/images/logo-5-color.png',
     alt: '',
-  },
-];
-
-export const EDUCATION: TimelineType[] = [
-  {
-    title: 'Alterna Academy',
-    time: '2022 — 2023',
-    description:
-      'Full Stack Development – React, Node.js, Express.js, MongoDB (frontend & backend integration)',
-  },
-  {
-    title: 'Instituto Tecnológico de Las Américas ITLA',
-    time: '2014 — 2016',
-    description:
-      'Website creation and management with Content Management Systems (CMS), including building, customizing, and maintaining user‑friendly sites.',
-  },
-  {
-    title: 'Cisco Certified Network Associate (CCNA)',
-    time: '2012 — 2014',
-    description: 'Networking configuration, routing & switching, security, and troubleshooting',
-  },
-];
-
-export const EXPERIRENCE: TimelineType[] = [
-  {
-    title: 'Project‑based developer',
-    time: '2024 — Present',
-    description:
-      'Delivering tailored web solutions across diverse projects, from design to deployment. Skilled in adapting to client needs, integrating modern frameworks, and ensuring scalable, maintainable results',
-  },
-  {
-    title: 'Full stack Developer - Productiviy',
-    time: '2023 — 2024',
-    description:
-      'React developer crafting clean TypeScript code, with Axios for data and Gestalt + Figma for design.',
-  },
-  {
-    title: 'Frontend Developer - CoolHunter Partner',
-    time: '2022 - 2023',
-    description:
-      'Web developer using Vue.js for dynamic interfaces, Tailwind CSS for styling, TypeScript for clean code, Axios for data fetching, and Git for version control.',
-  },
-];
-
-export const SKILLS: SkillType[] = [
-  { title: 'Web develop', progress: '90', width: 'w-[90%]' },
-  { title: 'Web design', progress: '70', width: 'w-[70%]' },
-  { title: 'Branding', progress: '50', width: 'w-[50%]' },
-  { title: 'Wordpress', progress: '90', width: 'w-[90%]' },
-];
-
-export const PORTFOLIO: PortfolioType[] = [
-  {
-    to: '#',
-    image: '/src/assets/images/project-1.jpg',
-    title: 'Finance',
-    category: 'Web development',
-    alt: 'finance',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-2.png',
-    title: 'Orizon',
-    category: 'Web development',
-    alt: 'orizon',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-3.jpg',
-    title: 'Orizon',
-    category: 'Web design',
-    alt: 'fundo',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-4.png',
-    title: 'Brawlhalla',
-    category: 'Applications',
-    alt: 'brawlhalla',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-5.png',
-    title: 'DSM.',
-    category: 'Web design',
-    alt: 'dsm.',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-6.png',
-    title: 'MetaSpark',
-    category: 'Web design',
-    alt: 'metaspark',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-7.png',
-    title: 'Summary',
-    category: 'Web development',
-    alt: 'summary',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-8.jpg',
-    title: 'Task Manager',
-    category: 'Applications',
-    alt: 'task manager',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/project-9.png',
-    title: 'Arrival',
-    category: 'Applications',
-    alt: 'Web development',
   },
 ];
 

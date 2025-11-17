@@ -1,31 +1,35 @@
 {
-  "sidebar": {
-    "email": "Correo electrónico",
-    "phone": "Teléfono",
-    "birthday": "Cumpleaños",
-    "location": "Ubicación"
-  },
-  "navigation": {
-    "about": "Acerca de",
-    "resume": "Currículum",
-    "portfolio": "Portafolio",
-    "blog": "Blog",
-    "contact": "Contacto"
-  },
-  "about": {
-    "aboutMe": "Sobre mí",
+  "education": "Educación",
+  "resume": "Currículum",
+  "experience": "Experiencia",
+  "mySkills": "Mis habilidades",
+  "webDesign": "Diseño web",
+  "webDevelopment": "Desarrollo web",
+  "mobileApps": "Aplicaciones móviles",
+  "whatImDoing": "Lo que hago",
+  "fullName": "Nombre completo",
+  "email": "Correo electrónico",
+  "phone": "Teléfono",
+  "birthday": "Cumpleaños",
+  "location": "Ubicación",
+  "seo": "SEO",
+  "about": "Acerca de",
+  "portfolio": "Portafolio",
+  "blog": "Blog",
+  "contact": "Contacto",
+  "yourMessage": "Tu mensaje",
+  "sendMessage": "Enviar mensaje",
+  "aboutMe": "Sobre mí",
+  "applications": "Aplicaciones",
+  "contactForm": "Formulario de contacto",
+  "aboutPage": {
     "description1": "¡Hola Mundo! Soy Louis, desarrollador Full Stack con un conjunto de habilidades únicas que aportarán una perspectiva fresca a su equipo.",
     "description2": "Mis habilidades de programación son muy sólidas; desde el diseño front‑end hasta el desarrollo back‑end, tengo talento para crear interfaces fáciles de usar y escribir código eficiente y libre de errores. Domino una variedad de lenguajes de programación, incluyendo TypeScript, JavaScript, Python, PHP, HTML/CSS, y tecnologías como MongoDB, Express, React, NodeJS, WordPress Core, etc.",
     "services": {
-      "whatImDoing": "Esto es lo que hago",
-      "webDesign": "Diseño web",
-      "webDesignDescription": "El diseño más moderno y de alta calidad realizado a nivel profesional.",
-      "webDevelopment": "Desarrollo web",
-      "webDevelopmentDescription": "Desarrollo de sitios web de alta calidad a nivel profesional.",
-      "mobileApps": "Aplicaciones móviles",
-      "mobileAppsDescription": "Desarrollo profesional de aplicaciones para iOS y Android.",
-      "seo": "SEO",
-      "seoDescription": "Optimizo sitios web de alta calidad en cualquier categoría a nivel profesional."
+      "description1": "El diseño más moderno y de alta calidad realizado a nivel profesional.",
+      "description2": "Desarrollo de sitios web de alta calidad a nivel profesional.",
+      "description3": "Desarrollo profesional de aplicaciones para iOS y Android.",
+      "description4": "Optimizo sitios web de alta calidad en cualquier categoría a nivel profesional."
     },
     "testimonials": {
       "feedback1": "Richard fue contratado para crear una identidad corporativa. Quedamos muy satisfechos con el trabajo realizado. Tiene mucha experiencia y se preocupa mucho por las necesidades del cliente.",
@@ -36,5 +40,13 @@
     "footer": {
       "clients": "Clientes"
     }
+  },
+  "resumePage": {
+    "education1": "Desarrollo Full Stack – React, Node.js, Express.js, MongoDB (integración frontend y backend)",
+    "education2": "Creación y gestión de sitios web con Sistemas de Gestión de Contenidos (CMS), incluyendo construcción, personalización y mantenimiento de sitios fáciles de usar.",
+    "education3": "Configuración de redes, enrutamiento y conmutación, seguridad y resolución de problemas",
+    "experience1": "Entrega de soluciones web a medida a través de diversos proyectos, desde el diseño hasta el despliegue. Competente en adaptarse a las necesidades del cliente, integrando frameworks modernos y asegurando resultados escalables y mantenibles",
+    "experience2": "Desarrollador React creando código limpio en TypeScript, con Axios para datos y Gestalt + Figma para diseño.",
+    "experience3": "Desarrollador web usando Vue.js para interfaces dinámicas, Tailwind CSS para estilos, TypeScript para código limpio, Axios para obtención de datos y Git para control de versiones."
   }
 }

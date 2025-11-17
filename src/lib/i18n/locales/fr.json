@@ -1,31 +1,35 @@
 {
-  "sidebar": {
-    "email": "E-mail",
-    "phone": "Téléphone",
-    "birthday": "Anniversaire",
-    "location": "Lieu"
-  },
-  "navigation": {
-    "about": "À propos",
-    "resume": "CV",
-    "portfolio": "Portfolio",
-    "blog": "Blog",
-    "contact": "Contact"
-  },
-  "about": {
-    "aboutMe": "À propos de moi",
+  "education": "Éducation",
+  "resume": "CV",
+  "experience": "Expérience",
+  "mySkills": "Mes compétences",
+  "webDesign": "Conception web",
+  "webDevelopment": "Développement web",
+  "mobileApps": "Applications mobiles",
+  "whatImDoing": "Ce que je fais",
+  "fullName": "Nom complet",
+  "email": "E-mail",
+  "phone": "Téléphone",
+  "birthday": "Anniversaire",
+  "location": "Lieu",
+  "seo": "SEO",
+  "about": "À propos",
+  "portfolio": "Portfolio",
+  "blog": "Blog",
+  "contact": "Contact",
+  "yourMessage": "Votre message",
+  "sendMessage": "Envoyer le message",
+  "aboutMe": "À propos de moi",
+  "applications": "Applications",
+  "contactForm": "Formulaire de contact",
+  "aboutPage": {
     "description1": "Bonjour le monde ! Je suis Louis, développeur Full Stack avec un ensemble de compétences uniques qui apporteront une nouvelle perspective à votre équipe.",
-    "description2": "Mon travail consiste à construire votre site web afin qu’il soit fonctionnel et convivial, mais aussi attrayant. De plus, j’ajoute une touche personnelle à votre produit pour qu’il soit accrocheur et facile à utiliser. Mon objectif est de transmettre votre message et votre identité de la manière la plus créative possible. J’ai créé des designs web pour de nombreuses grandes marques.",
+    "description2": "Mes compétences en codage sont très solides, du design front-end au développement back-end, j'ai un talent pour créer des interfaces conviviales et écrire un code efficace et sans bugs. Je maîtrise une variété de langages de programmation, notamment TypeScript, JavaScript, Python, PHP, HTML/CSS et des technologies telles que MongoDB, Express, React, NodeJS, WordPress Core, etc.",
     "services": {
-      "whatImDoing": "Ce que je fais",
-      "webDesign": "Conception web",
-      "webDesignDescription": "Le design le plus moderne et de haute qualité réalisé à un niveau professionnel.",
-      "webDevelopment": "Développement web",
-      "webDevelopmentDescription": "Développement de sites web de haute qualité au niveau professionnel.",
-      "mobileApps": "Applications mobiles",
-      "mobileAppsDescription": "Développement professionnel d’applications pour iOS et Android.",
-      "seo": "SEO",
-      "seoDescription": "J’optimise des sites web de haute qualité dans toute catégorie au niveau professionnel."
+      "description1": "Le design le plus moderne et de haute qualité réalisé à un niveau professionnel.",
+      "description2": "Développement de sites web de haute qualité au niveau professionnel.",
+      "description3": "Développement professionnel d'applications pour iOS et Android.",
+      "description4": "J'optimise des sites web de haute qualité dans toute catégorie au niveau professionnel."
     },
     "testimonials": {
       "feedback1": "Richard a été engagé pour créer une identité d’entreprise. Nous avons été très satisfaits du travail réalisé. Elle a beaucoup d’expérience et se soucie énormément des besoins du client.",
@@ -36,5 +40,13 @@
     "footer": {
       "clients": "Clients"
     }
+  },
+  "resumePage": {
+    "education1": "Développement Full Stack – React, Node.js, Express.js, MongoDB (intégration frontend et backend)",
+    "education2": "Création et gestion de sites Web avec des systèmes de gestion de contenu (CMS), y compris la construction, la personnalisation et la maintenance de sites conviviaux.",
+    "education3": "Configuration réseau, routage et commutation, sécurité et dépannage",
+    "experience1": "Fournir des solutions web sur mesure à travers divers projets, du design au déploiement. Compétent pour s'adapter aux besoins du client, intégrer des frameworks modernes et assurer des résultats évolutifs et maintenables",
+    "experience2": "Développeur React écrivant un code TypeScript propre, avec Axios pour les données et Gestalt + Figma pour le design.",
+    "experience3": "Développeur web utilisant Vue.js pour des interfaces dynamiques, Tailwind CSS pour le style, TypeScript pour un code propre, Axios pour la récupération de données et Git pour le contrôle de version."
   }
 }

@@ -3,33 +3,33 @@
   "resume": "Resume",
   "experience": "Experience",
   "mySkills": "My Skills",
-  "sidebar": {
-    "email": "Email",
-    "phone": "Phone",
-    "birthday": "Birthday",
-    "location": "Location"
-  },
-  "navigation": {
-    "about": "About",
-    "resume": "Resume",
-    "portfolio": "Portfolio",
-    "blog": "Blog",
-    "contact": "Contact"
-  },
-  "about": {
-    "aboutMe": "About me",
+  "webDesign": "Web design",
+  "webDevelopment": "Web development",
+  "mobileApps": "Mobile apps",
+  "whatImDoing": "What I'm doing",
+  "fullName": "Full Name",
+  "email": "Email",
+  "phone": "Phone",
+  "birthday": "Birthday",
+  "location": "Location",
+  "seo": "SEO",
+  "about": "About",
+  "portfolio": "Portfolio",
+  "blog": "Blog",
+  "contact": "Contact",
+  "yourMessage": "Your Message",
+  "sendMessage": "Send Message",
+  "aboutMe": "About me",
+  "applications": "Applications",
+  "contactForm": "Contact Form",
+  "aboutPage": {
     "description1": "Hello World! I am Louis, a Full stack developer with a unique set of skills that will bring a fresh perspective to your team.",
     "description2": "My coding skills are rock solid, from front-end design to back-end development, I have a knack for creating user-friendly interfaces and writing efficient, bug-free code. I'm well-versed in a variety of programming languages, including TypeSricpt, JavaScript, Python, PHP, HTML/CSS and technology such as: MongoDB, Express, React, NodeJS, Wordress Core etc.",
     "services": {
-      "whatImDoing": "What I'm doing",
-      "webDesign": "Web design",
-      "webDesignDescription": "The most modern and high-quality design made at a professional level.",
-      "webDevelopment": "Web development",
-      "webDevelopmentDescription": "High-quality development of sites at the professional level.",
-      "mobileApps": "Mobile apps",
-      "mobileAppsDescription": "Professional development of applications for iOS and Android.",
-      "seo": "SEO",
-      "seoDescription": "I optimize high‑quality websites in any category at a professional level."
+      "description1": "The most modern and high-quality design made at a professional level.",
+      "description2": "High-quality development of sites at the professional level.",
+      "description3": "Professional development of applications for iOS and Android.",
+      "description4": "I optimize high‑quality websites in any category at a professional level."
     },
     "testimonials": {
       "feedback1": "Richard was hired to create a corporate identity. We were very pleased with the work done. She has a lot of experience and is very concerned about the needs of client.",
@@ -40,5 +40,13 @@
     "footer": {
       "clients": "Clients"
     }
+  },
+  "resumePage": {
+    "education1": "Full Stack Development – React, Node.js, Express.js, MongoDB (frontend & backend integration)",
+    "education2": "Website creation and management with Content Management Systems (CMS), including building, customizing, and maintaining user‑friendly sites.",
+    "education3": "Networking configuration, routing & switching, security, and troubleshooting",
+    "experience1": "Delivering tailored web solutions across diverse projects, from design to deployment. Skilled in adapting to client needs, integrating modern frameworks, and ensuring scalable, maintainable results",
+    "experience2": "React developer crafting clean TypeScript code, with Axios for data and Gestalt + Figma for design.",
+    "experience3": "Web developer using Vue.js for dynamic interfaces, Tailwind CSS for styling, TypeScript for clean code, Axios for data fetching, and Git for version control."
   }
 }

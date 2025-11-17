@@ -16,28 +16,28 @@ const useAbout = () => {
 
   const services: CardType[] = [
     {
-      alt: t('about.services.webDesign'),
-      title: t('about.services.webDesign'),
+      alt: t('webDesign'),
+      title: t('webDesign'),
       image: '/src/assets/images/icon-design.svg',
-      description: t('about.services.webDesignDescription'),
+      description: t('aboutPage.services.description1'),
     },
     {
-      alt: t('about.services.webDevelopment'),
-      title: t('about.services.webDevelopment'),
+      alt: t('webDevelopment'),
+      title: t('webDevelopment'),
       image: '/src/assets/images/icon-dev.svg',
-      description: t('about.services.webDevelopmentDescription'),
+      description: t('aboutPage.services.description2'),
     },
     {
-      alt: t('about.services.mobileApps'),
-      title: t('about.services.mobileApps'),
+      alt: t('mobileApps'),
+      title: t('mobileApps'),
       image: '/src/assets/images/icon-app.svg',
-      description: t('about.services.mobileAppsDescription'),
+      description: t('aboutPage.services.description3'),
     },
     {
-      alt: t('about.services.seo'),
-      title: t('about.services.seo'),
+      alt: t('seo'),
+      title: t('seo'),
       image: '/src/assets/images/icon-seo.svg',
-      description: t('about.services.seoDescription'),
+      description: t('aboutPage.services.description4'),
     },
   ];
 
@@ -46,25 +46,25 @@ const useAbout = () => {
       alt: 'Daniel lewis',
       title: 'Daniel lewis',
       image: '/src/assets/images/avatar-1.png',
-      description: t('about.testimonials.feedback1'),
+      description: t('aboutPage.testimonials.feedback1'),
     },
     {
       alt: 'Jessica miller',
       title: 'Jessica miller',
       image: '/src/assets/images/avatar-2.png',
-      description: t('about.testimonials.feedback2'),
+      description: t('aboutPage.testimonials.feedback2'),
     },
     {
       alt: 'Emily evans',
       title: 'Emily evans',
       image: '/src/assets/images/avatar-3.png',
-      description: t('about.testimonials.feedback3'),
+      description: t('aboutPage.testimonials.feedback3'),
     },
     {
       alt: 'Henry william"',
       title: 'Henry william',
       image: '/src/assets/images/avatar-4.png',
-      description: t('about.testimonials.feedback4'),
+      description: t('aboutPage.testimonials.feedback4'),
     },
   ];
 

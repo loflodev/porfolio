@@ -11,7 +11,7 @@ interface ServicesProps {
 const Service = ({ data }: ServicesProps) => {
   const { t } = useTranslation();
   return (
-    <Section name={'service'} title={t('about.services.whatImDoing')} className="service">
+    <Section name={'service'} title={t('whatImDoing')} className="service">
       <Card type="service" cards={data} />
     </Section>
   );

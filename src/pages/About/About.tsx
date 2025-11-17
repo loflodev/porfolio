@@ -14,7 +14,7 @@ const About = () => {
   const { services, testimonies } = useAbout();
   const { t } = useTranslation();
   return (
-    <Article name="article" header={t('about.aboutMe')} className="about">
+    <Article name="article" header={t('aboutMe')} className="about">
       <Hero />
       <Service data={services} />
       <Testimony data={testimonies} handleTestimonyData={handleModalData} />
