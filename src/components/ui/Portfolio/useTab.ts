@@ -9,12 +9,12 @@ const useTab = () => {
   const filteredCategory: TabType[] = [...new Set(PORTFOLIO.map((item) => item.category))].map(
     (cat) => ({
       title: cat,
-      index: false,
+      isSelected: false,
     })
   );
 
   const [category, setCategory] = useState<TabType[]>([
-    { title: 'all', index: true },
+    { title: 'all', isSelected: true },
     ...filteredCategory,
   ]);
 
@@ -22,7 +22,7 @@ const useTab = () => {
     setActiveIndex(index);
 
     setCategory((prev) => {
-      return prev.map((item, i) => (i === index ? { ...item, index: true } : item));
+      return prev.map((item, i) => (i === index ? { ...item, isSelected: true } : item));
     });
   };
   return { category, setCategory, handleTabSelect, activeIndex };

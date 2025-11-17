@@ -1,10 +1,39 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { DEFAULT_STATE_NUMBER, TOP_MENU } from '../../../constants';
+import { DEFAULT_STATE_NUMBER } from '../../../constants';
+import useTranslation from '../../../hooks/useTransalation';
 import type { TopMenuType } from '../../../types';
 
 const useHeader = () => {
+  const { t } = useTranslation();
+  const TOP_MENU: TopMenuType[] = [
+    {
+      label: t('navigation.about'),
+      to: '/',
+      index: false,
+    },
+    {
+      label: t('navigation.resume'),
+      to: '/resume',
+      index: false,
+    },
+    {
+      label: t('navigation.portfolio'),
+      to: '/portfolio',
+      index: false,
+    },
+    {
+      label: t('navigation.blog'),
+      to: '/blog',
+      index: false,
+    },
+    {
+      label: t('navigation.contact'),
+      to: '/contact',
+      index: false,
+    },
+  ];
   const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_STATE_NUMBER);
   const [menu, setMenu] = useState<TopMenuType[]>(TOP_MENU);
   const navigate = useNavigate();

@@ -73,9 +73,10 @@ const useContact = () => {
           "Thank you for reaching out. We've received your message and will get back to you as soon as possible.",
         icon: 'h',
       });
+
+      setContactFormInput(CONTACT_FORM_DEFAULT);
     }
 
-    setContactFormInput(CONTACT_FORM_DEFAULT);
     setIsDisabled(false);
   };
   return {

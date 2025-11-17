@@ -40,7 +40,7 @@ export type PortfolioType = {
 
 export type TabType = {
   title: string;
-  index: boolean;
+  isSelected: boolean;
 };
 
 export type PostType = {

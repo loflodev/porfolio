@@ -1,0 +1,40 @@
+{
+  "sidebar": {
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "birthday": "Anniversaire",
+    "location": "Lieu"
+  },
+  "navigation": {
+    "about": "À propos",
+    "resume": "CV",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "about": {
+    "aboutMe": "À propos de moi",
+    "description1": "Bonjour le monde ! Je suis Louis, développeur Full Stack avec un ensemble de compétences uniques qui apporteront une nouvelle perspective à votre équipe.",
+    "description2": "Mon travail consiste à construire votre site web afin qu’il soit fonctionnel et convivial, mais aussi attrayant. De plus, j’ajoute une touche personnelle à votre produit pour qu’il soit accrocheur et facile à utiliser. Mon objectif est de transmettre votre message et votre identité de la manière la plus créative possible. J’ai créé des designs web pour de nombreuses grandes marques.",
+    "services": {
+      "whatImDoing": "Ce que je fais",
+      "webDesign": "Conception web",
+      "webDesignDescription": "Le design le plus moderne et de haute qualité réalisé à un niveau professionnel.",
+      "webDevelopment": "Développement web",
+      "webDevelopmentDescription": "Développement de sites web de haute qualité au niveau professionnel.",
+      "mobileApps": "Applications mobiles",
+      "mobileAppsDescription": "Développement professionnel d’applications pour iOS et Android.",
+      "seo": "SEO",
+      "seoDescription": "J’optimise des sites web de haute qualité dans toute catégorie au niveau professionnel."
+    },
+    "testimonials": {
+      "feedback1": "Richard a été engagé pour créer une identité d’entreprise. Nous avons été très satisfaits du travail réalisé. Elle a beaucoup d’expérience et se soucie énormément des besoins du client.",
+      "feedback2": "Richard a été engagé pour créer une identité d’entreprise. Nous avons été très satisfaits du travail réalisé. Elle a beaucoup d’expérience et se soucie énormément des besoins du client.",
+      "feedback3": "Richard a été engagé pour créer une identité d’entreprise. Nous avons été très satisfaits du travail réalisé. Elle a beaucoup d’expérience et se soucie énormément des besoins du client.",
+      "feedback4": "Richard a été engagé pour créer une identité d’entreprise. Nous avons été très satisfaits du travail réalisé. Elle a beaucoup d’expérience et se soucie énormément des besoins du client."
+    },
+    "footer": {
+      "clients": "Clients"
+    }
+  }
+}

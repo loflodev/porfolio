@@ -1,0 +1,40 @@
+{
+  "sidebar": {
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "birthday": "Cumpleaños",
+    "location": "Ubicación"
+  },
+  "navigation": {
+    "about": "Acerca de",
+    "resume": "Currículum",
+    "portfolio": "Portafolio",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "about": {
+    "aboutMe": "Sobre mí",
+    "description1": "¡Hola Mundo! Soy Louis, desarrollador Full Stack con un conjunto de habilidades únicas que aportarán una perspectiva fresca a su equipo.",
+    "description2": "Mis habilidades de programación son muy sólidas; desde el diseño front‑end hasta el desarrollo back‑end, tengo talento para crear interfaces fáciles de usar y escribir código eficiente y libre de errores. Domino una variedad de lenguajes de programación, incluyendo TypeScript, JavaScript, Python, PHP, HTML/CSS, y tecnologías como MongoDB, Express, React, NodeJS, WordPress Core, etc.",
+    "services": {
+      "whatImDoing": "Esto es lo que hago",
+      "webDesign": "Diseño web",
+      "webDesignDescription": "El diseño más moderno y de alta calidad realizado a nivel profesional.",
+      "webDevelopment": "Desarrollo web",
+      "webDevelopmentDescription": "Desarrollo de sitios web de alta calidad a nivel profesional.",
+      "mobileApps": "Aplicaciones móviles",
+      "mobileAppsDescription": "Desarrollo profesional de aplicaciones para iOS y Android.",
+      "seo": "SEO",
+      "seoDescription": "Optimizo sitios web de alta calidad en cualquier categoría a nivel profesional."
+    },
+    "testimonials": {
+      "feedback1": "Richard fue contratado para crear una identidad corporativa. Quedamos muy satisfechos con el trabajo realizado. Tiene mucha experiencia y se preocupa mucho por las necesidades del cliente.",
+      "feedback2": "Richard fue contratado para crear una identidad corporativa. Quedamos muy satisfechos con el trabajo realizado. Tiene mucha experiencia y se preocupa mucho por las necesidades del cliente.",
+      "feedback3": "Richard fue contratado para crear una identidad corporativa. Quedamos muy satisfechos con el trabajo realizado. Tiene mucha experiencia y se preocupa mucho por las necesidades del cliente.",
+      "feedback4": "Richard fue contratado para crear una identidad corporativa. Quedamos muy satisfechos con el trabajo realizado. Tiene mucha experiencia y se preocupa mucho por las necesidades del cliente."
+    },
+    "footer": {
+      "clients": "Clientes"
+    }
+  }
+}

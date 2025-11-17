@@ -32,7 +32,7 @@ const ThumbnailCard = ({ data, category }: ThumbnailCardProps) => {
                 <IonIcon icon={eyeOutline} />
               </div>
 
-              <img src={item.image} alt={item.alt} loading="lazy" />
+              <img src={item.image} alt={item.alt} loading="eager" decoding="async" />
             </figure>
 
             <h3 className="project-title">{item.title}</h3>

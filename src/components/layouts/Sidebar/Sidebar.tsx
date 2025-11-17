@@ -2,9 +2,9 @@ import { IonIcon } from '@ionic/react';
 import {
   calendarOutline,
   locationOutline,
-  logoFacebook,
+  logoGithub,
   logoInstagram,
-  logoTwitter,
+  logoLinkedin,
   mailOutline,
   phonePortraitOutline,
 } from 'ionicons/icons';
@@ -16,60 +16,61 @@ import SidebarInfo from './SidebarInfo';
 import SidebarMenu from './SidebarMenu';
 import SidebarSocialIcon from './SidebarSocialIcon';
 import useSidebar, { type SidebarMenuType } from './useSidebar';
+import useTranslation from '../../../hooks/useTransalation';
 
 const Sidebar: FC = () => {
+  const { t } = useTranslation();
+
   const { isActive, toggleMenu } = useSidebar();
+
   const menuList: SidebarMenuType[] = [
     {
       icon: <IonIcon icon={mailOutline} />,
-      label: 'Email',
-      title: ' richard@example.com',
-      to: 'mailto:richard@example.com',
+      label: t('sidebar.email'),
+      title: 'louis@loflodev.com',
+      to: 'mailto:louis@loflodev.com',
       itemType: 'link',
     },
     {
       icon: <IonIcon icon={phonePortraitOutline} />,
-      label: 'Phone',
-      title: ' +1 (213) 352-2795',
-      to: 'tel:+12133522795',
+      label: t('sidebar.phone'),
+      title: ' +1 (438) 526-2254',
+      to: 'tel:+14385262254',
       itemType: 'link',
     },
     {
       icon: <IonIcon icon={calendarOutline} />,
-      label: 'Birthday',
-      title: 'June 23, 1982',
+      label: t('sidebar.birthday'),
+      title: 'October 10, 1989',
       to: '#',
       itemType: 'date',
     },
     {
       icon: <IonIcon icon={locationOutline} />,
-      label: 'Location',
-      title: 'Sacramento, California, USA',
+      label: t('sidebar.location'),
+      title: 'Repentigny, QC, CANADA',
       to: '#',
       itemType: 'address',
     },
   ];
 
-  const socialIconList: SidebarMenuType[] = [
+  const socialIconList: Omit<SidebarMenuType, 'label'>[] = [
     {
-      icon: <IonIcon className="socials-icons" icon={logoFacebook} />,
-      label: 'Facebok',
-      title: 'facebook',
-      to: '#',
-      itemType: 'link',
-    },
-    {
-      icon: <IonIcon className="socials-icons" icon={logoTwitter} />,
-      label: 'Twitter',
-      title: 'twitter',
-      to: '#',
+      icon: <IonIcon className="socials-icons" icon={logoGithub} />,
+      title: 'Github',
+      to: 'https://github.com/loflodev/',
       itemType: 'link',
     },
     {
       icon: <IonIcon className="socials-icons" icon={logoInstagram} />,
-      label: 'Instagram',
       title: 'instagram',
-      to: '#',
+      to: 'https://www.instagram.com/louis_thereborn',
+      itemType: 'link',
+    },
+    {
+      icon: <IonIcon className="socials-icons" icon={logoLinkedin} />,
+      title: 'Linkedin',
+      to: 'https://www.linkedin.com/in/ljunit25',
       itemType: 'link',
     },
   ];

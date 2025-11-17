@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { Link } from 'react-router-dom';
 
 import type { SidebarMenuType } from './useSidebar';
 
 interface SidebarSocialIconProps {
-  socialIconList: SidebarMenuType[];
+  socialIconList: Omit<SidebarMenuType, 'label'>[];
 }
 
 const SidebarSocialIcon = ({ socialIconList }: SidebarSocialIconProps) => {
@@ -12,9 +11,9 @@ const SidebarSocialIcon = ({ socialIconList }: SidebarSocialIconProps) => {
     <ul className="social-list">
       {socialIconList.map((item, index) => (
         <li key={`social-icon-${index}`} className="social-item">
-          <Link to={item.to} className="social-link">
+          <a href={item.to} target="_blank" rel="noopener noreferrer" className="social-link">
             {item.icon}
-          </Link>
+          </a>
         </li>
       ))}
     </ul>

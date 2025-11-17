@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { IonIcon } from '@ionic/react';
-import { chevronDown } from 'ionicons/icons';
 
+import MobileTab from './MobileTab';
 import type { TabType } from '../../../types';
 
 interface TabProps {
@@ -14,7 +13,7 @@ const Tab = ({ data, handleSelect, activeTab }: TabProps) => {
     <>
       <ul className="filter-list">
         {data.map((item, index) => (
-          <li className="filter-item">
+          <li key={`tab-${index}`} className="filter-item">
             <button
               className={`${activeTab === index ? 'active' : ''} capitalize`}
               onClick={() => handleSelect(index)}
@@ -26,35 +25,7 @@ const Tab = ({ data, handleSelect, activeTab }: TabProps) => {
         ))}
       </ul>
 
-      <div className="filter-select-box">
-        <button className="filter-select" data-select>
-          <div className="select-value" data-selecct-value>
-            Select category
-          </div>
-
-          <div className="select-icon">
-            <IonIcon icon={chevronDown} />
-          </div>
-        </button>
-
-        <ul className="select-list">
-          <li className="select-item">
-            <button data-select-item>All</button>
-          </li>
-
-          <li className="select-item">
-            <button data-select-item>Web design</button>
-          </li>
-
-          <li className="select-item">
-            <button data-select-item>Applications</button>
-          </li>
-
-          <li className="select-item">
-            <button data-select-item>Web development</button>
-          </li>
-        </ul>
-      </div>
+      <MobileTab data={data} handleSelect={handleSelect} activeTab={activeTab} />
     </>
   );
 };

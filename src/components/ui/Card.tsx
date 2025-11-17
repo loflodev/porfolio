@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
+import useTranslation from '../../hooks/useTransalation';
 import type { CardType, ModalType } from '../../types';
 
 interface CardProps {
@@ -28,18 +29,19 @@ export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
 };
 
 export const ServiceCard = ({ cards }: ServiceCardProps) => {
+  const { t } = useTranslation();
   return (
     <ul className="service-list">
       {cards.map((item, index) => (
         <li key={`card -${index}`} className="service-item">
           <div className="service-icon-box">
-            <img src={item.image} alt={item.alt} width="40" />
+            <img src={item.image} alt={t(item.alt)} width="40" />
           </div>
 
           <div className="service-content-box">
-            <h4 className="h4 service-item-title">{item.title}</h4>
+            <h4 className="h4 service-item-title">{t(item.title)}</h4>
 
-            <p className="service-item-text">{item.description}</p>
+            <p className="service-item-text">{t(item.description)}</p>
           </div>
         </li>
       ))}

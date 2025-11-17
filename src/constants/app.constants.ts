@@ -3,7 +3,6 @@ export const DEFAULT_STATE_NUMBER = 0;
 export const INPUT_MININUM_CHARATER = 3;
 
 import type {
-  CardType,
   ClientSectionType,
   ContactFormInputType,
   PortfolioType,
@@ -12,116 +11,25 @@ import type {
   TimelineType,
 } from '../types';
 
-export const TOP_MENU = [
-  {
-    label: 'About',
-    to: '/',
-    index: false,
-  },
-  {
-    label: 'Resume',
-    to: '/resume',
-    index: false,
-  },
-  {
-    label: 'Portfolio',
-    to: '/portfolio',
-    index: false,
-  },
-  {
-    label: 'Blog',
-    to: '/blog',
-    index: false,
-  },
-  {
-    label: 'Contact',
-    to: '/contact',
-    index: false,
-  },
-];
-
-export const SERVICES: CardType[] = [
-  {
-    alt: 'design icon',
-    title: 'Web design',
-    image: '/src/assets/images/icon-design.svg',
-    description: 'The most modern and high-quality design made at a professional level.',
-  },
-  {
-    alt: 'Web development icon',
-    title: 'Web development',
-    image: '/src/assets/images/icon-dev.svg',
-    description: 'High-quality development of sites at the professional level.',
-  },
-  {
-    alt: 'mobile app icon',
-    title: 'Mobile apps',
-    image: '/src/assets/images/icon-app.svg',
-    description: 'Professional development of applications for iOS and Android.',
-  },
-  {
-    alt: 'camera icon',
-    title: 'Photography',
-    image: '/src/assets/images/icon-photo.svg',
-    description: 'I make high-quality photos of any category at a professional level.',
-  },
-];
-
-export const TESTIMONIES: CardType[] = [
-  {
-    alt: 'Daniel lewis',
-    title: 'Daniel lewis',
-    image: '/src/assets/images/avatar-1.png',
-    description: `Richard was hired to create a corporate identity. We were very pleased with the work done. She has a lot of experience and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.`,
-  },
-  {
-    alt: 'Jessica miller',
-    title: 'Jessica miller',
-    image: '/src/assets/images/avatar-2.png',
-    description: `Richard was hired to create a corporate identity. We were very pleased with the
-                  work done. She has a lot of experience and is very concerned about the needs of
-                  client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit,
-                  seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.`,
-  },
-  {
-    alt: 'Emily evans',
-    title: 'Emily evans',
-    image: '/src/assets/images/avatar-3.png',
-    description: `Richard was hired to create a corporate identity. We were very pleased with the
-                  work done. She has a lot of experience and is very concerned about the needs of
-                  client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit,
-                  seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.`,
-  },
-  {
-    alt: 'Henry william"',
-    title: 'Henry william',
-    image: '/src/assets/images/avatar-4.png',
-    description: `Richard was hired to create a corporate identity. We were very pleased with the
-                  work done. She has a lot of experience and is very concerned about the needs of
-                  client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit,
-                  seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.`,
-  },
-];
-
 export const CLIENTS: ClientSectionType[] = [
   {
-    to: '#',
-    image: '/src/assets/images/logo-1-color.png',
-    alt: '',
+    to: 'https://safrozen.com/',
+    image: '/src/assets/images/logo-safrozen.svg',
+    alt: 'Les Aliments Safrozen Foods',
+  },
+  {
+    to: 'https://boissonsolutionx.ca/',
+    image: '/src/assets/images/logo-boissonsolutionx.png',
+    alt: 'Boisson SolutionX',
   },
   {
     to: '#',
-    image: '/src/assets/images/logo-2-color.png',
-    alt: '',
+    image: '/src/assets/images/logo-assurelis.png',
+    alt: 'Assurelis',
   },
   {
-    to: '#',
-    image: '/src/assets/images/logo-3-color.png',
-    alt: '',
-  },
-  {
-    to: '#',
-    image: '/src/assets/images/logo-4-color.png',
+    to: 'https://jdpetplace.com/',
+    image: '/src/assets/images/logo-jdpetplace.png',
     alt: '',
   },
   {
@@ -129,52 +37,46 @@ export const CLIENTS: ClientSectionType[] = [
     image: '/src/assets/images/logo-5-color.png',
     alt: '',
   },
-  {
-    to: '#',
-    image: '/src/assets/images/logo-6-color.png',
-    alt: '',
-  },
 ];
 
 export const EDUCATION: TimelineType[] = [
   {
-    title: 'University school of the arts',
-    time: '2007 — 2008',
+    title: 'Alterna Academy',
+    time: '2022 — 2023',
     description:
-      'Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur.',
+      'Full Stack Development – React, Node.js, Express.js, MongoDB (frontend & backend integration)',
   },
   {
-    title: 'New york academy of art',
-    time: '2006 — 2007',
+    title: 'Instituto Tecnológico de Las Américas ITLA',
+    time: '2014 — 2016',
     description:
-      'Ratione voluptatem sequi nesciunt, facere quisquams facere menda ossimus, omnis voluptas assumenda est omnis..',
+      'Website creation and management with Content Management Systems (CMS), including building, customizing, and maintaining user‑friendly sites.',
   },
   {
-    title: 'High school of art and design',
-    time: '2002 — 2004',
-    description:
-      'Duis aute irure dolor in reprehenderit in voluptate, quila voluptas mag odit aut fugit, sed consequuntur magni dolores eos.',
+    title: 'Cisco Certified Network Associate (CCNA)',
+    time: '2012 — 2014',
+    description: 'Networking configuration, routing & switching, security, and troubleshooting',
   },
 ];
 
 export const EXPERIRENCE: TimelineType[] = [
   {
-    title: 'Creative director',
-    time: '2015 — Present',
+    title: 'Project‑based developer',
+    time: '2024 — Present',
     description:
-      'Nemo enim ipsam voluptatem blanditiis praesentium voluptum delenit atque corrupti, quos dolores et qvuas molestias exceptur.',
+      'Delivering tailored web solutions across diverse projects, from design to deployment. Skilled in adapting to client needs, integrating modern frameworks, and ensuring scalable, maintainable results',
   },
   {
-    title: 'Art director',
-    time: '2013 — 2015',
+    title: 'Full stack Developer - Productiviy',
+    time: '2023 — 2024',
     description:
-      'Ratione voluptatem sequi nesciunt, facere quisquams facere menda ossimus, omnis voluptas assumenda est omnis..',
+      'React developer crafting clean TypeScript code, with Axios for data and Gestalt + Figma for design.',
   },
   {
-    title: 'Web designer',
-    time: '2010 — 2013',
+    title: 'Frontend Developer - CoolHunter Partner',
+    time: '2022 - 2023',
     description:
-      'Duis aute irure dolor in reprehenderit in voluptate, quila voluptas mag odit aut fugit, sed consequuntur magni dolores eos.',
+      'Web developer using Vue.js for dynamic interfaces, Tailwind CSS for styling, TypeScript for clean code, Axios for data fetching, and Git for version control.',
   },
 ];
 

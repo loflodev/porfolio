@@ -24,7 +24,7 @@ const SidebarMenu = ({ menuList }: SidebarMenuProps) => {
             )}
 
             {menu.itemType === 'date' && <time dateTime="1982-06-23">{menu.title}</time>}
-            {menu.itemType === 'address' && <address>Sacramento, California, USA</address>}
+            {menu.itemType === 'address' && <address>{menu.title}</address>}
           </div>
         </li>
       ))}
