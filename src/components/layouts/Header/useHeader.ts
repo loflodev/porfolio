@@ -9,27 +9,27 @@ const useHeader = () => {
   const { t } = useTranslation();
   const TOP_MENU: TopMenuType[] = [
     {
-      label: t('navigation.about'),
+      label: t('about'),
       to: '/',
       index: false,
     },
     {
-      label: t('navigation.resume'),
+      label: t('resume'),
       to: '/resume',
       index: false,
     },
     {
-      label: t('navigation.portfolio'),
+      label: t('portfolio'),
       to: '/portfolio',
       index: false,
     },
     {
-      label: t('navigation.blog'),
+      label: t('blog'),
       to: '/blog',
       index: false,
     },
     {
-      label: t('navigation.contact'),
+      label: t('contact'),
       to: '/contact',
       index: false,
     },
