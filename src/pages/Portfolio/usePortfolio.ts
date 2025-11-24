@@ -44,6 +44,13 @@ const usePortfolio = () => {
       category: t('webDesign'),
       alt: 'Les Alimitent Safrozen Foods',
     },
+    {
+      to: '#',
+      image: '/src/assets/images/project-6.webp',
+      title: 'Assurelis',
+      category: t('webDevelopment'),
+      alt: 'Assurelis',
+    },
   ];
 
   const filteredCategory: TabType[] = [...new Set(portfolio.map((item) => item.category))].map(
