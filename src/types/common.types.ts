@@ -76,7 +76,7 @@ export type ModalType = {
   date?: string;
 };
 
-type ErrorMessageType = Record<'fullName' | 'email' | 'yourMessage', ErrorType | ''>;
+type ErrorMessageType = Record<'fullName' | 'email' | 'yourMessage', ErrorType | string>;
 
 export type ContactFormInputType = {
   fullName: string;

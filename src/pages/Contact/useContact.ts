@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 
 import { CONTACT_FORM_DEFAULT } from '../../constants';
 import useMainContext from '../../hooks/useMainContext';
+import { saveContactForm } from '../../services/api/contactForm';
 import type { ContactFormInputType } from '../../types';
 import { validateEmail, validateInput } from '../../utils/validation';
 
@@ -61,20 +62,36 @@ const useContact = () => {
     );
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const allInputValid = inputValidation();
 
     if (isDisabled && allInputValid) {
-      handleModalData({
-        title: 'Message Sent Successfully!',
-        description:
-          "Thank you for reaching out. We've received your message and will get back to you as soon as possible.",
-        icon: 'h',
+      const response = await saveContactForm({
+        name: contactFormInput.fullName,
+        email: contactFormInput.email,
+        message: contactFormInput.yourMessage,
       });
 
-      setContactFormInput(CONTACT_FORM_DEFAULT);
+      if (response?.success) {
+        handleModalData({
+          title: 'Message Sent Successfully!',
+          description:
+            "Thank you for reaching out. We've received your message and will get back to you as soon as possible.",
+          icon: 'h',
+        });
+
+        setContactFormInput(CONTACT_FORM_DEFAULT);
+      } else {
+        setContactFormInput((prev) => ({
+          ...prev,
+          errorMessage: {
+            ...prev.errorMessage,
+            yourMessage: response.error,
+          },
+        }));
+      }
     }
 
     setIsDisabled(false);

@@ -37,3 +37,16 @@ export const validateInput = (value: string): ValidationType => {
     message: 'Cannot be empty',
   };
 };
+
+// Helper function to escape HTML and prevent XSS
+export const escapeHtml = (value: string) => {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+
+  return value.replace(/[&<>"']/g, (char) => map[char]);
+};
