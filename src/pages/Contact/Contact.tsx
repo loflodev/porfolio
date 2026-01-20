@@ -16,6 +16,7 @@ const Contact = () => {
     isDisabled,
     handleIsDisabled,
     handleSubmit,
+    isLoading,
   } = useContact();
 
   return (
@@ -26,6 +27,7 @@ const Contact = () => {
         data={contactFormInput}
         handleChange={handleChange}
         isDisabled={isDisabled}
+        loading={isLoading}
         handleIsDisabled={handleIsDisabled}
         handleSubmit={handleSubmit}
       />

@@ -9,6 +9,7 @@ import { validateEmail, validateInput } from '../../utils/validation';
 const useContact = () => {
   const { showModal, toggleModal, modalData, handleModalData } = useMainContext();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [contactFormInput, setContactFormInput] =
     useState<ContactFormInputType>(CONTACT_FORM_DEFAULT);
 
@@ -68,6 +69,7 @@ const useContact = () => {
     const allInputValid = inputValidation();
 
     if (isDisabled && allInputValid) {
+      setIsLoading(true);
       const response = await saveContactForm({
         name: contactFormInput.fullName,
         email: contactFormInput.email,
@@ -75,6 +77,7 @@ const useContact = () => {
       });
 
       if (response?.success) {
+        setIsLoading(false);
         handleModalData({
           title: 'Message Sent Successfully!',
           description:
@@ -84,6 +87,7 @@ const useContact = () => {
 
         setContactFormInput(CONTACT_FORM_DEFAULT);
       } else {
+        setIsLoading(false);
         setContactFormInput((prev) => ({
           ...prev,
           errorMessage: {
@@ -106,6 +110,8 @@ const useContact = () => {
     handleIsDisabled,
     isDisabled,
     handleSubmit,
+    isLoading,
+    setIsLoading,
   };
 };
 
