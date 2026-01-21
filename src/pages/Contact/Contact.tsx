@@ -31,7 +31,12 @@ const Contact = () => {
         handleIsDisabled={handleIsDisabled}
         handleSubmit={handleSubmit}
       />
-      <Modal showModal={showModal} handleModal={toggleModal} data={modalData} />
+      <Modal
+        showModal={showModal}
+        handleModal={toggleModal}
+        data={modalData}
+        notification="message"
+      />
     </Article>
   );
 };

@@ -8,9 +8,10 @@ interface ModalProps {
   data: ModalType;
   showModal: boolean;
   handleModal: () => void;
+  notification?: 'message' | 'popup';
 }
 
-const Modal = ({ showModal, handleModal, data }: ModalProps) => {
+const Modal = ({ showModal, handleModal, data, notification = 'popup' }: ModalProps) => {
   const isActive = showModal ? 'active' : '';
   return (
     data && (
@@ -23,9 +24,11 @@ const Modal = ({ showModal, handleModal, data }: ModalProps) => {
           </button>
 
           <div className="modal-img-wrapper">
-            <figure className="modal-avatar-box">
-              <img src={data.icon} alt="Daniel lewis" width="80" data-modal-img />
-            </figure>
+            {notification === 'popup' && (
+              <figure className="modal-avatar-box">
+                <img src={data.icon} alt="Daniel lewis" width="80" data-modal-img />
+              </figure>
+            )}
 
             <img src="/src/assets/images/icon-quote.svg" alt="quote icon" />
           </div>
