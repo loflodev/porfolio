@@ -43,26 +43,26 @@ const useAbout = () => {
 
   const testimonies: CardType[] = [
     {
-      alt: 'Daniel lewis',
-      title: 'Daniel lewis',
+      alt: 'Guise S',
+      title: 'Guise S',
       image: '/src/assets/images/avatar-1.png',
       description: t('aboutPage.testimonials.feedback1'),
     },
     {
-      alt: 'Jessica miller',
-      title: 'Jessica miller',
+      alt: 'Wilson Jean',
+      title: 'Wilson Jean',
       image: '/src/assets/images/avatar-2.png',
       description: t('aboutPage.testimonials.feedback2'),
     },
     {
-      alt: 'Emily evans',
-      title: 'Emily evans',
+      alt: 'Team Bouskad',
+      title: 'Team Bouskad',
       image: '/src/assets/images/avatar-3.png',
       description: t('aboutPage.testimonials.feedback3'),
     },
     {
-      alt: 'Henry william"',
-      title: 'Henry william',
+      alt: 'JD Pet"',
+      title: 'JD Pet',
       image: '/src/assets/images/avatar-4.png',
       description: t('aboutPage.testimonials.feedback4'),
     },

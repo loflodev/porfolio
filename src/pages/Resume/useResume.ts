@@ -35,7 +35,7 @@ const useResume = () => {
     {
       title: 'Frontend Developer - CoolHunter Partner',
       time: '2022 - 2023',
-      description: t('resumePage.experience1'),
+      description: t('resumePage.experience3'),
     },
   ];
 

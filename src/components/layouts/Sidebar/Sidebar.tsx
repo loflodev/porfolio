@@ -26,28 +26,28 @@ const Sidebar: FC = () => {
   const menuList: SidebarMenuType[] = [
     {
       icon: <IonIcon icon={mailOutline} />,
-      label: t('sidebar.email'),
+      label: t('email'),
       title: 'louis@loflodev.com',
       to: 'mailto:louis@loflodev.com',
       itemType: 'link',
     },
     {
       icon: <IonIcon icon={phonePortraitOutline} />,
-      label: t('sidebar.phone'),
+      label: t('phone'),
       title: ' +1 (438) 526-2254',
       to: 'tel:+14385262254',
       itemType: 'link',
     },
     {
       icon: <IonIcon icon={calendarOutline} />,
-      label: t('sidebar.birthday'),
+      label: t('birthday'),
       title: 'October 10, 1989',
       to: '#',
       itemType: 'date',
     },
     {
       icon: <IonIcon icon={locationOutline} />,
-      label: t('sidebar.location'),
+      label: t('location'),
       title: 'Repentigny, QC, CANADA',
       to: '#',
       itemType: 'address',

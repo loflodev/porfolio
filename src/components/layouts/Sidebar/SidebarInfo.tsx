@@ -13,11 +13,11 @@ const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
   return (
     <div className="sidebar-info">
       <figure className="avatar-box">
-        <img src={image} alt="Richard hanrick" width="80" />
+        <img src={image} alt={name} width="80" />
       </figure>
 
       <div className="info-content">
-        <h1 className="name" title="Richard hanrick">
+        <h1 className="name" title={name}>
           {name}
         </h1>
 
