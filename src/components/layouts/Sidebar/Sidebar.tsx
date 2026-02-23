@@ -10,7 +10,7 @@ import {
 } from 'ionicons/icons';
 import { type FC } from 'react';
 
-import avatar from '@/assets/images/avatar-1.png';
+import avatar from '@/assets/images/my-avatar.png';
 
 import SidebarInfo from './SidebarInfo';
 import SidebarMenu from './SidebarMenu';

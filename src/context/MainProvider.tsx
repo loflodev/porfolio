@@ -13,7 +13,7 @@ const MainProvider = ({ children }: MainProviderProps) => {
   const [modalData, setModalData] = useState<ModalType>({
     title: '',
     description: '',
-    icon: '',
+    icon: '#',
   });
 
   const toggleModal = () => {

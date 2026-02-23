@@ -51,7 +51,7 @@ const useAbout = () => {
     {
       alt: 'Wilson Jean',
       title: 'Wilson Jean',
-      image: '/src/assets/images/avatar-2.png',
+      image: '/src/assets/images/avatar-4.png',
       description: t('aboutPage.testimonials.feedback2'),
     },
     {
@@ -61,9 +61,9 @@ const useAbout = () => {
       description: t('aboutPage.testimonials.feedback3'),
     },
     {
-      alt: 'JD Pet"',
+      alt: 'JD Pet',
       title: 'JD Pet',
-      image: '/src/assets/images/avatar-4.png',
+      image: '/src/assets/images/avatar-2.png',
       description: t('aboutPage.testimonials.feedback4'),
     },
   ];
