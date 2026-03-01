@@ -35,7 +35,8 @@ export type PortfolioType = {
   category: string;
   image: string;
   alt: string;
-  to: string;
+  linkTo1: string;
+  linkTo2: string;
 };
 
 export type TabType = {

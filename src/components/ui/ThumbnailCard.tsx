@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { IonIcon } from '@ionic/react';
-import { eyeOutline } from 'ionicons/icons';
-import { Link } from 'react-router-dom';
 
+import ThumbnailIcon from './ThumbnailIcon';
 import { DEFAULT_STATE_NUMBER } from '../../constants';
 import type { PortfolioType } from '../../types';
 
@@ -26,19 +24,35 @@ const ThumbnailCard = ({ data, category }: ThumbnailCardProps) => {
           data-filter-item
           data-category="web development"
         >
-          <Link to={item.to}>
+          <div className="project-link-a">
             <figure className="project-img">
-              <div className="project-item-icon-box">
-                <IonIcon icon={eyeOutline} />
-              </div>
+              <ThumbnailIcon link1={item.linkTo1} link2={item.linkTo2} />
+              {/* {(item.linkTo1 !== '#' || item.linkTo2 !== '#') && (
+                <div className="project-item-icon-box">
+                  {item.linkTo1 !== '#' && (
+                    <Link to={item.linkTo1}>
+                      <IonIcon icon={eyeOutline} />
+                    </Link>
+                  )}
 
+                  {item.linkTo1 !== '#' && item.linkTo2 !== '#' && (
+                    <div className="vertical-line" />
+                  )}
+
+                  {item.linkTo2 !== '#' && (
+                    <Link to={item.linkTo2}>
+                      <IonIcon icon={codeSlashOutline} />
+                    </Link>
+                  )}
+                </div>
+              )} */}
               <img src={item.image} alt={item.alt} loading="eager" decoding="async" />
             </figure>
 
             <h3 className="project-title">{item.title}</h3>
 
             <p className="project-category">{item.category}</p>
-          </Link>
+          </div>
         </li>
       ))}
     </ul>

@@ -10,46 +10,53 @@ const usePortfolio = () => {
 
   const portfolio: PortfolioType[] = [
     {
-      to: '#',
-      image: '/src/assets/images/project-1.webp',
-      title: 'Rafaela Chic Shop',
-      category: t('webDesign'),
-      alt: 'Rafeal Chic Shop',
-    },
-    {
-      to: '#',
-      image: '/src/assets/images/project-2.webp',
-      title: 'PA Real Estate Queen',
-      category: t('webDesign'),
-      alt: 'PA Real Estate Queen',
-    },
-    {
-      to: '#',
-      image: '/src/assets/images/project-3.webp',
-      title: 'Yoopikids',
-      category: t('webDesign'),
-      alt: 'Yoopikids',
-    },
-    {
-      to: 'https://boissonsolutionx.ca',
+      linkTo1: 'https://boissonsolutionx.ca',
+      linkTo2: 'https://github.com/loflodev/react-boissonsolutionx',
       image: '/src/assets/images/project-4.webp',
       title: 'Boisson SolutionX',
       category: t('webDevelopment'),
       alt: 'Boisson SolutionX',
     },
     {
-      to: 'https://safrozen.com/',
-      image: '/src/assets/images/project-5.webp',
-      title: 'Les Alimitent Safrozen Foods',
-      category: t('webDesign'),
-      alt: 'Les Alimitent Safrozen Foods',
-    },
-    {
-      to: 'https://github.com/loflodev/assurelis-v1/',
+      linkTo1: '#',
+      linkTo2: 'https://github.com/loflodev/assurelis-v1/',
       image: '/src/assets/images/project-6.webp',
       title: 'Assurelis',
       category: t('webDevelopment'),
       alt: 'Assurelis',
+    },
+    {
+      linkTo1: '#',
+      linkTo2: '#',
+      image: '/src/assets/images/project-1.webp',
+      title: 'Rafaela Chic Shop',
+      category: t('webDesign'),
+      alt: 'Rafeal Chic Shop',
+    },
+    {
+      linkTo1: '#',
+      linkTo2: '#',
+      image: '/src/assets/images/project-2.webp',
+      title: 'PA Real Estate Queen',
+      category: t('webDesign'),
+      alt: 'PA Real Estate Queen',
+    },
+    {
+      linkTo1: '#',
+      linkTo2: '#',
+      image: '/src/assets/images/project-3.webp',
+      title: 'Yoopikids',
+      category: t('webDesign'),
+      alt: 'Yoopikids',
+    },
+
+    {
+      linkTo1: 'https://safrozen.com/',
+      linkTo2: '#',
+      image: '/src/assets/images/project-5.webp',
+      title: 'Les Alimitent Safrozen Foods',
+      category: t('webDesign'),
+      alt: 'Les Alimitent Safrozen Foods',
     },
   ];
 
