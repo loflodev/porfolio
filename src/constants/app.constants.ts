@@ -1,9 +1,3 @@
-import logoColor2 from '@/assets/images/logo-2-color.png';
-import logoAssurelis from '@/assets/images/logo-assurelis.png';
-import logoBoissonsolutionx from '@/assets/images/logo-boissonsolutionx.png';
-import logoJdpetplace from '@/assets/images/logo-jdpetplace.png';
-import logoSafrozen from '@/assets/images/logo-safrozen.svg';
-
 import type { ClientSectionType, ContactFormInputType, PostType } from '../types';
 
 export const DEFAULT_STATE_NUMBER = 0;
@@ -14,30 +8,31 @@ export const MAX_NAME_LENGTH = 100;
 export const MAX_EMAIL_LENGTH = 254;
 export const MAX_MESSAGE_LENGTH = 5000;
 
+// Client logos served from public folder
 export const CLIENTS: ClientSectionType[] = [
   {
     to: 'https://safrozen.com/',
-    image: logoSafrozen,
+    image: '/images/logo-safrozen.svg',
     alt: 'Les Aliments Safrozen Foods',
   },
   {
     to: 'https://boissonsolutionx.ca/',
-    image: logoBoissonsolutionx,
+    image: '/images/logo-boissonsolutionx.png',
     alt: 'Boisson SolutionX',
   },
   {
     to: '#',
-    image: logoAssurelis,
+    image: '/images/logo-assurelis.png',
     alt: 'Assurelis',
   },
   {
     to: 'https://jdpetplace.com/',
-    image: logoJdpetplace,
+    image: '/images/logo-jdpetplace.png',
     alt: '',
   },
   {
     to: '#',
-    image: logoColor2,
+    image: '/images/logo-2-color.png',
     alt: '',
   },
 ];
