@@ -1,4 +1,4 @@
-import logoColor5 from '@/assets/images/logo-5-color.png';
+import logoColor2 from '@/assets/images/logo-2-color.png';
 import logoAssurelis from '@/assets/images/logo-assurelis.png';
 import logoBoissonsolutionx from '@/assets/images/logo-boissonsolutionx.png';
 import logoJdpetplace from '@/assets/images/logo-jdpetplace.png';
@@ -37,7 +37,7 @@ export const CLIENTS: ClientSectionType[] = [
   },
   {
     to: '#',
-    image: logoColor5,
+    image: logoColor2,
     alt: '',
   },
 ];
