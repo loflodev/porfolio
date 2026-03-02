@@ -83,5 +83,6 @@ export type ContactFormInputType = {
   fullName: string;
   email: string;
   yourMessage: string;
+  website: string; // Honeypot field - should always be empty
   errorMessage: ErrorMessageType;
 };

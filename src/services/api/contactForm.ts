@@ -6,6 +6,7 @@ type FormData = {
   name: string;
   email: string;
   message: string;
+  website?: string; // Honeypot field
 };
 
 type ApiResponse = {

@@ -3,6 +3,7 @@ import { paperPlane } from 'ionicons/icons';
 import type { ChangeEvent, FormEvent } from 'react';
 import PulseLoader from 'react-spinners/PulseLoader';
 
+import { MAX_EMAIL_LENGTH, MAX_MESSAGE_LENGTH, MAX_NAME_LENGTH } from '../../../constants';
 import useTranslation from '../../../hooks/useTransalation';
 import type { ContactFormInputType } from '../../../types';
 
@@ -29,6 +30,18 @@ const ContactForm = ({
       <h3 className="h3 form-title">{t('contactForm')}</h3>
 
       <form action="#" className="form" data-form onSubmit={handleSubmit}>
+        {/* Honeypot field - hidden from users, bots will fill it */}
+        <input
+          type="text"
+          name="website"
+          value={data.website}
+          onChange={handleChange}
+          autoComplete="off"
+          tabIndex={-1}
+          aria-hidden="true"
+          style={{ position: 'absolute', left: '-9999px', opacity: 0 }}
+        />
+
         <div className="input-wrapper">
           <div>
             <input
@@ -38,6 +51,8 @@ const ContactForm = ({
               onChange={handleChange}
               className="form-input max-input-heigth"
               placeholder={t('fullName')}
+              maxLength={MAX_NAME_LENGTH}
+              autoComplete="name"
               data-form-input
             />
             {data.errorMessage.fullName && (
@@ -47,11 +62,14 @@ const ContactForm = ({
 
           <div>
             <input
+              type="email"
               name="email"
               value={data.email}
               onChange={handleChange}
               className="form-input max-input-heigth"
               placeholder={t('email')}
+              maxLength={MAX_EMAIL_LENGTH}
+              autoComplete="email"
               data-form-input
             />
             {data.errorMessage.email && <p className="pl-4">{data.errorMessage.email}</p>}
@@ -67,9 +85,12 @@ const ContactForm = ({
             handleIsDisabled();
           }}
           placeholder={t('yourMessage')}
+          maxLength={MAX_MESSAGE_LENGTH}
           data-form-input
         ></textarea>
-        {data.errorMessage.yourMessage && <p className="pl-4">{data.errorMessage.yourMessage}</p>}
+        {data.errorMessage.yourMessage && (
+          <p className="pl-4 text-orange-yellow-crayola">{data.errorMessage.yourMessage}</p>
+        )}
 
         <button className="form-btn" type="submit" disabled={!isDisabled} data-form-btn>
           {loading ? (

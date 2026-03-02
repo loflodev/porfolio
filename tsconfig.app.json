@@ -24,5 +24,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "functions", "netlify/functions/submit-form.ts"]
+  "include": ["src"]
 }

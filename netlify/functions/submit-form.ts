@@ -1,32 +1,41 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable node/no-process-env */
-/* eslint-disable no-console */
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 
+import { DEFAULT_STATE_NUMBER } from '../../src/constants/app.constants';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_API_KEY!);
 
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json',
+const ALLOWED_ORIGINS = ['https://loflodev.com', 'https://www.loflodev.com'];
+const isDev = process.env.CONTEXT === 'dev' || process.env.NETLIFY_DEV === 'true';
+
+const getHeaders = (origin?: string) => {
+  const allowedOrigin =
+    isDev || (origin && ALLOWED_ORIGINS.includes(origin))
+      ? origin || '*'
+      : ALLOWED_ORIGINS[DEFAULT_STATE_NUMBER];
+
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+  };
 };
 
 const MAX_MESSAGE_LENGTH = 5000;
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 254;
 
-export const handler: Handler = async (event: HandlerEvent) => {
-  // CORS headers
+// Rate limiting constants
+const RATE_LIMIT_WINDOW_MINUTES = 5;
+const MAX_SUBMISSIONS_PER_WINDOW = 2;
 
-  console.log('=== Environment Check ===');
-  console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? '✅ EXISTS' : '❌ MISSING');
-  console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ EXISTS' : '❌ MISSING');
-  console.log('ADMIN_EMAIL:', process.env.ADMIN_EMAIL || 'djljmix@gmail.com');
-  console.log('========================');
+export const handler: Handler = async (event: HandlerEvent) => {
+  const origin = event.headers.origin || event.headers.Origin;
+  const headers = getHeaders(origin);
 
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -45,13 +54,24 @@ export const handler: Handler = async (event: HandlerEvent) => {
   }
 
   try {
-    const { email, name, message } = JSON.parse(event.body || '{}');
+    const { email, name, message, website } = JSON.parse(event.body || '{}');
 
-    // Validate
+    // Honeypot check - if 'website' field is filled, it's a bot
+    if (website) {
+      // Return fake success to not alert bots
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true, message: 'Message received' }),
+      };
+    }
+
+    // Validate required fields
     if (!email?.trim() || !name?.trim() || !message?.trim()) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required fields' }),
+        headers,
+        body: JSON.stringify({ success: false, error: 'Missing required fields' }),
       };
     }
 
@@ -82,32 +102,43 @@ export const handler: Handler = async (event: HandlerEvent) => {
     const trimmedEmail = email.trim().toLowerCase();
     const trimmedMessage = message.trim();
 
-    console.log('📧 Attempting to send email from:', 'noreply@loflodev.com');
-    console.log('📧 Sending to:', process.env.ADMIN_EMAIL || 'djljmix@gmail.com');
+    // Rate limiting: Check recent submissions from this email
+    const rateLimitTime = new Date();
+    rateLimitTime.setMinutes(rateLimitTime.getMinutes() - RATE_LIMIT_WINDOW_MINUTES);
+
+    const { count: recentSubmissions } = await supabase
+      .from('contacts')
+      .select('*', { count: 'exact', head: true })
+      .eq('email', trimmedEmail)
+      .gte('created_at', rateLimitTime.toISOString());
+
+    if (recentSubmissions && recentSubmissions >= MAX_SUBMISSIONS_PER_WINDOW) {
+      return {
+        statusCode: 429,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Too many submissions. Please try again later.',
+        }),
+      };
+    }
 
     // Save to Supabase
-    const { data: dbData, error: dbError } = await supabase
-      .from('contacts')
-      .insert([
-        {
-          name: trimmedName,
-          email: trimmedEmail.toLowerCase(),
-          message: trimmedMessage,
-          created_at: new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single();
+    const { error: dbError } = await supabase.from('contacts').insert([
+      {
+        name: trimmedName,
+        email: trimmedEmail,
+        message: trimmedMessage,
+        created_at: new Date().toISOString(),
+      },
+    ]);
 
     if (dbError) {
-      console.error('Supabase error:', dbError);
       throw new Error('Failed to save contact information');
     }
 
-    console.log('✅ Data saved to Supabase');
-
     // Send email via Resend
-    const { data: emailData, error: emailError } = await resend.emails.send({
+    const { error: emailError } = await resend.emails.send({
       from: 'LofloDev <noreply@loflodev.com>', // Update with your verified domain
       to: process.env.ADMIN_EMAIL || 'djljmix@gmail.com',
       subject: ` New Message from ${trimmedName}`,
@@ -125,12 +156,12 @@ export const handler: Handler = async (event: HandlerEvent) => {
       
       <div style="margin-bottom: 20px;">
         <p style="color: hsl(0, 0%, 84%); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 6px 0; font-weight: 500;">Email</p>
-        <p style="margin: 0;"><a href="mailto:${escapeHtml(trimmedEmail)}" style="color: #d4af37; text-decoration: none; font-size: 16px;">${email}</a></p>
+        <p style="margin: 0;"><a href="mailto:${escapeHtml(trimmedEmail)}" style="color: #d4af37; text-decoration: none; font-size: 16px;">${escapeHtml(trimmedEmail)}</a></p>
       </div>
       
       <div>
         <p style="color: hsl(0, 0%, 84%); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 6px 0; font-weight: 500;">Message</p>
-        <p style="color: #cccccc; font-size: 15px; margin: 0 0 30px 0; white-space: pre-wrap; line-height: 1.6;">${message}</p>
+        <p style="color: #cccccc; font-size: 15px; margin: 0 0 30px 0; white-space: pre-wrap; line-height: 1.6;">${escapeHtml(trimmedMessage)}</p>
       </div>
     
     <p style="color: #666666; font-size: 13px; margin: 0; text-align: center;">
@@ -151,31 +182,16 @@ export const handler: Handler = async (event: HandlerEvent) => {
       `,
     });
 
-    if (emailError) {
-      console.error('Resend error:', emailError);
-      // eslint-disable-next-line no-magic-numbers
-      console.error('Error details:', JSON.stringify(emailError, null, 2));
-    } else {
-      console.log('✅ Email sent successfully!');
-      console.log('Email ID:', emailData?.id);
-    }
-
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        data: {
-          id: dbData.id,
-          emailSent: !emailError,
-          emailId: emailData?.id,
-        },
+        emailSent: !emailError,
         message: 'Your message has been received successfully!',
       }),
     };
   } catch (error) {
-    console.error('Function error:', error);
-
     // Handle specific error types
     if (error instanceof SyntaxError) {
       return {

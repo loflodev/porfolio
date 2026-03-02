@@ -74,6 +74,7 @@ const useContact = () => {
         name: contactFormInput.fullName,
         email: contactFormInput.email,
         message: contactFormInput.yourMessage,
+        website: contactFormInput.website, // Honeypot field
       });
 
       if (response?.success) {
