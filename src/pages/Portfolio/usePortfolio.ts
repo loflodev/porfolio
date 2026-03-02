@@ -1,5 +1,12 @@
 import { useState } from 'react';
 
+import project1 from '@/assets/images/project-1.webp';
+import project2 from '@/assets/images/project-2.webp';
+import project3 from '@/assets/images/project-3.webp';
+import project4 from '@/assets/images/project-4.webp';
+import project5 from '@/assets/images/project-5.webp';
+import project6 from '@/assets/images/project-6.webp';
+
 import { DEFAULT_STATE_NUMBER } from '../../constants';
 import useTranslation from '../../hooks/useTransalation';
 import type { PortfolioType, TabType } from '../../types';
@@ -12,7 +19,7 @@ const usePortfolio = () => {
     {
       linkTo1: 'https://boissonsolutionx.ca',
       linkTo2: 'https://github.com/loflodev/react-boissonsolutionx',
-      image: '/src/assets/images/project-4.webp',
+      image: project4,
       title: 'Boisson SolutionX',
       category: t('webDevelopment'),
       alt: 'Boisson SolutionX',
@@ -20,7 +27,7 @@ const usePortfolio = () => {
     {
       linkTo1: '#',
       linkTo2: 'https://github.com/loflodev/assurelis-v1/',
-      image: '/src/assets/images/project-6.webp',
+      image: project6,
       title: 'Assurelis',
       category: t('webDevelopment'),
       alt: 'Assurelis',
@@ -28,7 +35,7 @@ const usePortfolio = () => {
     {
       linkTo1: '#',
       linkTo2: '#',
-      image: '/src/assets/images/project-1.webp',
+      image: project1,
       title: 'Rafaela Chic Shop',
       category: t('webDesign'),
       alt: 'Rafeal Chic Shop',
@@ -36,7 +43,7 @@ const usePortfolio = () => {
     {
       linkTo1: '#',
       linkTo2: '#',
-      image: '/src/assets/images/project-2.webp',
+      image: project2,
       title: 'PA Real Estate Queen',
       category: t('webDesign'),
       alt: 'PA Real Estate Queen',
@@ -44,16 +51,15 @@ const usePortfolio = () => {
     {
       linkTo1: '#',
       linkTo2: '#',
-      image: '/src/assets/images/project-3.webp',
+      image: project3,
       title: 'Yoopikids',
       category: t('webDesign'),
       alt: 'Yoopikids',
     },
-
     {
       linkTo1: 'https://safrozen.com/',
       linkTo2: '#',
-      image: '/src/assets/images/project-5.webp',
+      image: project5,
       title: 'Les Alimitent Safrozen Foods',
       category: t('webDesign'),
       alt: 'Les Alimitent Safrozen Foods',
