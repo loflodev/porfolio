@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DEFAULT_STATE_NUMBER } from '../../../constants';
 import useTranslation from '../../../hooks/useTransalation';
@@ -7,6 +7,8 @@ import type { TopMenuType } from '../../../types';
 
 const useHeader = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
   const TOP_MENU: TopMenuType[] = [
     {
       label: t('about'),
@@ -34,7 +36,16 @@ const useHeader = () => {
       index: false,
     },
   ];
-  const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_STATE_NUMBER);
+
+  // Get initial index based on current URL path
+  const getInitialIndex = (): number => {
+    const currentPath = location.pathname;
+    const index = TOP_MENU.findIndex((item) => item.to === currentPath);
+    // eslint-disable-next-line no-magic-numbers
+    return index !== -1 ? index : DEFAULT_STATE_NUMBER;
+  };
+
+  const [activeIndex, setActiveIndex] = useState<number>(getInitialIndex);
   const [menu, setMenu] = useState<TopMenuType[]>(TOP_MENU);
   const navigate = useNavigate();
 
