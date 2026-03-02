@@ -90,7 +90,6 @@
     padding: 0;
     box-sizing: border-box;
   }
-
   a {
     text-decoration: none;
   }
@@ -1309,6 +1308,20 @@
 
   /* @section: #RESPONSIVE */
 
+  @media (max-width: 450px) {
+    /* Your styles here */
+    .navbar-link {
+      --font-size-xx: 14px;
+    }
+
+    .navbar-list {
+      gap: 8px;
+    }
+
+    .navbar-link {
+      font-weight: var(--font-weight-medium);
+    }
+  }
   /* @section: 450px screen */
 
   @media (min-width: 450px) {
@@ -1318,6 +1331,18 @@
 
     .clients-item {
       min-width: calc(33.33% - 10px);
+    }
+
+    .navbar-link {
+      --font-size-xx: 14px;
+    }
+
+    .navbar-list {
+      gap: 8px;
+    }
+
+    .navbar-link {
+      font-weight: var(--font-weight-medium);
     }
 
     /**

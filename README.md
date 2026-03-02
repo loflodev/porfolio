@@ -219,7 +219,7 @@ Build settings:
 - **Portfolio:** [https://loflodev.com](https://loflodev.com)
 - **LinkedIn:** [linkedin.com/in/ljunit25](https://linkedin.com/in/ljunit25)
 - **GitHub:** [github.com/loflodev](https://github.com/loflodev)
-- **Email:** me.loflodev.com
+- **Email:** louis@loflodev.com
 
 ---
 
