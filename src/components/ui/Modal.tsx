@@ -2,6 +2,8 @@
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 
+import iconQuote from '@/assets/images/icon-quote.svg';
+
 import type { ModalType } from '../../types';
 
 interface ModalProps {
@@ -30,7 +32,7 @@ const Modal = ({ showModal, handleModal, data, notification = 'popup' }: ModalPr
               </figure>
             )}
 
-            <img src="/src/assets/images/icon-quote.svg" alt="quote icon" />
+            <img src={iconQuote} alt="quote icon" />
           </div>
 
           <div className="modal-content">
