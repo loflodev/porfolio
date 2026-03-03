@@ -22,6 +22,7 @@
   "aboutMe": "Sobre mí",
   "applications": "Aplicaciones",
   "contactForm": "Formulario de contacto",
+  "showContacts": "Mis Contactos",
   "aboutPage": {
     "description1": "¡Hola Mundo! Soy Louis, desarrollador Full Stack con un conjunto de habilidades únicas que aportarán una perspectiva fresca a su equipo.",
     "description2": "Mis habilidades de programación son muy sólidas; desde el diseño front‑end hasta el desarrollo back‑end, tengo talento para crear interfaces fáciles de usar y escribir código eficiente y libre de errores. Domino una variedad de lenguajes de programación, incluyendo TypeScript, JavaScript, Python, PHP, HTML/CSS, y tecnologías como MongoDB, Express, React, NodeJS, WordPress Core, etc.",

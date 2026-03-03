@@ -378,7 +378,7 @@
   }
 
   .info_more-btn span {
-    display: none;
+    display: block;
   }
 
   .sidebar-info_more {
@@ -1352,6 +1352,10 @@
     .project-img,
     .blog-banner-box {
       height: auto;
+    }
+
+    .info_more-btn ion-icon {
+      display: none;
     }
   }
   /* @endsection */

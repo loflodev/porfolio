@@ -1,6 +1,8 @@
 import { IonIcon } from '@ionic/react';
 import { chevronDown } from 'ionicons/icons';
 
+import useTranslation from '../../../hooks/useTransalation';
+
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 interface SidebarInfoProps {
   image: string;
@@ -10,6 +12,8 @@ interface SidebarInfoProps {
 }
 
 const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="sidebar-info">
       <figure className="avatar-box">
@@ -25,7 +29,7 @@ const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
       </div>
 
       <button className="info_more-btn" onClick={toggleMenu} data-sidebar-btn>
-        <span>Show Contacts</span>
+        <span>{t('showContacts')}</span>
 
         <IonIcon icon={chevronDown} />
       </button>
