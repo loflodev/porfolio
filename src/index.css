@@ -1321,6 +1321,10 @@
     .navbar-link {
       font-weight: var(--font-weight-medium);
     }
+
+    .info_more-btn ion-icon {
+      display: none;
+    }
   }
   /* @section: 450px screen */
 
