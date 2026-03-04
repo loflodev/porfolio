@@ -1,6 +1,5 @@
 import { IonIcon } from '@ionic/react';
 import {
-  calendarOutline,
   locationOutline,
   logoGithub,
   logoInstagram,
@@ -38,13 +37,13 @@ const Sidebar: FC = () => {
       to: 'tel:+14385262254',
       itemType: 'link',
     },
-    {
-      icon: <IonIcon icon={calendarOutline} />,
-      label: t('birthday'),
-      title: 'October 10, 1989',
-      to: '#',
-      itemType: 'date',
-    },
+    // {
+    //   icon: <IonIcon icon={calendarOutline} />,
+    //   label: t('birthday'),
+    //   title: 'October 10, 1989',
+    //   to: '#',
+    //   itemType: 'date',
+    // },
     {
       icon: <IonIcon icon={locationOutline} />,
       label: t('location'),
