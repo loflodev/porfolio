@@ -28,7 +28,7 @@ export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
   }
 };
 
-export const ServiceCard = ({ cards }: ServiceCardProps) => {
+const ServiceCard = ({ cards }: ServiceCardProps) => {
   const { t } = useTranslation();
   return (
     <ul className="service-list">
@@ -49,7 +49,7 @@ export const ServiceCard = ({ cards }: ServiceCardProps) => {
   );
 };
 
-export const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) => {
+const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) => {
   return (
     handleModalInfo && (
       <ul className="testimonials-list has-scrollbar">

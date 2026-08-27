@@ -16,6 +16,9 @@ type ContactFormProps = {
   loading: boolean;
 };
 
+const FieldError = ({ message, className }: { message?: string; className?: string }) =>
+  message ? <p className={className}>{message}</p> : null;
+
 const ContactForm = ({
   data,
   handleSubmit,
@@ -55,9 +58,7 @@ const ContactForm = ({
               autoComplete="name"
               data-form-input
             />
-            {data.errorMessage.fullName && (
-              <p className="pl-4 text-white-2">{data.errorMessage.fullName}</p>
-            )}
+            <FieldError message={data.errorMessage.fullName} className="pl-4 text-white-2" />
           </div>
 
           <div>
@@ -72,7 +73,7 @@ const ContactForm = ({
               autoComplete="email"
               data-form-input
             />
-            {data.errorMessage.email && <p className="pl-4">{data.errorMessage.email}</p>}
+            <FieldError message={data.errorMessage.email} className="pl-4" />
           </div>
         </div>
 
@@ -88,9 +89,10 @@ const ContactForm = ({
           maxLength={MAX_MESSAGE_LENGTH}
           data-form-input
         ></textarea>
-        {data.errorMessage.yourMessage && (
-          <p className="pl-4 text-orange-yellow-crayola">{data.errorMessage.yourMessage}</p>
-        )}
+        <FieldError
+          message={data.errorMessage.yourMessage}
+          className="pl-4 text-orange-yellow-crayola"
+        />
 
         <button className="form-btn" type="submit" disabled={!isDisabled} data-form-btn>
           {loading ? (

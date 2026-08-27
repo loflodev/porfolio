@@ -7,8 +7,3 @@ export default axios.create({
   },
   timeout: 10000,
 });
-
-export const supabaseClient = axios.create({
-  baseURL: import.meta.env.VITE_SUPABASE_URL,
-  withCredentials: true,
-});

@@ -8,29 +8,34 @@ interface ThumbnailIconProps {
   link2: string;
 }
 
-const ThumbnailIcon = ({ link1, link2 }: ThumbnailIconProps) => {
-  const showIconBox = link1 !== '#' || link2 !== '#';
-  const showSeperationLine = link1 !== '#' && link2 !== '#';
+interface ProjectLinkIconProps {
+  show: boolean;
+  link: string;
+  icon: string;
+}
 
+const shouldShowIconBox = (link1: string, link2: string) => link1 !== '#' || link2 !== '#';
+const shouldShowSeparator = (link1: string, link2: string) => link1 !== '#' && link2 !== '#';
+
+const ProjectLinkIcon = ({ show, link, icon }: ProjectLinkIconProps) =>
+  show ? (
+    <Link to={link}>
+      <IonIcon icon={icon} />
+    </Link>
+  ) : null;
+
+const ThumbnailIcon = ({ link1, link2 }: ThumbnailIconProps) => {
   const showFirstIcon = link1 !== '#';
-  const showSecondtIcon = link2 !== '#';
+  const showSecondIcon = link2 !== '#';
 
   return (
-    showIconBox && (
+    shouldShowIconBox(link1, link2) && (
       <div className="project-item-icon-box">
-        {showFirstIcon && (
-          <Link to={link1}>
-            <IonIcon icon={eyeOutline} />
-          </Link>
-        )}
+        <ProjectLinkIcon show={showFirstIcon} link={link1} icon={eyeOutline} />
 
-        {showSeperationLine && <div className="vertical-line" />}
+        {shouldShowSeparator(link1, link2) && <div className="vertical-line" />}
 
-        {showSecondtIcon && (
-          <Link to={link2}>
-            <IonIcon icon={codeSlashOutline} />
-          </Link>
-        )}
+        <ProjectLinkIcon show={showSecondIcon} link={link2} icon={codeSlashOutline} />
       </div>
     )
   );

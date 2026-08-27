@@ -12,6 +12,60 @@ import iconSeo from '@/assets/images/icon-seo.svg';
 import useTranslation from '../../hooks/useTransalation';
 import type { CardType } from '../../types';
 
+const buildServices = (t: (key: string) => string): CardType[] => [
+  {
+    alt: t('webDesign'),
+    title: t('webDesign'),
+    image: iconDesign,
+    description: t('aboutPage.services.description1'),
+  },
+  {
+    alt: t('webDevelopment'),
+    title: t('webDevelopment'),
+    image: iconDev,
+    description: t('aboutPage.services.description2'),
+  },
+  {
+    alt: t('mobileApps'),
+    title: t('mobileApps'),
+    image: iconApp,
+    description: t('aboutPage.services.description3'),
+  },
+  {
+    alt: t('seo'),
+    title: t('seo'),
+    image: iconSeo,
+    description: t('aboutPage.services.description4'),
+  },
+];
+
+const buildTestimonies = (t: (key: string) => string): CardType[] => [
+  {
+    alt: 'Guise S',
+    title: 'Guise S',
+    image: avatar1,
+    description: t('aboutPage.testimonials.feedback1'),
+  },
+  {
+    alt: 'Wilson Jean',
+    title: 'Wilson Jean',
+    image: avatar4,
+    description: t('aboutPage.testimonials.feedback2'),
+  },
+  {
+    alt: 'Team Bouskad',
+    title: 'Team Bouskad',
+    image: avatar3,
+    description: t('aboutPage.testimonials.feedback3'),
+  },
+  {
+    alt: 'JD Pet',
+    title: 'JD Pet',
+    image: avatar2,
+    description: t('aboutPage.testimonials.feedback4'),
+  },
+];
+
 const useAbout = () => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -23,59 +77,8 @@ const useAbout = () => {
     image: '#',
   });
 
-  const services: CardType[] = [
-    {
-      alt: t('webDesign'),
-      title: t('webDesign'),
-      image: iconDesign,
-      description: t('aboutPage.services.description1'),
-    },
-    {
-      alt: t('webDevelopment'),
-      title: t('webDevelopment'),
-      image: iconDev,
-      description: t('aboutPage.services.description2'),
-    },
-    {
-      alt: t('mobileApps'),
-      title: t('mobileApps'),
-      image: iconApp,
-      description: t('aboutPage.services.description3'),
-    },
-    {
-      alt: t('seo'),
-      title: t('seo'),
-      image: iconSeo,
-      description: t('aboutPage.services.description4'),
-    },
-  ];
-
-  const testimonies: CardType[] = [
-    {
-      alt: 'Guise S',
-      title: 'Guise S',
-      image: avatar1,
-      description: t('aboutPage.testimonials.feedback1'),
-    },
-    {
-      alt: 'Wilson Jean',
-      title: 'Wilson Jean',
-      image: avatar4,
-      description: t('aboutPage.testimonials.feedback2'),
-    },
-    {
-      alt: 'Team Bouskad',
-      title: 'Team Bouskad',
-      image: avatar3,
-      description: t('aboutPage.testimonials.feedback3'),
-    },
-    {
-      alt: 'JD Pet',
-      title: 'JD Pet',
-      image: avatar2,
-      description: t('aboutPage.testimonials.feedback4'),
-    },
-  ];
+  const services = buildServices(t);
+  const testimonies = buildTestimonies(t);
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);

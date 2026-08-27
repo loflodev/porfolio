@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useTranslation as useI18nTranslation } from 'react-i18next';
 
-export type TranslationKey = string;
+type TranslationKey = string;
 
 const useTranslation = () => {
   const { t, i18n } = useI18nTranslation();

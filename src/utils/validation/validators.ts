@@ -1,52 +1,36 @@
 import { INPUT_MININUM_CHARATER } from '../../constants';
-import type { ValidationType } from '../../types';
+import type { ErrorType, ValidationType } from '../../types';
+
+const EMPTY_VALUE_MESSAGE = 'Cannot be empty';
+
+const buildValidationResult = (
+  isValid: boolean,
+  value: string,
+  invalidMessage: ErrorType
+): ValidationType => ({
+  isValid,
+  input: isValid ? value : '',
+  message: isValid ? '' : invalidMessage,
+});
 
 export const validateEmail = (value: string): ValidationType => {
-  if (value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u;
-    const validEmail = emailRegex.test(value.trim());
-
-    return {
-      isValid: validEmail ? true : false,
-      input: validEmail ? value : '',
-      message: !validEmail ? 'Invalid email' : '',
-    };
+  if (!value) {
+    return buildValidationResult(false, '', EMPTY_VALUE_MESSAGE);
   }
 
-  return {
-    isValid: false,
-    input: '',
-    message: 'Cannot be empty',
-  };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u;
+
+  return buildValidationResult(emailRegex.test(value.trim()), value, 'Invalid email');
 };
 
 export const validateInput = (value: string): ValidationType => {
-  if (value) {
-    const validInput = value.trim().length >= INPUT_MININUM_CHARATER;
-
-    return {
-      isValid: validInput ? true : false,
-      input: validInput ? value : '',
-      message: !validInput ? 'Input require at least 3 character' : '',
-    };
+  if (!value) {
+    return buildValidationResult(false, '', EMPTY_VALUE_MESSAGE);
   }
 
-  return {
-    isValid: false,
-    input: '',
-    message: 'Cannot be empty',
-  };
-};
-
-// Helper function to escape HTML and prevent XSS
-export const escapeHtml = (value: string) => {
-  const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  };
-
-  return value.replace(/[&<>"']/g, (char) => map[char]);
+  return buildValidationResult(
+    value.trim().length >= INPUT_MININUM_CHARATER,
+    value,
+    'Input require at least 3 character'
+  );
 };

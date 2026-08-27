@@ -3,7 +3,7 @@ import { createContext } from 'react';
 
 import type { ModalType } from '../types';
 
-export interface MainContextType {
+interface MainContextType {
   showModal: boolean;
   toggleModal: () => void;
   modalData: ModalType;

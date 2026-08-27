@@ -17,62 +17,63 @@ import SidebarSocialIcon from './SidebarSocialIcon';
 import useSidebar, { type SidebarMenuType } from './useSidebar';
 import useTranslation from '../../../hooks/useTransalation';
 
+const buildMenuList = (t: (key: string) => string): SidebarMenuType[] => [
+  {
+    icon: <IonIcon icon={mailOutline} />,
+    label: t('email'),
+    title: 'louis@loflodev.com',
+    to: 'mailto:louis@loflodev.com',
+    itemType: 'link',
+  },
+  {
+    icon: <IonIcon icon={phonePortraitOutline} />,
+    label: t('phone'),
+    title: ' +1 (438) 304-7941',
+    to: 'tel:+14383047941',
+    itemType: 'link',
+  },
+  // {
+  //   icon: <IonIcon icon={calendarOutline} />,
+  //   label: t('birthday'),
+  //   title: 'October 10, 1989',
+  //   to: '#',
+  //   itemType: 'date',
+  // },
+  {
+    icon: <IonIcon icon={locationOutline} />,
+    label: t('location'),
+    title: 'Repentigny, QC, CANADA',
+    to: '#',
+    itemType: 'address',
+  },
+];
+
+const SOCIAL_ICON_LIST: Omit<SidebarMenuType, 'label'>[] = [
+  {
+    icon: <IonIcon className="socials-icons" icon={logoGithub} />,
+    title: 'Github',
+    to: 'https://github.com/loflodev/',
+    itemType: 'link',
+  },
+  {
+    icon: <IonIcon className="socials-icons" icon={logoInstagram} />,
+    title: 'instagram',
+    to: 'https://www.instagram.com/louis_thereborn',
+    itemType: 'link',
+  },
+  {
+    icon: <IonIcon className="socials-icons" icon={logoLinkedin} />,
+    title: 'Linkedin',
+    to: 'https://www.linkedin.com/in/ljunit25',
+    itemType: 'link',
+  },
+];
+
 const Sidebar: FC = () => {
   const { t } = useTranslation();
-
   const { isActive, toggleMenu } = useSidebar();
 
-  const menuList: SidebarMenuType[] = [
-    {
-      icon: <IonIcon icon={mailOutline} />,
-      label: t('email'),
-      title: 'louis@loflodev.com',
-      to: 'mailto:louis@loflodev.com',
-      itemType: 'link',
-    },
-    {
-      icon: <IonIcon icon={phonePortraitOutline} />,
-      label: t('phone'),
-      title: ' +1 (438) 526-2254',
-      to: 'tel:+14385262254',
-      itemType: 'link',
-    },
-    // {
-    //   icon: <IonIcon icon={calendarOutline} />,
-    //   label: t('birthday'),
-    //   title: 'October 10, 1989',
-    //   to: '#',
-    //   itemType: 'date',
-    // },
-    {
-      icon: <IonIcon icon={locationOutline} />,
-      label: t('location'),
-      title: 'Repentigny, QC, CANADA',
-      to: '#',
-      itemType: 'address',
-    },
-  ];
-
-  const socialIconList: Omit<SidebarMenuType, 'label'>[] = [
-    {
-      icon: <IonIcon className="socials-icons" icon={logoGithub} />,
-      title: 'Github',
-      to: 'https://github.com/loflodev/',
-      itemType: 'link',
-    },
-    {
-      icon: <IonIcon className="socials-icons" icon={logoInstagram} />,
-      title: 'instagram',
-      to: 'https://www.instagram.com/louis_thereborn',
-      itemType: 'link',
-    },
-    {
-      icon: <IonIcon className="socials-icons" icon={logoLinkedin} />,
-      title: 'Linkedin',
-      to: 'https://www.linkedin.com/in/ljunit25',
-      itemType: 'link',
-    },
-  ];
+  const menuList = buildMenuList(t);
 
   return (
     <aside className={`sidebar ${isActive()}`} data-sidebar>
@@ -90,7 +91,7 @@ const Sidebar: FC = () => {
 
         <div className="separator"></div>
 
-        <SidebarSocialIcon socialIconList={socialIconList} />
+        <SidebarSocialIcon socialIconList={SOCIAL_ICON_LIST} />
       </div>
     </aside>
   );
