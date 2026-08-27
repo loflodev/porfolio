@@ -483,6 +483,67 @@
   .navbar-link.active {
     color: var(--color-orange-yellow-crayola);
   }
+
+  .navbar-item-more {
+    position: relative;
+  }
+
+  .navbar-item-more .navbar-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .navbar-more-icon {
+    font-size: 12px;
+    transition: transform var(--transition-1);
+  }
+
+  .navbar-more-icon.open {
+    transform: rotate(180deg);
+  }
+
+  .navbar-dropdown {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 10px;
+    min-width: 140px;
+    background: var(--border-gradient-onyx);
+    border-radius: 14px;
+    box-shadow: var(--shadow-3);
+    padding: 8px;
+    z-index: 1;
+  }
+
+  .navbar-dropdown::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-gradient-jet);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .navbar-dropdown-link {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--color-light-gray);
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    transition: var(--transition-1);
+  }
+
+  .navbar-dropdown-link:hover,
+  .navbar-dropdown-link:focus {
+    color: var(--color-light-gray-70);
+    background: hsla(0, 0%, 100%, 0.05);
+  }
+
+  .navbar-dropdown-link.active {
+    color: var(--color-orange-yellow-crayola);
+  }
   /* @endsection Navbar */
 
   /* @section: #About */
@@ -1306,6 +1367,102 @@
   }
   /* @endsection */
 
+  /* @section: #PRICING */
+
+  .pricing-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pricing-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--border-gradient-onyx);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-2);
+    z-index: 1;
+  }
+
+  .pricing-item::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--bg-gradient-jet);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .pricing-item.featured {
+    background: var(--bg-gradient-yellow-1);
+    box-shadow: var(--shadow-4);
+  }
+
+  .pricing-item.featured::before {
+    background: var(--bg-gradient-yellow-2);
+  }
+
+  .pricing-badge {
+    align-self: flex-start;
+    margin-bottom: 15px;
+    padding: 4px 12px;
+    background: var(--text-gradient-yellow);
+    color: var(--color-smoky-black);
+    font-size: var(--font-size-xx);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 20px;
+  }
+
+  .pricing-item-title {
+    margin-bottom: 10px;
+  }
+
+  .pricing-item-price {
+    margin-bottom: 10px;
+    color: var(--color-orange-yellow-crayola);
+    font-size: var(--font-size-huge);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pricing-item-text {
+    margin-bottom: 20px;
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+  }
+
+  .pricing-feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .pricing-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+  }
+
+  .pricing-feature-item ion-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--color-orange-yellow-crayola);
+    font-size: 16px;
+  }
+
+  .pricing-btn {
+    margin-top: auto;
+  }
+  /* @endsection */
+
   /* @section: #RESPONSIVE */
 
   @media (max-width: 450px) {
@@ -1863,6 +2020,13 @@
       font-weight: var(--font-weight-medium);
     }
 
+    .navbar-dropdown {
+      bottom: auto;
+      top: 100%;
+      margin-bottom: 0;
+      margin-top: 10px;
+    }
+
     /**
    * ABOUT
    */
@@ -1892,6 +2056,15 @@
 
     .project-list {
       grid-template-columns: repeat(3, 1fr);
+    }
+
+    /**
+   * PRICING
+   */
+
+    .pricing-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
     }
 
     /**

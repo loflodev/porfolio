@@ -5,6 +5,7 @@ import About from './pages/About/About';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact/Contact';
 import Portfolio from './pages/Portfolio/Portfolio';
+import Pricing from './pages/Pricing/Pricing';
 import Resume from './pages/Resume/Resume';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Route>
       </Routes>
     </BrowserRouter>

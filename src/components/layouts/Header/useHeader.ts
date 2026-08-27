@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { DEFAULT_STATE_NUMBER } from '../../../constants';
 import useTranslation from '../../../hooks/useTransalation';
 import type { TopMenuType } from '../../../types';
+
+const NO_ACTIVE_INDEX = -1;
 
 const useHeader = () => {
   const { t } = useTranslation();
@@ -30,24 +31,33 @@ const useHeader = () => {
       to: '/blog',
       index: false,
     },
+  ];
+
+  const MORE_MENU: TopMenuType[] = [
     {
       label: t('contact'),
       to: '/contact',
       index: false,
     },
+    {
+      label: t('pricing'),
+      to: '/pricing',
+      index: false,
+    },
   ];
 
-  // Get initial index based on current URL path
+  // Get initial index based on current URL path; -1 when the current route lives under "More"
   const getInitialIndex = (): number => {
     const currentPath = location.pathname;
-    const index = TOP_MENU.findIndex((item) => item.to === currentPath);
-    // eslint-disable-next-line no-magic-numbers
-    return index !== -1 ? index : DEFAULT_STATE_NUMBER;
+    return TOP_MENU.findIndex((item) => item.to === currentPath);
   };
 
   const [activeIndex, setActiveIndex] = useState<number>(getInitialIndex);
   const [menu, setMenu] = useState<TopMenuType[]>(TOP_MENU);
+  const [isMoreOpen, setIsMoreOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const isMoreActive = MORE_MENU.some((item) => item.to === location.pathname);
 
   const handleTopMenu = (current: number, to: string) => {
     setActiveIndex(current);
@@ -56,7 +66,32 @@ const useHeader = () => {
       return prev.map((item, index) => (index === current ? { ...item, index: true } : item));
     });
   };
-  return { menu, handleTopMenu, activeIndex };
+
+  const toggleMoreMenu = () => {
+    setIsMoreOpen((prev) => !prev);
+  };
+
+  const closeMoreMenu = () => {
+    setIsMoreOpen(false);
+  };
+
+  const handleMoreMenu = (to: string) => {
+    setActiveIndex(NO_ACTIVE_INDEX);
+    navigate(to);
+    closeMoreMenu();
+  };
+
+  return {
+    menu,
+    moreMenu: MORE_MENU,
+    handleTopMenu,
+    handleMoreMenu,
+    activeIndex,
+    isMoreOpen,
+    isMoreActive,
+    toggleMoreMenu,
+    closeMoreMenu,
+  };
 };
 
 export default useHeader;

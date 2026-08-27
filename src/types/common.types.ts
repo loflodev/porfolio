@@ -30,6 +30,17 @@ export type SkillType = {
   width: string;
 };
 
+export type PricingPlanType = {
+  title: string;
+  price: string;
+  description: string;
+  features: string[];
+  ctaLabel: string;
+  ctaType: 'modal' | 'link';
+  ctaTo?: string;
+  isFeatured?: boolean;
+};
+
 export type PortfolioType = {
   title: string;
   category: string;
