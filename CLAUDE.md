@@ -51,7 +51,8 @@ BrowserRouter (App.tsx)
 
 - `netlify/functions/submit-form.ts` - Contact form handler
 - Validates input, stores in Supabase `contacts` table, sends email via Resend
-- API calls routed via `/api/*` → `/.netlify/functions/*`
+- API calls routed via `/api/*` → `/.netlify/functions/*` (see `netlify.toml` redirects)
+- Functions bundled with esbuild targeting Node 18 (ESM format); `resend` and `@supabase/supabase-js` are marked external
 
 ### Internationalization
 
