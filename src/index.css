@@ -303,13 +303,13 @@
 
   .sidebar {
     margin-bottom: 15px;
-    max-height: 112px;
+    max-height: 167px;
     overflow: hidden;
     transition: var(--transition-2);
   }
 
   .sidebar.active {
-    max-height: 405px;
+    max-height: 460px;
   }
 
   .sidebar-info {
@@ -379,6 +379,14 @@
 
   .info_more-btn span {
     display: block;
+  }
+
+  .info-content .hire-me-btn {
+    width: max-content;
+    margin-top: 12px;
+    margin-left: 0;
+    padding: 10px 18px;
+    font-size: var(--font-size-sm);
   }
 
   .sidebar-info_more {
@@ -1585,12 +1593,12 @@
    */
 
     .sidebar {
-      max-height: 180px;
+      max-height: 235px;
       margin-bottom: 30px;
     }
 
     .sidebar.active {
-      max-height: 584px;
+      max-height: 639px;
     }
 
     .sidebar-info {
@@ -2170,6 +2178,10 @@
 
     .info-content .title {
       margin: auto;
+    }
+
+    .info-content .hire-me-btn {
+      margin-inline: auto;
     }
 
     .info_more-btn {

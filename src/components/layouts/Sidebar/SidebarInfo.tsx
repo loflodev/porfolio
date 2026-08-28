@@ -1,5 +1,6 @@
 import { IonIcon } from '@ionic/react';
 import { chevronDown } from 'ionicons/icons';
+import { Link } from 'react-router-dom';
 
 import useTranslation from '../../../hooks/useTransalation';
 
@@ -17,15 +18,19 @@ const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
   return (
     <div className="sidebar-info">
       <figure className="avatar-box">
-        <img src={image} alt={name} width="80" />
+        <img src={image} alt={name} width="120" />
       </figure>
 
       <div className="info-content">
-        <h1 className="name" title={name}>
+        <h1 className="name ml-2" title={name}>
           {name}
         </h1>
 
         <p className="title">{title}</p>
+
+        <Link className="hire-me-btn form-btn" to="/pricing">
+          <span>{t('hireMe')}</span>
+        </Link>
       </div>
 
       <button className="info_more-btn" onClick={toggleMenu} data-sidebar-btn>
