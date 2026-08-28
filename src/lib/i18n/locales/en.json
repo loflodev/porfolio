@@ -87,7 +87,11 @@
       "enterpriseFeature6": "Tailored to your project's scope",
       "enterpriseCta": "Let's Discuss"
     },
-    "comingSoonTitle": "Coming Soon!",
-    "comingSoonDescription": "Online checkout isn't live just yet. Reach out via the contact page and we'll get your project started right away."
+    "checkoutSuccessTitle": "Payment Successful!",
+    "checkoutSuccessDescription": "Thank you! Your payment was received and a receipt has been emailed to you. We'll be in touch shortly to get your project started.",
+    "checkoutCancelledTitle": "Checkout Cancelled",
+    "checkoutCancelledDescription": "Your checkout was cancelled and no payment was made. Feel free to try again whenever you're ready.",
+    "checkoutErrorTitle": "Something Went Wrong",
+    "checkoutErrorDescription": "We couldn't start your checkout. Please try again, or reach out via the contact page."
   }
 }

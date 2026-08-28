@@ -56,9 +56,9 @@ const computeValidatedFields = (current: ContactFormInputType): ValidatedFields 
 };
 
 const buildContactPayload = (input: ContactFormInputType) => ({
-  name: input.fullName,
+  fullName: input.fullName,
   email: input.email,
-  message: input.yourMessage,
+  yourMessage: input.yourMessage,
   website: input.website, // Honeypot field
 });
 

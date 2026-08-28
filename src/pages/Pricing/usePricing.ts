@@ -1,5 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import useMainContext from '../../hooks/useMainContext';
 import useTranslation from '../../hooks/useTransalation';
+import { createCheckoutSession } from '../../services/api/checkout';
 import type { ModalType, PricingPlanType } from '../../types';
 
 const buildPricingPlans = (): PricingPlanType[] => [
@@ -16,7 +20,8 @@ const buildPricingPlans = (): PricingPlanType[] => [
       'pricingPage.plans.essentialFeature6',
     ],
     ctaLabel: 'pricingPage.plans.essentialCta',
-    ctaType: 'modal',
+    ctaType: 'checkout',
+    planSlug: 'essential',
   },
   {
     title: 'pricingPage.plans.growthTitle',
@@ -31,7 +36,8 @@ const buildPricingPlans = (): PricingPlanType[] => [
       'pricingPage.plans.growthFeature6',
     ],
     ctaLabel: 'pricingPage.plans.growthCta',
-    ctaType: 'modal',
+    ctaType: 'checkout',
+    planSlug: 'growth',
     isFeatured: true,
   },
   {
@@ -55,21 +61,63 @@ const buildPricingPlans = (): PricingPlanType[] => [
 const usePricing = () => {
   const { t } = useTranslation();
   const { showModal, toggleModal, modalData, handleModalData } = useMainContext();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const hasHandledCheckoutParam = useRef(false);
 
   const plans = buildPricingPlans();
 
-  const handlePlanSelect = (plan: PricingPlanType) => {
-    if (plan.ctaType === 'modal') {
-      const comingSoonModalData: ModalType = {
-        title: t('pricingPage.comingSoonTitle'),
-        description: t('pricingPage.comingSoonDescription'),
+  useEffect(() => {
+    const checkoutStatus = searchParams.get('checkout');
+
+    if (!checkoutStatus || hasHandledCheckoutParam.current) {
+      return;
+    }
+    hasHandledCheckoutParam.current = true;
+
+    if (checkoutStatus === 'success') {
+      handleModalData({
+        title: t('pricingPage.checkoutSuccessTitle'),
+        description: t('pricingPage.checkoutSuccessDescription'),
         icon: '',
-      };
-      handleModalData(comingSoonModalData);
+      });
+    } else if (checkoutStatus === 'cancelled') {
+      handleModalData({
+        title: t('pricingPage.checkoutCancelledTitle'),
+        description: t('pricingPage.checkoutCancelledDescription'),
+        icon: '',
+      });
+    }
+    setSearchParams({}, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const showCheckoutError = () => {
+    const errorModalData: ModalType = {
+      title: t('pricingPage.checkoutErrorTitle'),
+      description: t('pricingPage.checkoutErrorDescription'),
+      icon: '',
+    };
+    handleModalData(errorModalData);
+  };
+
+  const handlePlanSelect = async (plan: PricingPlanType) => {
+    if (plan.ctaType !== 'checkout' || !plan.planSlug || isRedirecting) {
+      return;
+    }
+
+    setIsRedirecting(true);
+    const result = await createCheckoutSession(plan.planSlug);
+
+    if (result.success) {
+      window.location.href = result.url;
+    } else {
+      showCheckoutError();
+      setIsRedirecting(false);
     }
   };
 
-  return { plans, showModal, toggleModal, modalData, handlePlanSelect };
+  return { plans, showModal, toggleModal, modalData, handlePlanSelect, isRedirecting };
 };
 
 export default usePricing;

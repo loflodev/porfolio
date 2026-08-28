@@ -1,3 +1,5 @@
+import type { PlanSlug } from '../constants/app.constants';
+
 export type TopMenuType = {
   label: string;
   to: string;
@@ -36,8 +38,9 @@ export type PricingPlanType = {
   description: string;
   features: string[];
   ctaLabel: string;
-  ctaType: 'modal' | 'link';
+  ctaType: 'link' | 'checkout';
   ctaTo?: string;
+  planSlug?: PlanSlug;
   isFeatured?: boolean;
 };
 

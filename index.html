@@ -66,6 +66,14 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Static form for Netlify's build-time form detection; the real UI lives in ContactForm.tsx -->
+    <form name="contact" data-netlify="true" netlify-honeypot="website" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="text" name="fullName" />
+      <input type="email" name="email" />
+      <textarea name="yourMessage"></textarea>
+      <input type="text" name="website" />
+    </form>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

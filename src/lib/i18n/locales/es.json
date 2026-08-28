@@ -87,7 +87,11 @@
       "enterpriseFeature6": "Adaptado al alcance de tu proyecto",
       "enterpriseCta": "Hablemos"
     },
-    "comingSoonTitle": "¡Muy pronto!",
-    "comingSoonDescription": "El pago en línea aún no está disponible. Contáctanos desde la página de contacto y comenzaremos tu proyecto de inmediato."
+    "checkoutSuccessTitle": "¡Pago exitoso!",
+    "checkoutSuccessDescription": "¡Gracias! Tu pago fue recibido y te hemos enviado un recibo por correo. Nos pondremos en contacto pronto para comenzar tu proyecto.",
+    "checkoutCancelledTitle": "Pago cancelado",
+    "checkoutCancelledDescription": "Tu pago fue cancelado y no se realizó ningún cargo. Puedes intentarlo de nuevo cuando quieras.",
+    "checkoutErrorTitle": "Algo salió mal",
+    "checkoutErrorDescription": "No pudimos iniciar el pago. Intenta de nuevo o contáctanos desde la página de contacto."
   }
 }

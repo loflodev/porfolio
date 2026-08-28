@@ -3,6 +3,10 @@ import type { ClientSectionType, ContactFormInputType, PostType } from '../types
 export const DEFAULT_STATE_NUMBER = 0;
 export const INPUT_MININUM_CHARATER = 3;
 
+// Pricing plans backed by a real Stripe Checkout session (must match backend price env vars)
+export const PLAN_SLUGS = ['essential', 'growth'] as const;
+export type PlanSlug = (typeof PLAN_SLUGS)[number];
+
 // Input length limits (must match backend)
 export const MAX_NAME_LENGTH = 100;
 export const MAX_EMAIL_LENGTH = 254;

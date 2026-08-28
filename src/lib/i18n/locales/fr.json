@@ -87,7 +87,11 @@
       "enterpriseFeature6": "Adapté à la portée de votre projet",
       "enterpriseCta": "Discutons-en"
     },
-    "comingSoonTitle": "Bientôt disponible !",
-    "comingSoonDescription": "Le paiement en ligne n'est pas encore disponible. Contactez-nous via la page de contact et nous démarrerons votre projet immédiatement."
+    "checkoutSuccessTitle": "Paiement réussi !",
+    "checkoutSuccessDescription": "Merci ! Votre paiement a été reçu et un reçu vous a été envoyé par courriel. Nous vous contacterons sous peu pour démarrer votre projet.",
+    "checkoutCancelledTitle": "Paiement annulé",
+    "checkoutCancelledDescription": "Votre paiement a été annulé et aucun montant n'a été débité. N'hésitez pas à réessayer quand vous serez prêt.",
+    "checkoutErrorTitle": "Une erreur est survenue",
+    "checkoutErrorDescription": "Impossible de démarrer le paiement. Veuillez réessayer ou nous contacter via la page de contact."
   }
 }

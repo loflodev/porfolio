@@ -1,55 +1,42 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 import axiosInstance from './axiosInstance';
 
+const HTTP_OK = 200;
+const HTTP_REDIRECT_LIMIT = 300;
+
 type FormData = {
-  name: string;
+  fullName: string;
   email: string;
-  message: string;
+  yourMessage: string;
   website?: string; // Honeypot field
 };
 
-type ApiResponse = {
-  success: boolean;
-  data?: unknown;
-  error?: string;
-};
-
-type SubmitResult = { success: true; data?: unknown } | { success: false; error: string };
-
-const toSubmitResult = (data: ApiResponse): SubmitResult =>
-  data.success
-    ? { success: true, data: data.data }
-    : { success: false, error: data.error || 'Failed to submit form' };
+type SubmitResult = { success: true } | { success: false; error: string };
 
 const resolveErrorMessage = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError<ApiResponse>;
-
-    return (
-      axiosError.response?.data.error ||
-      axiosError.message ||
-      'Something went wrong. Please try again'
-    );
+    return error.message || 'Something went wrong. Please try again';
   }
 
   return 'An unexpected error occured. Please try again';
 };
 
+const encodeFormData = (data: FormData): string =>
+  new URLSearchParams({ 'form-name': 'contact', ...data }).toString();
+
 export const saveContactForm = async (data: FormData): Promise<SubmitResult> => {
   try {
-    const response = await axiosInstance.post<ApiResponse>(
-      '/.netlify/functions/submit-form',
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000, // 10 second timeout
-      }
-    );
+    const response = await axiosInstance.post('/', encodeFormData(data), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      timeout: 10000, // 10 second timeout
+    });
 
-    return toSubmitResult(response.data);
+    return response.status >= HTTP_OK && response.status < HTTP_REDIRECT_LIMIT
+      ? { success: true }
+      : { success: false, error: 'Failed to submit form' };
   } catch (error) {
     return { success: false, error: resolveErrorMessage(error) };
   }

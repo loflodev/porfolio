@@ -3,7 +3,7 @@
   "$schema": "./node_modules/fallow/schema.json",
   "entry": ["src/index.{ts,tsx,js,jsx}", "src/main.{ts,tsx,js,jsx}", "netlify/functions/*.ts"],
   "ignorePatterns": ["dist/**", "dist-functions/**", ".netlify/**"],
-  "ignoreDependencies": ["@netlify/functions", "@supabase/supabase-js", "resend"],
+  "ignoreDependencies": ["@netlify/functions", "resend", "stripe", "@sentry/node"],
   "duplicates": {
     // Hide pair-only clones; focus on widespread copy-paste
     // worth refactoring. Lower to 2 to report every duplicate pair.
