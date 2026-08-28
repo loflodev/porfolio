@@ -1,4 +1,5 @@
 import useContact from './useContact';
+import Seo from '../../components/common/Seo';
 import Article from '../../components/ui/Article';
 import ContactForm from '../../components/ui/Contact/ContactForm';
 import MapEmbed from '../../components/ui/MapEmbed';
@@ -21,6 +22,11 @@ const Contact = () => {
 
   return (
     <Article name="article" header={t('contact')} className="contact">
+      <Seo
+        title="Contact"
+        description="Get in touch with Louis Florival for full stack web development work."
+        path="/contact"
+      />
       <MapEmbed />
 
       <ContactForm

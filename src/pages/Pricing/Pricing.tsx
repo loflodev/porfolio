@@ -1,4 +1,5 @@
 import usePricing from './usePricing';
+import Seo from '../../components/common/Seo';
 import Article from '../../components/ui/Article';
 import Modal from '../../components/ui/Modal';
 import PricingCard from '../../components/ui/Pricing/PricingCard';
@@ -11,6 +12,11 @@ const Pricing = () => {
 
   return (
     <Article className="pricing" name="article" header={t('pricing')}>
+      <Seo
+        title="Pricing"
+        description="Service plans and pricing for full stack web development work with Louis Florival."
+        path="/pricing"
+      />
       <Section className="plans">
         <PricingCard data={plans} onSelect={handlePlanSelect} />
       </Section>

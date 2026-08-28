@@ -1,4 +1,5 @@
 import useAbout from './useAbout';
+import Seo from '../../components/common/Seo';
 import ClientSection from '../../components/ui/About/Client';
 import Hero from '../../components/ui/About/Hero';
 import Service from '../../components/ui/About/Service';
@@ -15,6 +16,7 @@ const About = () => {
   const { t } = useTranslation();
   return (
     <Article name="article" header={t('aboutMe')} className="about">
+      <Seo title="About Me" description={t('aboutPage.description1')} path="/" />
       <Hero />
       <Service data={services} />
       <Testimony data={testimonies} handleTestimonyData={handleModalData} />

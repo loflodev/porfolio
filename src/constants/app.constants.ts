@@ -28,12 +28,12 @@ export const CLIENTS: ClientSectionType[] = [
   {
     to: 'https://jdpetplace.com/',
     image: '/images/logo-jdpetplace.png',
-    alt: '',
+    alt: 'JD Pet Place',
   },
   {
     to: '#',
     image: '/images/logo-2-color.png',
-    alt: '',
+    alt: 'Client logo',
   },
 ];
 

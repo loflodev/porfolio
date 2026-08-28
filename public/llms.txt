@@ -1,0 +1,23 @@
+# LofloDev - Louis Jr Florival
+
+> Full Stack developer with a unique set of skills that will bring a fresh
+> perspective to your team. Based in Repentigny, QC, Canada.
+
+Louis Florival is a full stack developer working primarily with
+TypeScript, JavaScript, Python, PHP, React, Node.js, Express, MongoDB,
+and WordPress.
+
+## Pages
+
+- [Home / About](https://loflodev.com/): Introduction, bio, and skills
+- [Resume](https://loflodev.com/resume): Work experience and education
+- [Portfolio](https://loflodev.com/portfolio): Selected projects
+- [Blog](https://loflodev.com/blog): Articles and posts
+- [Pricing](https://loflodev.com/pricing): Service plans
+- [Contact](https://loflodev.com/contact): Contact form and details
+
+## Contact
+
+- Email: louis@loflodev.com
+- GitHub: https://github.com/loflodev/
+- LinkedIn: https://www.linkedin.com/in/ljunit25

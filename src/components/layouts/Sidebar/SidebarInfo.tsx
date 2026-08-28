@@ -18,7 +18,7 @@ const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
   return (
     <div className="sidebar-info">
       <figure className="avatar-box">
-        <img src={image} alt={name} width="120" />
+        <img src={image} alt={name} width="120" height="118" />
       </figure>
 
       <div className="info-content">

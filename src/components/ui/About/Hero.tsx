@@ -57,13 +57,21 @@ const Hero = () => {
 
   return (
     <Section className="about-text">
-      <p className="about-typing">
-        <span aria-hidden="true">
-          {typedContent}
-          {!isDone && <span className="typing-cursor" aria-hidden="true" />}
-        </span>
-        <span className="sr-only">{fullText}</span>
-      </p>
+      <div className="about-typing-box">
+        {/* Reserves the final text's height up front so the typing animation doesn't
+            shift the layout below it as characters are added. */}
+        <p className="about-typing about-typing-ghost" aria-hidden="true">
+          {fullText}
+        </p>
+
+        <p className="about-typing about-typing-live">
+          <span aria-hidden="true">
+            {typedContent}
+            {!isDone && <span className="typing-cursor" aria-hidden="true" />}
+          </span>
+          <span className="sr-only">{fullText}</span>
+        </p>
+      </div>
 
       <TechIconCluster popIn={iconsVisible} />
     </Section>

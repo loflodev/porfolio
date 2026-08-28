@@ -1,4 +1,5 @@
 import usePortfolio from './usePortfolio';
+import Seo from '../../components/common/Seo';
 import Article from '../../components/ui/Article';
 import Tab from '../../components/ui/Portfolio/Tab';
 import Section from '../../components/ui/Section';
@@ -11,6 +12,11 @@ const Portfolio = () => {
 
   return (
     <Article className="portfolio" name="article" header={t('portfolio')}>
+      <Seo
+        title="Portfolio"
+        description="Selected web and app development projects by Louis Florival, full stack developer."
+        path="/portfolio"
+      />
       <Section className="projects">
         <Tab data={category} handleSelect={handleTabSelect} activeTab={activeIndex} />
         <ThumbnailCard data={portfolio} category={category[activeIndex].title} />

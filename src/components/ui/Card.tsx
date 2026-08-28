@@ -35,7 +35,7 @@ const ServiceCard = ({ cards }: ServiceCardProps) => {
       {cards.map((item, index) => (
         <li key={`card -${index}`} className="service-item">
           <div className="service-icon-box">
-            <img src={item.image} alt={t(item.alt)} width="40" />
+            <img src={item.image} alt={t(item.alt)} width="40" height="40" />
           </div>
 
           <div className="service-content-box">
@@ -68,7 +68,13 @@ const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) => {
           >
             <div className="content-card" data-testimonials-item>
               <figure className="testimonials-avatar-box">
-                <img src={item.image} alt={item.alt} width="60" data-testimonials-avatar />
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  width="60"
+                  height="59"
+                  data-testimonials-avatar
+                />
               </figure>
 
               <h4 className="h4 testimonials-item-title" data-testimonials-title>
