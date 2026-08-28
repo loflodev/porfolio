@@ -122,6 +122,15 @@ SUPABASE_URL=your_supabase_url
 SUPABASE_API_KEY=your_supabase_key
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_API_KEY=your_supabase_key
+
+# Payments (Stripe)
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PRICE_ESSENTIAL=your_stripe_price_id
+STRIPE_PRICE_GROWTH=your_stripe_price_id
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+
+# Error Tracking (Sentry, optional)
+SENTRY_DSN=your_sentry_dsn
 ```
 
 ### Development

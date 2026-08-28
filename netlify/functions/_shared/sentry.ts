@@ -1,4 +1,4 @@
-/* eslint-disable node/no-process-env */
+/* eslint-disable node/no-process-env, no-console */
 import * as Sentry from '@sentry/node';
 
 const SENTRY_FLUSH_TIMEOUT_MS = 2000;
@@ -15,6 +15,7 @@ export const initSentry = (): void => {
 };
 
 export const captureAndFlush = async (error: unknown): Promise<void> => {
+  console.error(error);
   Sentry.captureException(error);
   await Sentry.flush(SENTRY_FLUSH_TIMEOUT_MS);
 };
