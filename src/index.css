@@ -570,6 +570,125 @@
   .about-text p {
     margin-bottom: 15px;
   }
+
+  .about-text .name-highlight {
+    display: inline;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-orange-yellow-crayola);
+  }
+
+  .typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 0.9em;
+    margin-left: 2px;
+    background: var(--color-orange-yellow-crayola);
+    vertical-align: text-bottom;
+    animation: blinkCursor 0.8s step-end infinite;
+  }
+
+  @keyframes blinkCursor {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .tech-bubbles-wrap {
+    padding: 8px 0;
+    margin-bottom: 15px;
+  }
+
+  .tech-bubbles {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .tech-bubble-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tech-bubble-col:nth-child(even) {
+    margin-top: 25px;
+  }
+
+  .tech-bubble {
+    display: flex;
+  }
+
+  .tech-magnetic {
+    display: inline-flex;
+    transition: transform 0.25s ease-out;
+  }
+
+  .tech-bubble-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 17px;
+    box-shadow: var(--shadow-2);
+    border: 1px solid hsla(0, 0%, 100%, 0.08);
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tech-bubbles.is-visible .tech-bubble-circle {
+      animation:
+        bubblePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 0.07s) both,
+        iconFloat calc(2.6s + var(--i) * 0.15s) ease-in-out calc(0.5s + var(--i) * 0.07s) infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tech-bubble-circle {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes bubblePop {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+
+    60% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes iconFloat {
+    0%,
+    100% {
+      transform: translateY(0) scale(1);
+    }
+
+    50% {
+      transform: translateY(-3px) scale(1.05);
+    }
+  }
   /* @endsection */
 
   /* @section: #service */
@@ -1675,6 +1794,24 @@
 
     .about-text {
       margin-bottom: 40px;
+    }
+
+    .tech-bubbles {
+      gap: 16px;
+    }
+
+    .tech-bubble-col {
+      gap: 18px;
+    }
+
+    .tech-bubble-col:nth-child(even) {
+      margin-top: 32px;
+    }
+
+    .tech-bubble-circle {
+      width: 44px;
+      height: 44px;
+      font-size: 21px;
     }
 
     /* service */
