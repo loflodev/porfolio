@@ -78,6 +78,18 @@ export const handler: Handler = async (event: HandlerEvent) => {
       });
     }
 
+    if (!priceId.startsWith('price_')) {
+      await captureAndFlush(
+        new Error(
+          `STRIPE_PRICE_${plan.toUpperCase()} looks like a Product ID (prod_...), not a Price ID (price_...): ${priceId}`
+        )
+      );
+      return jsonResponse(headers, HTTP_INTERNAL_SERVER_ERROR, {
+        success: false,
+        error: CHECKOUT_START_ERROR,
+      });
+    }
+
     const siteUrl = process.env.URL || 'http://localhost:8888';
 
     const session = await stripe.checkout.sessions.create({
