@@ -74,6 +74,19 @@
       <textarea name="yourMessage"></textarea>
       <input type="text" name="website" />
     </form>
+    <!-- Static form for Netlify's build-time form detection; submitted server-to-server from
+         netlify/functions/stripe-webhook.ts to record a completed purchase (no human ever fills
+         this in, so no honeypot is needed). -->
+    <form name="purchase" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="purchase" />
+      <input type="text" name="planSlug" />
+      <input type="text" name="stripeSessionId" />
+      <input type="text" name="amountTotal" />
+      <input type="text" name="currency" />
+      <input type="email" name="customerEmail" />
+      <input type="text" name="timestamp" />
+      <input type="text" name="verificationToken" />
+    </form>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

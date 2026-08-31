@@ -8,7 +8,8 @@ import useTranslation from '../../hooks/useTransalation';
 
 const Pricing = () => {
   const { t } = useTranslation();
-  const { plans, showModal, toggleModal, modalData, handlePlanSelect } = usePricing();
+  const { plans, showModal, toggleModal, modalData, handlePlanSelect, isRedirecting } =
+    usePricing();
 
   return (
     <Article className="pricing" name="article" header={t('pricing')}>
@@ -18,7 +19,7 @@ const Pricing = () => {
         path="/pricing"
       />
       <Section className="plans">
-        <PricingCard data={plans} onSelect={handlePlanSelect} />
+        <PricingCard data={plans} onSelect={handlePlanSelect} isRedirecting={isRedirecting} />
       </Section>
 
       <Modal

@@ -23,14 +23,19 @@ const resolveErrorMessage = (error: unknown): string => {
   return CHECKOUT_START_ERROR;
 };
 
-export const createCheckoutSession = async (plan: PlanSlug): Promise<CheckoutResult> => {
+export const createCheckoutSession = async (
+  plan: PlanSlug,
+  idempotencyKey: string,
+  locale: string
+): Promise<CheckoutResult> => {
   try {
     const response = await axiosInstance.post<CheckoutSessionResponse>(
       '/.netlify/functions/create-checkout-session',
-      { plan },
+      { plan, locale },
       {
         headers: {
           'Content-Type': 'application/json',
+          'X-Idempotency-Key': idempotencyKey,
         },
         timeout: 10000,
       }
@@ -41,5 +46,18 @@ export const createCheckoutSession = async (plan: PlanSlug): Promise<CheckoutRes
       : { success: false, error: response.data.error ?? CHECKOUT_START_ERROR };
   } catch (error) {
     return { success: false, error: resolveErrorMessage(error) };
+  }
+};
+
+export const verifyCheckoutSession = async (sessionId: string): Promise<boolean> => {
+  try {
+    const response = await axiosInstance.get<{ verified: boolean }>(
+      '/.netlify/functions/verify-checkout-session',
+      { params: { session_id: sessionId }, timeout: 10000 }
+    );
+
+    return response.data.verified === true;
+  } catch {
+    return false;
   }
 };

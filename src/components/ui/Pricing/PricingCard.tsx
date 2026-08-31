@@ -9,9 +9,10 @@ import type { PricingPlanType } from '../../../types';
 interface PricingCardProps {
   data: PricingPlanType[];
   onSelect: (plan: PricingPlanType) => void;
+  isRedirecting: boolean;
 }
 
-const PricingCard = ({ data, onSelect }: PricingCardProps) => {
+const PricingCard = ({ data, onSelect, isRedirecting }: PricingCardProps) => {
   const { t } = useTranslation();
 
   return (
@@ -42,7 +43,12 @@ const PricingCard = ({ data, onSelect }: PricingCardProps) => {
               <span>{t(plan.ctaLabel)}</span>
             </Link>
           ) : (
-            <button className="pricing-btn form-btn" type="button" onClick={() => onSelect(plan)}>
+            <button
+              className="pricing-btn form-btn"
+              type="button"
+              onClick={() => onSelect(plan)}
+              disabled={isRedirecting}
+            >
               <span>{t(plan.ctaLabel)}</span>
             </button>
           )}

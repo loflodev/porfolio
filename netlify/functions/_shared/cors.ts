@@ -17,9 +17,9 @@ const resolveAllowedOrigin = (origin?: string): string => {
   return ALLOWED_ORIGINS[DEFAULT_STATE_NUMBER];
 };
 
-export const getHeaders = (origin?: string): Record<string, string> => ({
+export const getHeaders = (origin?: string, methods = 'POST, OPTIONS'): Record<string, string> => ({
   'Access-Control-Allow-Origin': resolveAllowedOrigin(origin),
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Idempotency-Key',
+  'Access-Control-Allow-Methods': methods,
   'Content-Type': 'application/json',
 });

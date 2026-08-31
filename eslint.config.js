@@ -16,7 +16,7 @@ import unicorn from 'eslint-plugin-unicorn';
 import perfectionist from 'eslint-plugin-perfectionist';
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', '.netlify']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

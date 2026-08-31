@@ -10,7 +10,11 @@ export const initSentry = (): void => {
     return;
   }
 
-  Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0 });
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 0,
+    environment: process.env.CONTEXT || 'production',
+  });
   initialized = true;
 };
 

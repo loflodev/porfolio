@@ -3,8 +3,21 @@ import { useSearchParams } from 'react-router-dom';
 
 import useMainContext from '../../hooks/useMainContext';
 import useTranslation from '../../hooks/useTransalation';
-import { createCheckoutSession } from '../../services/api/checkout';
+import { createCheckoutSession, verifyCheckoutSession } from '../../services/api/checkout';
 import type { ModalType, PricingPlanType } from '../../types';
+import { clearIdempotencyKey, getOrCreateIdempotencyKey } from '../../utils/checkoutIdempotency';
+
+const SUPPORTED_STRIPE_LOCALES = ['en', 'es', 'fr'];
+const LANGUAGE_BASE_INDEX = 0;
+
+// Stripe only needs the base language (e.g. "en"), not region-qualified tags like "en-US" that
+// the browser-based language detector can produce; anything unsupported falls back to Stripe
+// auto-detecting the locale from the buyer's browser.
+const resolveStripeLocale = (language: string): string => {
+  const base = language.split('-')[LANGUAGE_BASE_INDEX];
+
+  return SUPPORTED_STRIPE_LOCALES.includes(base) ? base : 'auto';
+};
 
 const buildPricingPlans = (): PricingPlanType[] => [
   {
@@ -59,38 +72,13 @@ const buildPricingPlans = (): PricingPlanType[] => [
 ];
 
 const usePricing = () => {
-  const { t } = useTranslation();
+  const { t, getCurrentLanguage } = useTranslation();
   const { showModal, toggleModal, modalData, handleModalData } = useMainContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const hasHandledCheckoutParam = useRef(false);
 
   const plans = buildPricingPlans();
-
-  useEffect(() => {
-    const checkoutStatus = searchParams.get('checkout');
-
-    if (!checkoutStatus || hasHandledCheckoutParam.current) {
-      return;
-    }
-    hasHandledCheckoutParam.current = true;
-
-    if (checkoutStatus === 'success') {
-      handleModalData({
-        title: t('pricingPage.checkoutSuccessTitle'),
-        description: t('pricingPage.checkoutSuccessDescription'),
-        icon: '',
-      });
-    } else if (checkoutStatus === 'cancelled') {
-      handleModalData({
-        title: t('pricingPage.checkoutCancelledTitle'),
-        description: t('pricingPage.checkoutCancelledDescription'),
-        icon: '',
-      });
-    }
-    setSearchParams({}, { replace: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
 
   const showCheckoutError = () => {
     const errorModalData: ModalType = {
@@ -101,15 +89,54 @@ const usePricing = () => {
     handleModalData(errorModalData);
   };
 
+  useEffect(() => {
+    const checkoutStatus = searchParams.get('checkout');
+
+    if (!checkoutStatus || hasHandledCheckoutParam.current) {
+      return;
+    }
+    hasHandledCheckoutParam.current = true;
+
+    const resolveCheckoutOutcome = async () => {
+      if (checkoutStatus === 'success') {
+        const sessionId = searchParams.get('session_id');
+        const verified = sessionId ? await verifyCheckoutSession(sessionId) : false;
+
+        if (verified) {
+          handleModalData({
+            title: t('pricingPage.checkoutSuccessTitle'),
+            description: t('pricingPage.checkoutSuccessDescription'),
+            icon: '',
+          });
+        } else {
+          showCheckoutError();
+        }
+      } else if (checkoutStatus === 'cancelled') {
+        handleModalData({
+          title: t('pricingPage.checkoutCancelledTitle'),
+          description: t('pricingPage.checkoutCancelledDescription'),
+          icon: '',
+        });
+      }
+      setSearchParams({}, { replace: true });
+    };
+
+    void resolveCheckoutOutcome();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   const handlePlanSelect = async (plan: PricingPlanType) => {
     if (plan.ctaType !== 'checkout' || !plan.planSlug || isRedirecting) {
       return;
     }
 
     setIsRedirecting(true);
-    const result = await createCheckoutSession(plan.planSlug);
+    const idempotencyKey = getOrCreateIdempotencyKey(plan.planSlug);
+    const locale = resolveStripeLocale(getCurrentLanguage());
+    const result = await createCheckoutSession(plan.planSlug, idempotencyKey, locale);
 
     if (result.success) {
+      clearIdempotencyKey(plan.planSlug);
       window.location.href = result.url;
     } else {
       showCheckoutError();
