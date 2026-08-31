@@ -1,6 +1,7 @@
 import type { HandlerEvent } from '@netlify/functions';
 
 import { getBlobStore } from './blobs';
+import { captureAndFlush } from './sentry';
 
 const MINUTES_PER_HOUR = 60;
 const MINUTE_MS = 60_000;
@@ -60,13 +61,21 @@ export const isRateLimited = async (
   ip: string,
   storeName = DEFAULT_RATE_LIMIT_STORE
 ): Promise<boolean> => {
-  const store = getBlobStore(storeName);
-  const [minuteLimited, hourLimited] = await Promise.all([
-    checkWindow(store, ip, MINUTE_MS, MAX_PER_MINUTE, 'm'),
-    checkWindow(store, ip, HOUR_MS, MAX_PER_HOUR, 'h'),
-  ]);
+  try {
+    const store = getBlobStore(storeName);
+    const [minuteLimited, hourLimited] = await Promise.all([
+      checkWindow(store, ip, MINUTE_MS, MAX_PER_MINUTE, 'm'),
+      checkWindow(store, ip, HOUR_MS, MAX_PER_HOUR, 'h'),
+    ]);
 
-  return minuteLimited || hourLimited;
+    return minuteLimited || hourLimited;
+  } catch (error) {
+    // Rate limiting is a best-effort abuse deterrent, not core to taking payments. If Netlify
+    // Blobs is unavailable for any reason, fail open (allow the request) rather than breaking
+    // checkout/verification for every legitimate user.
+    await captureAndFlush(error);
+    return false;
+  }
 };
 
 // `x-nf-client-connection-ip` is the header Netlify's edge populates with the caller's real IP;
