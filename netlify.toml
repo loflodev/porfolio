@@ -20,8 +20,5 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# SPA fallback - redirect all routes to index.html for React Router
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# No SPA catch-all: every route is prerendered to its own HTML file (scripts/prerender.mjs), so
+# unknown paths fall through to dist/404.html with a real 404 status instead of a soft 200.

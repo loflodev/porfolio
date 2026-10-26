@@ -118,6 +118,13 @@ export default defineConfig([
     },
   },
   {
+    // Build-time render entry, never hot-reloaded.
+    files: ['src/entry-server.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
     files: [
       '**/*.test.{ts,tsx}',
       'src/test/**',
