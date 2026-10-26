@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import axiosInstance from './axiosInstance';
+import type { ErrorType } from '../../types';
 
 const HTTP_OK = 200;
 const HTTP_REDIRECT_LIMIT = 300;
@@ -12,15 +13,11 @@ type FormData = {
   website?: string; // Honeypot field
 };
 
-type SubmitResult = { success: true } | { success: false; error: string };
+type SubmitResult = { success: true } | { success: false; error: ErrorType };
 
-const resolveErrorMessage = (error: unknown): string => {
-  if (axios.isAxiosError(error)) {
-    return error.message || 'Something went wrong. Please try again';
-  }
-
-  return 'An unexpected error occured. Please try again';
-};
+// Axios messages are technical English ("timeout of 10000ms exceeded"), so map to a translated key.
+const resolveErrorMessage = (error: unknown): ErrorType =>
+  axios.isAxiosError(error) ? 'errors.network' : 'errors.unexpected';
 
 const encodeFormData = (data: FormData): string =>
   new URLSearchParams({ 'form-name': 'contact', ...data }).toString();
@@ -36,7 +33,7 @@ export const saveContactForm = async (data: FormData): Promise<SubmitResult> => 
 
     return response.status >= HTTP_OK && response.status < HTTP_REDIRECT_LIMIT
       ? { success: true }
-      : { success: false, error: 'Failed to submit form' };
+      : { success: false, error: 'errors.submitFailed' };
   } catch (error) {
     return { success: false, error: resolveErrorMessage(error) };
   }

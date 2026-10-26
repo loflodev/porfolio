@@ -70,12 +70,14 @@ export type PostMetaType = {
   category: string;
   date: string;
 };
+// i18n keys under `errors` in the locale files; rendered with t() by the form.
 export type ErrorType =
-  | 'Invalid email'
-  | 'Email is required'
-  | 'Email cannot be empty'
-  | 'Cannot be empty'
-  | 'Input require at least 3 character';
+  | 'errors.required'
+  | 'errors.invalidEmail'
+  | 'errors.minLength'
+  | 'errors.submitFailed'
+  | 'errors.network'
+  | 'errors.unexpected';
 
 export type ValidationType = {
   isValid: boolean;

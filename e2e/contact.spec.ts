@@ -7,7 +7,7 @@ test('empty submit reports errors that are tied to their fields', async ({ page 
   for (const label of ['Full Name', 'Email', 'Your Message']) {
     const field = page.getByLabel(label);
     await expect(field).toHaveAttribute('aria-invalid', 'true');
-    await expect(field).toHaveAccessibleDescription('Cannot be empty');
+    await expect(field).toHaveAccessibleDescription('This field is required');
   }
 });
 

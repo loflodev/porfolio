@@ -27,7 +27,9 @@ describe('Contact page', () => {
     expect(screen.getByLabelText('Full Name')).toHaveAttribute('autocomplete', 'name');
     expect(screen.getByLabelText('Email')).toHaveAttribute('type', 'email');
     expect(screen.getByLabelText('Your Message').tagName).toBe('TEXTAREA');
-    expect(screen.getByTitle('Map of Repentigny, Quebec')).toBeInTheDocument();
+    const map = screen.getByTitle('Map of Repentigny, Quebec');
+    expect(map.getAttribute('src')).toContain('!1sen!2sca!4v');
+    expect(map.getAttribute('src')).not.toContain('es-419');
   });
 
   it('keeps submit enabled and reports every empty field on submit', async () => {
@@ -43,7 +45,7 @@ describe('Contact page', () => {
     for (const label of ['Full Name', 'Email', 'Your Message']) {
       const field = screen.getByLabelText(label);
       expect(field).toHaveAttribute('aria-invalid', 'true');
-      expect(field).toHaveAccessibleDescription('Cannot be empty');
+      expect(field).toHaveAccessibleDescription('This field is required');
     }
     expect(save).not.toHaveBeenCalled();
   });
@@ -57,7 +59,9 @@ describe('Contact page', () => {
     await user.type(screen.getByLabelText('Your Message'), 'Hello there');
     await user.click(screen.getByRole('button', { name: 'Send Message' }));
 
-    expect(screen.getByLabelText('Email')).toHaveAccessibleDescription('Invalid email');
+    expect(screen.getByLabelText('Email')).toHaveAccessibleDescription(
+      'Please enter a valid email address'
+    );
     expect(screen.getByLabelText('Full Name')).not.toHaveAttribute('aria-invalid');
     expect(save).not.toHaveBeenCalled();
   });
@@ -91,13 +95,15 @@ describe('Contact page', () => {
 
   it('shows the server error under the message field on failure', async () => {
     const user = userEvent.setup();
-    save.mockResolvedValue({ success: false, error: 'Network Error' });
+    save.mockResolvedValue({ success: false, error: 'errors.network' });
     renderWithProviders(<Contact />);
 
     await fill(user);
     await user.click(screen.getByRole('button', { name: 'Send Message' }));
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Network Error');
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Network problem. Please check your connection and try again.'
+    );
     expect(screen.getByLabelText('Full Name')).toHaveValue('Ada Lovelace');
   });
 });

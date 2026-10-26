@@ -26,12 +26,15 @@ const FieldError = ({
   name: FieldName;
   message?: string;
   className?: string;
-}) =>
-  message ? (
+}) => {
+  const { t } = useTranslation();
+
+  return message ? (
     <p id={errorId(name)} className={className} role="alert">
-      {message}
+      {t(message)}
     </p>
   ) : null;
+};
 
 // Wires a field to its visible error so screen readers announce it with the field.
 const errorProps = (name: FieldName, message: string) =>

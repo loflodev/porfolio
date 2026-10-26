@@ -4,11 +4,15 @@ import { validateEmail, validateInput } from './validators';
 
 describe('validateEmail', () => {
   it('rejects an empty value', () => {
-    expect(validateEmail('')).toEqual({ isValid: false, input: '', message: 'Cannot be empty' });
+    expect(validateEmail('')).toEqual({ isValid: false, input: '', message: 'errors.required' });
   });
 
   it.each(['plain', 'a@b', 'a@b.c', 'a b@c.com', '@c.com'])('rejects %s', (value) => {
-    expect(validateEmail(value)).toEqual({ isValid: false, input: '', message: 'Invalid email' });
+    expect(validateEmail(value)).toEqual({
+      isValid: false,
+      input: '',
+      message: 'errors.invalidEmail',
+    });
   });
 
   it.each(['louis@loflodev.com', 'a.b+c@sub.domain.ca', '  padded@mail.com  '])(
@@ -22,14 +26,14 @@ describe('validateEmail', () => {
 describe('validateInput', () => {
   it('rejects an empty value', () => {
     expect(validateInput('').isValid).toBe(false);
-    expect(validateInput('').message).toBe('Cannot be empty');
+    expect(validateInput('').message).toBe('errors.required');
   });
 
   it('rejects values shorter than 3 characters after trimming', () => {
     expect(validateInput('  ab  ')).toEqual({
       isValid: false,
       input: '',
-      message: 'Input require at least 3 character',
+      message: 'errors.minLength',
     });
   });
 

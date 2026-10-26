@@ -110,5 +110,13 @@
   "viewSourceCode": "Voir le code source de {{project}}",
   "notFoundTitle": "Page introuvable",
   "notFoundDescription": "La page que vous cherchez n'existe pas ou a été déplacée.",
-  "backHome": "Retour à l'accueil"
+  "backHome": "Retour à l'accueil",
+  "errors": {
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "Veuillez entrer une adresse courriel valide",
+    "minLength": "Veuillez entrer au moins 3 caractères",
+    "submitFailed": "Votre message n'a pas pu être envoyé. Veuillez réessayer.",
+    "network": "Problème de réseau. Vérifiez votre connexion et réessayez.",
+    "unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
+  }
 }

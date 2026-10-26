@@ -110,5 +110,13 @@
   "viewSourceCode": "View {{project}} source code",
   "notFoundTitle": "Page not found",
   "notFoundDescription": "The page you're looking for doesn't exist or has moved.",
-  "backHome": "Back to home"
+  "backHome": "Back to home",
+  "errors": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "minLength": "Please enter at least 3 characters",
+    "submitFailed": "Your message couldn't be sent. Please try again.",
+    "network": "Network problem. Please check your connection and try again.",
+    "unexpected": "An unexpected error occurred. Please try again."
+  }
 }

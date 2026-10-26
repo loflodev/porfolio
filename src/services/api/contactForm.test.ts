@@ -33,16 +33,16 @@ describe('saveContactForm', () => {
 
     expect(await saveContactForm(FORM)).toEqual({
       success: false,
-      error: 'Failed to submit form',
+      error: 'errors.submitFailed',
     });
   });
 
-  it('surfaces axios error messages', async () => {
+  it('maps axios errors to the network message key', async () => {
     post.mockRejectedValue(new AxiosError('timeout of 10000ms exceeded'));
 
     expect(await saveContactForm(FORM)).toEqual({
       success: false,
-      error: 'timeout of 10000ms exceeded',
+      error: 'errors.network',
     });
   });
 
@@ -51,7 +51,7 @@ describe('saveContactForm', () => {
 
     expect(await saveContactForm(FORM)).toEqual({
       success: false,
-      error: 'An unexpected error occured. Please try again',
+      error: 'errors.unexpected',
     });
   });
 });

@@ -1,7 +1,7 @@
 import { INPUT_MININUM_CHARATER } from '../../constants';
 import type { ErrorType, ValidationType } from '../../types';
 
-const EMPTY_VALUE_MESSAGE = 'Cannot be empty';
+const EMPTY_VALUE_MESSAGE: ErrorType = 'errors.required';
 
 const buildValidationResult = (
   isValid: boolean,
@@ -20,7 +20,7 @@ export const validateEmail = (value: string): ValidationType => {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u;
 
-  return buildValidationResult(emailRegex.test(value.trim()), value, 'Invalid email');
+  return buildValidationResult(emailRegex.test(value.trim()), value, 'errors.invalidEmail');
 };
 
 export const validateInput = (value: string): ValidationType => {
@@ -31,6 +31,6 @@ export const validateInput = (value: string): ValidationType => {
   return buildValidationResult(
     value.trim().length >= INPUT_MININUM_CHARATER,
     value,
-    'Input require at least 3 character'
+    'errors.minLength'
   );
 };
