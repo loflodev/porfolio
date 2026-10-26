@@ -1,14 +1,14 @@
 import Stripe from 'stripe';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { signPurchase } from './_shared/purchase-signature';
 import {
   createFakeBlobStore,
   makeEvent,
   parseBody,
   type FakeBlobStore,
   type HandlerResult,
-} from './_test/fakes';
+} from './fakes';
+import { signPurchase } from '../_shared/purchase-signature';
 
 const { captureAndFlush, getStripeClient, getBlobStore, submitToNetlifyForms } = vi.hoisted(() => ({
   captureAndFlush: vi.fn(),
@@ -17,12 +17,12 @@ const { captureAndFlush, getStripeClient, getBlobStore, submitToNetlifyForms } =
   submitToNetlifyForms: vi.fn(),
 }));
 
-vi.mock('./_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
-vi.mock('./_shared/stripe-client', () => ({ getStripeClient }));
-vi.mock('./_shared/blobs', () => ({ getBlobStore }));
-vi.mock('./_shared/netlify-forms', () => ({ submitToNetlifyForms }));
+vi.mock('../_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
+vi.mock('../_shared/stripe-client', () => ({ getStripeClient }));
+vi.mock('../_shared/blobs', () => ({ getBlobStore }));
+vi.mock('../_shared/netlify-forms', () => ({ submitToNetlifyForms }));
 
-const { handler } = await import('./stripe-webhook');
+const { handler } = await import('../stripe-webhook');
 
 const WEBHOOK_SECRET = 'whsec_test_secret';
 // A real client so signature verification runs through Stripe's own constructEvent.

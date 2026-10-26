@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeEvent, parseBody, type HandlerResult } from './_test/fakes';
+import { makeEvent, parseBody, type HandlerResult } from './fakes';
 
 const { isRateLimited, captureAndFlush, getStripeClient, createSession } = vi.hoisted(() => ({
   isRateLimited: vi.fn(),
@@ -9,12 +9,12 @@ const { isRateLimited, captureAndFlush, getStripeClient, createSession } = vi.ho
   createSession: vi.fn(),
 }));
 
-vi.mock('./_shared/rate-limit', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('./_shared/rate-limit')>()),
+vi.mock('../_shared/rate-limit', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../_shared/rate-limit')>()),
   isRateLimited,
 }));
-vi.mock('./_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
-vi.mock('./_shared/stripe-client', () => ({ getStripeClient }));
+vi.mock('../_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
+vi.mock('../_shared/stripe-client', () => ({ getStripeClient }));
 
 const VALID_UUID = '0b8f7c9e-1a2b-4c3d-8e9f-0a1b2c3d4e5f';
 
@@ -27,7 +27,7 @@ const loadHandler = async (env: Record<string, string> = {}) => {
   for (const [key, value] of Object.entries(env)) {
     vi.stubEnv(key, value);
   }
-  const { handler } = await import('./create-checkout-session');
+  const { handler } = await import('../create-checkout-session');
   return (event = makeEvent()) => handler(event, {} as never) as Promise<HandlerResult>;
 };
 

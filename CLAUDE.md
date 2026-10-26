@@ -85,6 +85,7 @@ main.tsx (BrowserRouter)        entry-server.tsx (StaticRouter, build time only)
 
 - **Vitest** (`vitest.config.ts`) has two projects: `web` (jsdom, `src/**/*.test.{ts,tsx}`) and `functions` (node, `netlify/functions/**/*.test.ts`).
 - Render components with `renderWithProviders` (`src/test/renderWithProviders.tsx`); check a11y with `axe` from `src/test/axe.ts` (contrast and iframes are left to e2e).
+- Handler tests live in `netlify/functions/_test/`, never next to the handlers: Netlify bundles every top-level file in `netlify/functions/` as a function, so a `*.test.ts` there breaks `netlify dev`/deploys. `_shared/*.test.ts` is fine (subfolders without `index.ts` aren't functions).
 - Function tests use the in-memory Blobs fake and `makeEvent` from `netlify/functions/_test/fakes.ts`. Modules that read env at load time are tested with `vi.stubEnv` + `vi.resetModules` + dynamic import.
 - **Playwright** (`playwright.config.ts`) runs desktop + Pixel 7 against `pnpm preview`; axe runs with `reducedMotion: 'reduce'` so fade-in animations don't skew contrast.
 - CI (`.github/workflows/ci.yml`) runs lint, functions typecheck, coverage, build and e2e on pushes/PRs to `main` and `development`.

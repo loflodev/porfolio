@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { makeEvent, parseBody, type HandlerResult } from './_test/fakes';
+import { makeEvent, parseBody, type HandlerResult } from './fakes';
 
 const { isRateLimited, captureAndFlush, getStripeClient, retrieveSession } = vi.hoisted(() => ({
   isRateLimited: vi.fn(),
@@ -9,14 +9,14 @@ const { isRateLimited, captureAndFlush, getStripeClient, retrieveSession } = vi.
   retrieveSession: vi.fn(),
 }));
 
-vi.mock('./_shared/rate-limit', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('./_shared/rate-limit')>()),
+vi.mock('../_shared/rate-limit', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../_shared/rate-limit')>()),
   isRateLimited,
 }));
-vi.mock('./_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
-vi.mock('./_shared/stripe-client', () => ({ getStripeClient }));
+vi.mock('../_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
+vi.mock('../_shared/stripe-client', () => ({ getStripeClient }));
 
-const { handler } = await import('./verify-checkout-session');
+const { handler } = await import('../verify-checkout-session');
 
 const NOW_SECONDS = Date.parse('2026-10-26T12:00:00Z') / 1000;
 const ONE_HOUR = 3600;

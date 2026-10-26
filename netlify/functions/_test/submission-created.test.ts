@@ -1,21 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { signPurchase } from './_shared/purchase-signature';
-import { makeEvent, type HandlerResult } from './_test/fakes';
+import { makeEvent, type HandlerResult } from './fakes';
+import { signPurchase } from '../_shared/purchase-signature';
 
 const { captureAndFlush, sendEmail } = vi.hoisted(() => ({
   captureAndFlush: vi.fn(),
   sendEmail: vi.fn(),
 }));
 
-vi.mock('./_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
+vi.mock('../_shared/sentry', () => ({ initSentry: vi.fn(), captureAndFlush }));
 vi.mock('resend', () => ({
   Resend: class {
     emails = { send: sendEmail };
   },
 }));
 
-const { handler } = await import('./submission-created');
+const { handler } = await import('../submission-created');
 
 const run = (payload: unknown) =>
   handler(makeEvent({ body: JSON.stringify({ payload }) }), {} as never) as Promise<HandlerResult>;
