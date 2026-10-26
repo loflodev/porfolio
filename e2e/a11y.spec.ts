@@ -5,7 +5,8 @@ import { PATHS } from './routes';
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
-for (const path of PATHS) {
+// An unknown path covers the 404 page (served from dist/404.html).
+for (const path of [...PATHS, '/does-not-exist']) {
   test(`${path} has no WCAG 2.2 AA violations`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(path);

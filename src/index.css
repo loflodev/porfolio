@@ -1462,6 +1462,19 @@
     text-transform: uppercase;
     margin-bottom: 4px;
   }
+
+  /* 404 page: same body text treatment as .about-text */
+  .not-found-text {
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .not-found-btn {
+    width: max-content;
+  }
   /* @endsection */
 
   /* @section: #CONTACT */
