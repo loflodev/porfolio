@@ -3,7 +3,6 @@ import type { PlanSlug } from '../constants/app.constants';
 export type TopMenuType = {
   label: string;
   to: string;
-  index: boolean;
 };
 
 export type CardType = {

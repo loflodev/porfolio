@@ -1,43 +1,50 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { IonIcon } from '@ionic/react';
-import { codeSlashOutline, eyeOutline } from 'ionicons/icons';
-import { Link } from 'react-router-dom';
+import type { IconType } from 'react-icons';
+import { IoCodeSlashOutline, IoEyeOutline } from 'react-icons/io5';
 
-interface ThumbnailIconProps {
+import useTranslation from '../../hooks/useTransalation';
+
+type ThumbnailIconProps = {
+  project: string;
   link1: string;
   link2: string;
-}
+};
 
-interface ProjectLinkIconProps {
-  show: boolean;
+type ProjectLinkIconProps = {
   link: string;
-  icon: string;
-}
+  label: string;
+  Icon: IconType;
+};
 
-const shouldShowIconBox = (link1: string, link2: string) => link1 !== '#' || link2 !== '#';
-const shouldShowSeparator = (link1: string, link2: string) => link1 !== '#' && link2 !== '#';
+const NO_LINK = '#';
 
-const ProjectLinkIcon = ({ show, link, icon }: ProjectLinkIconProps) =>
-  show ? (
-    <Link to={link}>
-      <IonIcon icon={icon} />
-    </Link>
-  ) : null;
+const ProjectLinkIcon = ({ link, label, Icon }: ProjectLinkIconProps) =>
+  link === NO_LINK ? null : (
+    <a href={link} target="_blank" rel="noopener noreferrer" aria-label={label}>
+      <Icon aria-hidden="true" />
+    </a>
+  );
 
-const ThumbnailIcon = ({ link1, link2 }: ThumbnailIconProps) => {
-  const showFirstIcon = link1 !== '#';
-  const showSecondIcon = link2 !== '#';
+const ThumbnailIcon = ({ project, link1, link2 }: ThumbnailIconProps) => {
+  const { t } = useTranslation();
+  const hasLiveSite = link1 !== NO_LINK;
+  const hasSourceCode = link2 !== NO_LINK;
+
+  if (!hasLiveSite && !hasSourceCode) {
+    return null;
+  }
 
   return (
-    shouldShowIconBox(link1, link2) && (
-      <div className="project-item-icon-box">
-        <ProjectLinkIcon show={showFirstIcon} link={link1} icon={eyeOutline} />
+    <div className="project-item-icon-box">
+      <ProjectLinkIcon link={link1} label={t('viewLiveSite', { project })} Icon={IoEyeOutline} />
 
-        {shouldShowSeparator(link1, link2) && <div className="vertical-line" />}
+      {hasLiveSite && hasSourceCode && <div className="vertical-line" />}
 
-        <ProjectLinkIcon show={showSecondIcon} link={link2} icon={codeSlashOutline} />
-      </div>
-    )
+      <ProjectLinkIcon
+        link={link2}
+        label={t('viewSourceCode', { project })}
+        Icon={IoCodeSlashOutline}
+      />
+    </div>
   );
 };
 

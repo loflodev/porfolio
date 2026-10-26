@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { IonIcon } from '@ionic/react';
-import { checkmarkOutline } from 'ionicons/icons';
+import { IoCheckmarkOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
 import useTranslation from '../../../hooks/useTransalation';
@@ -23,7 +22,7 @@ const PricingCard = ({ data, onSelect, isRedirecting }: PricingCardProps) => {
             <span className="pricing-badge">{t('pricingPage.plans.mostPopular')}</span>
           )}
 
-          <h4 className="h4 pricing-item-title">{t(plan.title)}</h4>
+          <h2 className="h4 pricing-item-title">{t(plan.title)}</h2>
 
           <p className="pricing-item-price">{t(plan.price)}</p>
 
@@ -32,7 +31,7 @@ const PricingCard = ({ data, onSelect, isRedirecting }: PricingCardProps) => {
           <ul className="pricing-feature-list">
             {plan.features.map((feature, featureIndex) => (
               <li key={`feature-${index}-${featureIndex}`} className="pricing-feature-item">
-                <IonIcon icon={checkmarkOutline} />
+                <IoCheckmarkOutline aria-hidden="true" />
                 <span>{t(feature)}</span>
               </li>
             ))}

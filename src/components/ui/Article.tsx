@@ -10,7 +10,7 @@ const Article = ({ name, header, children, ...restProps }: ArticleProps) => {
   return (
     <article {...restProps}>
       <header>
-        <h2 className={`h2 ${name}-title`}>{header}</h2>
+        <h1 className={`h2 ${name}-title`}>{header}</h1>
       </header>
       {children}
     </article>

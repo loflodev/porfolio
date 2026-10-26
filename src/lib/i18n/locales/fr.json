@@ -93,5 +93,22 @@
     "checkoutCancelledDescription": "Votre paiement a été annulé et aucun montant n'a été débité. N'hésitez pas à réessayer quand vous serez prêt.",
     "checkoutErrorTitle": "Une erreur est survenue",
     "checkoutErrorDescription": "Impossible de démarrer le paiement. Veuillez réessayer ou nous contacter via la page de contact."
-  }
+  },
+  "mainNavigation": "Navigation principale",
+  "skipToContent": "Aller au contenu",
+  "close": "Fermer",
+  "clients": "Clients",
+  "testimonials": "Témoignages",
+  "jobTitle": "Développeur full stack",
+  "selectCategory": "Choisir une catégorie",
+  "blogEmpty": "Rien à lire pour le moment",
+  "mapTitle": "Carte de Repentigny, Québec",
+  "sending": "Envoi…",
+  "contactSuccessTitle": "Message envoyé avec succès !",
+  "contactSuccessDescription": "Merci de m'avoir contacté. J'ai bien reçu votre message et je vous répondrai dès que possible.",
+  "viewLiveSite": "Voir le site {{project}}",
+  "viewSourceCode": "Voir le code source de {{project}}",
+  "notFoundTitle": "Page introuvable",
+  "notFoundDescription": "La page que vous cherchez n'existe pas ou a été déplacée.",
+  "backHome": "Retour à l'accueil"
 }

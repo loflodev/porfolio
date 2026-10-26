@@ -15,7 +15,9 @@ const Tab = ({ data, handleSelect, activeTab }: TabProps) => {
         {data.map((item, index) => (
           <li key={`tab-${index}`} className="filter-item">
             <button
+              type="button"
               className={`${activeTab === index ? 'active' : ''} capitalize`}
+              aria-pressed={activeTab === index}
               onClick={() => handleSelect(index)}
               data-filter-btn
             >

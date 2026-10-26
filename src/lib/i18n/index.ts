@@ -34,4 +34,14 @@ i18n
     },
   });
 
+// Keep <html lang> in step with the UI language so screen readers pick the right voice.
+const syncDocumentLanguage = (language: string | undefined) => {
+  if (typeof document !== 'undefined' && language) {
+    document.documentElement.lang = language;
+  }
+};
+
+i18n.on('languageChanged', syncDocumentLanguage);
+syncDocumentLanguage(i18n.resolvedLanguage);
+
 export default i18n;

@@ -54,7 +54,7 @@
   --font-size-base: 0.9375rem;
   --font-size-sm: 0.875rem;
   --font-size-sx: 0.8125rem;
-  --font-size-xx: 0.6875rem;
+  --font-size-xx: 0.75rem;
 
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -97,7 +97,7 @@
   }
 
   img,
-  ion-icon,
+  svg,
   a,
   button,
   time,
@@ -128,6 +128,34 @@
 
   :focus {
     outline-color: var(--color-orange-yellow-crayola);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 2px;
+  }
+
+  /* Programmatic focus target for the skip link; the ring would frame the whole page. */
+  main:focus {
+    outline: none;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--color-orange-yellow-crayola);
+    color: var(--color-smoky-black);
+    font-weight: var(--font-weight-semibold);
+    z-index: 100;
+    transform: translateY(-200%);
+    transition: transform var(--transition-1);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
   }
 
   html {
@@ -187,13 +215,25 @@
     z-index: -1;
   }
 
-  .icon-box ion-icon {
-    --ionicon-stroke-width: 35px;
+  .icon-box svg [stroke-width] {
+    stroke-width: 35px;
   }
 
   article {
     display: block;
     animation: fade 0.5s ease backwards;
+  }
+
+  /* Honour reduced-motion everywhere: page fades, modal scaling and hover transitions. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   @keyframes fade {
@@ -289,7 +329,7 @@
 
   /* @section: Main */
 
-  main {
+  .layout {
     margin: 15px 12px;
     margin-bottom: 75px;
     min-width: 259px;
@@ -806,6 +846,28 @@
     margin-bottom: 7px;
   }
 
+  .testimonials-open-btn {
+    color: inherit;
+    font: inherit;
+  }
+
+  .testimonials-open-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 2;
+  }
+
+  .testimonials-open-btn:focus-visible {
+    outline: none;
+  }
+
+  .content-card:has(.testimonials-open-btn:focus-visible) {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 3px;
+  }
+
   .testimonials-text {
     color: var(--color-light-gray);
     font-size: var(--font-size-sm);
@@ -832,6 +894,25 @@
     z-index: 20;
     pointer-events: none;
     visibility: hidden;
+  }
+
+  /* Reset the UA <dialog> box so the element itself is the full-screen container. */
+  dialog.modal-container {
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  dialog.modal-container:not([open]) {
+    display: none;
+  }
+
+  dialog.modal-container::backdrop {
+    background: transparent;
   }
 
   .modal-container::-webkit-scrollbar {
@@ -903,8 +984,8 @@
     opacity: 1;
   }
 
-  .modal-close-btn ion-icon {
-    --ionicon-stroke-width: 50px;
+  .modal-close-btn svg [stroke-width] {
+    stroke-width: 50px;
   }
 
   .modal-avatar-box {
@@ -1242,8 +1323,8 @@
     opacity: 1;
   }
 
-  .project-item-icon-box ion-icon {
-    --ionicon-stroke-width: 50px;
+  .project-item-icon-box svg [stroke-width] {
+    stroke-width: 50px;
   }
 
   .project-img img {
@@ -1428,7 +1509,6 @@
     padding: 13px 20px;
     border: 1px solid var(--color-jet);
     border-radius: 14px;
-    outline: none;
   }
 
   .form-input::placeholder {
@@ -1483,7 +1563,7 @@
     transition: var(--transition-1);
   }
 
-  .form-btn ion-icon {
+  .form-btn svg {
     font-size: 16px;
   }
 
@@ -1593,7 +1673,7 @@
     line-height: 1.5;
   }
 
-  .pricing-feature-item ion-icon {
+  .pricing-feature-item svg {
     flex-shrink: 0;
     margin-top: 2px;
     color: var(--color-orange-yellow-crayola);
@@ -1621,7 +1701,7 @@
       font-weight: var(--font-weight-medium);
     }
 
-    .info_more-btn ion-icon {
+    .info_more-btn svg {
       display: none;
     }
   }
@@ -1657,7 +1737,7 @@
       height: auto;
     }
 
-    .info_more-btn ion-icon {
+    .info_more-btn svg {
       display: none;
     }
   }
@@ -1682,7 +1762,7 @@
       --font-size-base: 15px;
       --font-size-sm: 14px;
       --font-size-sx: 13px;
-      --font-size-xx: 11px;
+      --font-size-xx: 12px;
     }
 
     /**
@@ -1717,7 +1797,7 @@
    * #MAIN
    */
 
-    main {
+    .layout {
       margin-top: 60px;
       margin-bottom: 100px;
     }
@@ -1766,7 +1846,7 @@
       font-size: var(--font-size-xx);
     }
 
-    .info_more-btn ion-icon {
+    .info_more-btn svg {
       display: none;
     }
 
@@ -2000,7 +2080,7 @@
       padding: 16px 20px;
     }
 
-    .form-btn ion-icon {
+    .form-btn svg {
       font-size: 18px;
     }
   }
@@ -2145,7 +2225,7 @@
    * MAIN 
    */
 
-    main {
+    .layout {
       margin-bottom: 60px;
     }
 
@@ -2286,7 +2366,7 @@
    * MAIN
    */
 
-    main {
+    .layout {
       max-width: 1200px;
       margin-inline: auto;
       display: flex;

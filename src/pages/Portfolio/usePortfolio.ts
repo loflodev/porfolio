@@ -56,9 +56,9 @@ const buildPortfolio = (t: (key: string) => string): PortfolioType[] => [
     linkTo1: 'https://safrozen.com/',
     linkTo2: '#',
     image: project5,
-    title: 'Les Alimitent Safrozen Foods',
+    title: 'Les Aliments Safrozen Foods',
     category: t('webDesign'),
-    alt: 'Les Alimitent Safrozen Foods',
+    alt: 'Les Aliments Safrozen Foods',
   },
 ];
 

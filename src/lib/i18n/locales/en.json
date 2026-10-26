@@ -93,5 +93,22 @@
     "checkoutCancelledDescription": "Your checkout was cancelled and no payment was made. Feel free to try again whenever you're ready.",
     "checkoutErrorTitle": "Something Went Wrong",
     "checkoutErrorDescription": "We couldn't start your checkout. Please try again, or reach out via the contact page."
-  }
+  },
+  "mainNavigation": "Main navigation",
+  "skipToContent": "Skip to content",
+  "close": "Close",
+  "clients": "Clients",
+  "testimonials": "Testimonials",
+  "jobTitle": "Full stack developer",
+  "selectCategory": "Select category",
+  "blogEmpty": "Nothing to read right now",
+  "mapTitle": "Map of Repentigny, Quebec",
+  "sending": "Sending…",
+  "contactSuccessTitle": "Message sent successfully!",
+  "contactSuccessDescription": "Thank you for reaching out. I've received your message and will get back to you as soon as possible.",
+  "viewLiveSite": "View {{project}} live site",
+  "viewSourceCode": "View {{project}} source code",
+  "notFoundTitle": "Page not found",
+  "notFoundDescription": "The page you're looking for doesn't exist or has moved.",
+  "backHome": "Back to home"
 }

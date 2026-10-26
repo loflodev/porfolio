@@ -1,16 +1,18 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
+import useTranslation from '../../../hooks/useTransalation';
 import type { CardType, ModalType } from '../../../types';
 import { Card } from '../Card';
 import Section from '../Section';
 
-interface testimonyProps {
+type TestimonyProps = {
   data: CardType[];
   handleTestimonyData?: (info: ModalType) => void;
-}
+};
 
-const Testimony = ({ data, handleTestimonyData }: testimonyProps) => {
+const Testimony = ({ data, handleTestimonyData }: TestimonyProps) => {
+  const { t } = useTranslation();
+
   return (
-    <Section name="testimonials" title="Testimonials" className="testimonials">
+    <Section name="testimonials" title={t('testimonials')} className="testimonials">
       <Card type="testimony" cards={data} handleModalInfo={handleTestimonyData} />
     </Section>
   );

@@ -1,18 +1,18 @@
-import { IonIcon } from '@ionic/react';
-import { chevronDown } from 'ionicons/icons';
+import { IoChevronDown } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
 import useTranslation from '../../../hooks/useTransalation';
 
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-interface SidebarInfoProps {
+type SidebarInfoProps = {
   image: string;
   name: string;
   title: string;
+  isMenuOpen: boolean;
+  menuId: string;
   toggleMenu: () => void;
-}
+};
 
-const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
+const SidebarInfo = ({ image, name, title, isMenuOpen, menuId, toggleMenu }: SidebarInfoProps) => {
   const { t } = useTranslation();
 
   return (
@@ -22,9 +22,10 @@ const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
       </figure>
 
       <div className="info-content">
-        <h1 className="name ml-2" title={name}>
+        {/* Not a heading: each page's own title is its <h1>. */}
+        <p className="name ml-2" title={name}>
           {name}
-        </h1>
+        </p>
 
         <p className="title">{title}</p>
 
@@ -33,10 +34,17 @@ const SidebarInfo = ({ image, name, title, toggleMenu }: SidebarInfoProps) => {
         </Link>
       </div>
 
-      <button className="info_more-btn" onClick={toggleMenu} data-sidebar-btn>
+      <button
+        type="button"
+        className="info_more-btn"
+        onClick={toggleMenu}
+        aria-expanded={isMenuOpen}
+        aria-controls={menuId}
+        data-sidebar-btn
+      >
         <span>{t('showContacts')}</span>
 
-        <IonIcon icon={chevronDown} />
+        <IoChevronDown aria-hidden="true" />
       </button>
     </div>
   );

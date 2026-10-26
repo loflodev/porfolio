@@ -10,13 +10,13 @@ interface SkillsProps {
 const Skills = ({ name, data }: SkillsProps) => {
   return (
     <Section className="skill">
-      <h3 className="h3 skills-title">{name}</h3>
+      <h2 className="h3 skills-title">{name}</h2>
 
       <ul className="skills-list content-card">
         {data.map((item, index) => (
           <li key={`skils-${index}`} className="skills-item">
             <div className="title-wrapper">
-              <h5 className="h5">{item.title}</h5>
+              <h3 className="h5">{item.title}</h3>
               <data value={item.progress}>{`${item.progress}%`}</data>
             </div>
 

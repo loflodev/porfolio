@@ -16,7 +16,7 @@ import unicorn from 'eslint-plugin-unicorn';
 import perfectionist from 'eslint-plugin-perfectionist';
 
 export default defineConfig([
-  globalIgnores(['dist', '.netlify']),
+  globalIgnores(['dist', 'dist-ssr', '.netlify', 'coverage', 'playwright-report', 'test-results']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -72,8 +72,7 @@ export default defineConfig([
         },
       ],
       // ♿ JSX accessibility
-      'jsx-a11y/alt-text': 'warn',
-      'jsx-a11y/anchor-is-valid': 'warn',
+      ...jsxA11y.flatConfigs.recommended.rules,
 
       // 🧠 SonarJS — cognitive complexity & duplication
       'sonarjs/no-duplicate-string': 'warn',
@@ -116,6 +115,20 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+    },
+  },
+  {
+    files: [
+      '**/*.test.{ts,tsx}',
+      'src/test/**',
+      'netlify/functions/_test/**',
+      'e2e/**',
+      'playwright.config.ts',
+    ],
+    rules: {
+      'no-magic-numbers': 'off',
+      'sonarjs/no-duplicate-string': 'off',
+      'node/no-process-env': 'off',
     },
   },
 ]);

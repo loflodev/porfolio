@@ -45,3 +45,7 @@ coverage/
 # Local Netlify folder
 .netlify
 .fallow/
+
+# Test output
+playwright-report/
+test-results/

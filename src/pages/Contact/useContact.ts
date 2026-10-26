@@ -2,16 +2,10 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 
 import { CONTACT_FORM_DEFAULT } from '../../constants';
 import useMainContext from '../../hooks/useMainContext';
+import useTranslation from '../../hooks/useTransalation';
 import { saveContactForm } from '../../services/api/contactForm';
 import type { ContactFormInputType } from '../../types';
 import { validateEmail, validateInput } from '../../utils/validation';
-
-const SUCCESS_MODAL_DATA = {
-  title: 'Message Sent Successfully!',
-  description:
-    "Thank you for reaching out. We've received your message and will get back to you as soon as possible.",
-  icon: 'h',
-};
 
 const valueOrEmpty = (condition: boolean, value: string): string => (condition ? value : '');
 
@@ -63,8 +57,8 @@ const buildContactPayload = (input: ContactFormInputType) => ({
 });
 
 const useContact = () => {
+  const { t } = useTranslation();
   const { showModal, toggleModal, modalData, handleModalData } = useMainContext();
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [contactFormInput, setContactFormInput] =
     useState<ContactFormInputType>(CONTACT_FORM_DEFAULT);
@@ -95,15 +89,13 @@ const useContact = () => {
     return validated.isValid;
   };
 
-  const handleIsDisabled = () => {
-    setIsDisabled(
-      Boolean(contactFormInput.email && contactFormInput.fullName && contactFormInput.yourMessage)
-    );
-  };
-
   const handleSubmitSuccess = () => {
     setIsLoading(false);
-    handleModalData(SUCCESS_MODAL_DATA);
+    handleModalData({
+      title: t('contactSuccessTitle'),
+      description: t('contactSuccessDescription'),
+      icon: '',
+    });
     setContactFormInput(CONTACT_FORM_DEFAULT);
   };
 
@@ -131,13 +123,11 @@ const useContact = () => {
 
     const allInputValid = inputValidation();
 
-    if (isDisabled && allInputValid) {
+    if (allInputValid && !isLoading) {
       setIsLoading(true);
       const response = await saveContactForm(buildContactPayload(contactFormInput));
       applySubmitResponse(response);
     }
-
-    setIsDisabled(false);
   };
   return {
     contactFormInput,
@@ -146,8 +136,6 @@ const useContact = () => {
     modalData,
     handleModalData,
     handleChange,
-    handleIsDisabled,
-    isDisabled,
     handleSubmit,
     isLoading,
     setIsLoading,

@@ -11,7 +11,13 @@ const SidebarSocialIcon = ({ socialIconList }: SidebarSocialIconProps) => {
     <ul className="social-list">
       {socialIconList.map((item, index) => (
         <li key={`social-icon-${index}`} className="social-item">
-          <a href={item.to} target="_blank" rel="noopener noreferrer" className="social-link">
+          <a
+            href={item.to}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label={item.title}
+          >
             {item.icon}
           </a>
         </li>

@@ -14,8 +14,6 @@ const Contact = () => {
     modalData,
     contactFormInput,
     handleChange,
-    isDisabled,
-    handleIsDisabled,
     handleSubmit,
     isLoading,
   } = useContact();
@@ -32,9 +30,7 @@ const Contact = () => {
       <ContactForm
         data={contactFormInput}
         handleChange={handleChange}
-        isDisabled={isDisabled}
         loading={isLoading}
-        handleIsDisabled={handleIsDisabled}
         handleSubmit={handleSubmit}
       />
       <Modal

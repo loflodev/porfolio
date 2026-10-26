@@ -93,5 +93,22 @@
     "checkoutCancelledDescription": "Tu pago fue cancelado y no se realizó ningún cargo. Puedes intentarlo de nuevo cuando quieras.",
     "checkoutErrorTitle": "Algo salió mal",
     "checkoutErrorDescription": "No pudimos iniciar el pago. Intenta de nuevo o contáctanos desde la página de contacto."
-  }
+  },
+  "mainNavigation": "Navegación principal",
+  "skipToContent": "Saltar al contenido",
+  "close": "Cerrar",
+  "clients": "Clientes",
+  "testimonials": "Testimonios",
+  "jobTitle": "Desarrollador full stack",
+  "selectCategory": "Seleccionar categoría",
+  "blogEmpty": "Nada que leer por ahora",
+  "mapTitle": "Mapa de Repentigny, Quebec",
+  "sending": "Enviando…",
+  "contactSuccessTitle": "¡Mensaje enviado con éxito!",
+  "contactSuccessDescription": "Gracias por escribirme. He recibido tu mensaje y te responderé lo antes posible.",
+  "viewLiveSite": "Ver el sitio de {{project}}",
+  "viewSourceCode": "Ver el código fuente de {{project}}",
+  "notFoundTitle": "Página no encontrada",
+  "notFoundDescription": "La página que buscas no existe o se ha movido.",
+  "backHome": "Volver al inicio"
 }

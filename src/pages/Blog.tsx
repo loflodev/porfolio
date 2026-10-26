@@ -2,7 +2,7 @@ import Seo from '../components/common/Seo';
 import Article from '../components/ui/Article';
 import Archive from '../components/ui/Blog/Archive';
 import Section from '../components/ui/Section';
-import { POSTS } from '../constants';
+import { isIndexable, POSTS } from '../constants';
 
 const Blog = () => {
   return (
@@ -11,6 +11,7 @@ const Blog = () => {
         title="Blog"
         description="Articles and posts by Louis Florival on full stack web development."
         path="/blog"
+        noindex={!isIndexable('/blog')}
       />
       <Section className="blog-posts">
         <Archive data={POSTS} />

@@ -24,7 +24,7 @@ const BlogCard = ({ data }: BlogCardProps) => {
             <time dateTime={item.meta.date}>{item.meta.date}</time>
           </div>
 
-          <h3 className="h3 blog-item-title">{item.title}</h3>
+          <h2 className="h3 blog-item-title">{item.title}</h2>
 
           <p className="blog-text">{item.description}</p>
         </div>

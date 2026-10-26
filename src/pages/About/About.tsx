@@ -16,7 +16,12 @@ const About = () => {
   const { t } = useTranslation();
   return (
     <Article name="article" header={t('aboutMe')} className="about">
-      <Seo title="About Me" description={t('aboutPage.description1')} path="/" />
+      <Seo
+        title="Louis Florival — Full Stack Developer | LofloDev"
+        description={t('aboutPage.description1')}
+        path="/"
+        absoluteTitle
+      />
       <Hero />
       <Service data={services} />
       <Testimony data={testimonies} handleTestimonyData={handleModalData} />

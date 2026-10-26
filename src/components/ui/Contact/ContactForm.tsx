@@ -1,6 +1,5 @@
-import { IonIcon } from '@ionic/react';
-import { paperPlane } from 'ionicons/icons';
 import type { ChangeEvent, FormEvent } from 'react';
+import { IoPaperPlane } from 'react-icons/io5';
 import PulseLoader from 'react-spinners/PulseLoader';
 
 import { MAX_EMAIL_LENGTH, MAX_MESSAGE_LENGTH, MAX_NAME_LENGTH } from '../../../constants';
@@ -11,28 +10,49 @@ type ContactFormProps = {
   data: ContactFormInputType;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleIsDisabled: () => void;
-  isDisabled: boolean;
   loading: boolean;
 };
 
-const FieldError = ({ message, className }: { message?: string; className?: string }) =>
-  message ? <p className={className}>{message}</p> : null;
+type FieldName = keyof ContactFormInputType['errorMessage'];
 
-const ContactForm = ({
-  data,
-  handleSubmit,
-  handleChange,
-  handleIsDisabled,
-  isDisabled,
-  loading,
-}: ContactFormProps) => {
+const fieldId = (name: FieldName) => `contact-${name}`;
+const errorId = (name: FieldName) => `contact-${name}-error`;
+
+const FieldError = ({
+  name,
+  message,
+  className,
+}: {
+  name: FieldName;
+  message?: string;
+  className?: string;
+}) =>
+  message ? (
+    <p id={errorId(name)} className={className} role="alert">
+      {message}
+    </p>
+  ) : null;
+
+// Wires a field to its visible error so screen readers announce it with the field.
+const errorProps = (name: FieldName, message: string) =>
+  message ? { 'aria-invalid': true, 'aria-describedby': errorId(name) } : {};
+
+const ContactForm = ({ data, handleSubmit, handleChange, loading }: ContactFormProps) => {
   const { t } = useTranslation();
+  const errors = data.errorMessage;
+
   return (
     <section className="contact-form">
-      <h3 className="h3 form-title">{t('contactForm')}</h3>
+      <h2 className="h3 form-title">{t('contactForm')}</h2>
 
-      <form action="#" className="form" data-form onSubmit={handleSubmit}>
+      <form
+        action="#"
+        className="form"
+        data-form
+        onSubmit={handleSubmit}
+        noValidate
+        aria-busy={loading}
+      >
         {/* Honeypot field - hidden from users, bots will fill it */}
         <input
           type="text"
@@ -47,7 +67,11 @@ const ContactForm = ({
 
         <div className="input-wrapper">
           <div>
+            <label htmlFor={fieldId('fullName')} className="sr-only">
+              {t('fullName')}
+            </label>
             <input
+              id={fieldId('fullName')}
               type="text"
               name="fullName"
               value={data.fullName}
@@ -56,13 +80,19 @@ const ContactForm = ({
               placeholder={t('fullName')}
               maxLength={MAX_NAME_LENGTH}
               autoComplete="name"
+              aria-required="true"
+              {...errorProps('fullName', errors.fullName)}
               data-form-input
             />
-            <FieldError message={data.errorMessage.fullName} className="pl-4 text-white-2" />
+            <FieldError name="fullName" message={errors.fullName} className="pl-4 text-white-2" />
           </div>
 
           <div>
+            <label htmlFor={fieldId('email')} className="sr-only">
+              {t('email')}
+            </label>
             <input
+              id={fieldId('email')}
               type="email"
               name="email"
               value={data.email}
@@ -71,37 +101,48 @@ const ContactForm = ({
               placeholder={t('email')}
               maxLength={MAX_EMAIL_LENGTH}
               autoComplete="email"
+              aria-required="true"
+              {...errorProps('email', errors.email)}
               data-form-input
             />
-            <FieldError message={data.errorMessage.email} className="pl-4" />
+            <FieldError name="email" message={errors.email} className="pl-4" />
           </div>
         </div>
 
+        <label htmlFor={fieldId('yourMessage')} className="sr-only">
+          {t('yourMessage')}
+        </label>
         <textarea
+          id={fieldId('yourMessage')}
           name="yourMessage"
           value={data.yourMessage}
           className="form-input"
-          onChange={(e) => {
-            handleChange(e);
-            handleIsDisabled();
-          }}
+          onChange={handleChange}
           placeholder={t('yourMessage')}
           maxLength={MAX_MESSAGE_LENGTH}
+          aria-required="true"
+          {...errorProps('yourMessage', errors.yourMessage)}
           data-form-input
         ></textarea>
         <FieldError
-          message={data.errorMessage.yourMessage}
+          name="yourMessage"
+          message={errors.yourMessage}
           className="pl-4 text-orange-yellow-crayola"
         />
 
-        <button className="form-btn" type="submit" disabled={!isDisabled} data-form-btn>
+        <button className="form-btn" type="submit" disabled={loading} data-form-btn>
           {loading ? (
-            <PulseLoader color={'var(--color-orange-yellow-crayola)'} size={8} margin={4} />
+            <PulseLoader
+              color={'var(--color-orange-yellow-crayola)'}
+              size={8}
+              margin={4}
+              aria-hidden="true"
+            />
           ) : (
-            <IonIcon icon={paperPlane} />
+            <IoPaperPlane aria-hidden="true" />
           )}
 
-          <span>{t('sendMessage')}</span>
+          <span>{loading ? t('sending') : t('sendMessage')}</span>
         </button>
       </form>
     </section>

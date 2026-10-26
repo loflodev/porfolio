@@ -9,7 +9,7 @@ interface SectionProps extends ComponentPropsWithoutRef<'section'> {
 const Section = ({ title, name, children, ...restProps }: SectionProps) => {
   return (
     <section {...restProps}>
-      {title && <h3 className={`h3 ${name}-title`}>{title}</h3>}
+      {title && <h2 className={`h3 ${name}-title`}>{title}</h2>}
       {children}
     </section>
   );

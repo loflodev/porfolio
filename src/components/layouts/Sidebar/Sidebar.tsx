@@ -1,13 +1,12 @@
-import { IonIcon } from '@ionic/react';
-import {
-  locationOutline,
-  logoGithub,
-  logoInstagram,
-  logoLinkedin,
-  mailOutline,
-  phonePortraitOutline,
-} from 'ionicons/icons';
 import { type FC } from 'react';
+import {
+  IoLocationOutline,
+  IoLogoGithub,
+  IoLogoInstagram,
+  IoLogoLinkedin,
+  IoMailOutline,
+  IoPhonePortraitOutline,
+} from 'react-icons/io5';
 
 import avatar from '@/assets/images/my-avatar.png';
 
@@ -19,28 +18,21 @@ import useTranslation from '../../../hooks/useTransalation';
 
 const buildMenuList = (t: (key: string) => string): SidebarMenuType[] => [
   {
-    icon: <IonIcon icon={mailOutline} />,
+    icon: <IoMailOutline aria-hidden="true" />,
     label: t('email'),
     title: 'louis@loflodev.com',
     to: 'mailto:louis@loflodev.com',
     itemType: 'link',
   },
   {
-    icon: <IonIcon icon={phonePortraitOutline} />,
+    icon: <IoPhonePortraitOutline aria-hidden="true" />,
     label: t('phone'),
     title: ' +1 (438) 304-7941',
     to: 'tel:+14383047941',
     itemType: 'link',
   },
-  // {
-  //   icon: <IonIcon icon={calendarOutline} />,
-  //   label: t('birthday'),
-  //   title: 'October 10, 1989',
-  //   to: '#',
-  //   itemType: 'date',
-  // },
   {
-    icon: <IonIcon icon={locationOutline} />,
+    icon: <IoLocationOutline aria-hidden="true" />,
     label: t('location'),
     title: 'Repentigny, QC, CANADA',
     to: '#',
@@ -50,28 +42,30 @@ const buildMenuList = (t: (key: string) => string): SidebarMenuType[] => [
 
 const SOCIAL_ICON_LIST: Omit<SidebarMenuType, 'label'>[] = [
   {
-    icon: <IonIcon className="socials-icons" icon={logoGithub} />,
-    title: 'Github',
+    icon: <IoLogoGithub className="socials-icons" aria-hidden="true" />,
+    title: 'GitHub',
     to: 'https://github.com/loflodev/',
     itemType: 'link',
   },
   {
-    icon: <IonIcon className="socials-icons" icon={logoInstagram} />,
-    title: 'instagram',
+    icon: <IoLogoInstagram className="socials-icons" aria-hidden="true" />,
+    title: 'Instagram',
     to: 'https://www.instagram.com/louis_thereborn',
     itemType: 'link',
   },
   {
-    icon: <IonIcon className="socials-icons" icon={logoLinkedin} />,
-    title: 'Linkedin',
+    icon: <IoLogoLinkedin className="socials-icons" aria-hidden="true" />,
+    title: 'LinkedIn',
     to: 'https://www.linkedin.com/in/ljunit25',
     itemType: 'link',
   },
 ];
 
+const SIDEBAR_MORE_ID = 'sidebar-contacts';
+
 const Sidebar: FC = () => {
   const { t } = useTranslation();
-  const { isActive, toggleMenu } = useSidebar();
+  const { showMenu, isActive, toggleMenu } = useSidebar();
 
   const menuList = buildMenuList(t);
 
@@ -80,11 +74,13 @@ const Sidebar: FC = () => {
       <SidebarInfo
         image={avatar}
         name={'Louis Florival'}
-        title="Full stack Developer"
+        title={t('jobTitle')}
+        isMenuOpen={showMenu}
+        menuId={SIDEBAR_MORE_ID}
         toggleMenu={toggleMenu}
       />
 
-      <div className="sidebar-info_more">
+      <div id={SIDEBAR_MORE_ID} className="sidebar-info_more">
         <div className="separator"></div>
 
         <SidebarMenu menuList={menuList} />

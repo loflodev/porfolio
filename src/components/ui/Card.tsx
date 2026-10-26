@@ -1,21 +1,20 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import useTranslation from '../../hooks/useTransalation';
 import type { CardType, ModalType } from '../../types';
 
-interface CardProps {
+type CardProps = {
   cards: CardType[];
   type?: 'service' | 'testimony';
   handleModalInfo?: (info: ModalType) => void;
-}
+};
 
-interface ServiceCardProps {
+type ServiceCardProps = {
   cards: CardType[];
-}
+};
 
-interface TestimonyCardProps {
+type TestimonyCardProps = {
   cards: CardType[];
   handleModalInfo?: (info: ModalType) => void;
-}
+};
 
 export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
   switch (type) {
@@ -24,7 +23,7 @@ export const Card = ({ cards, type, handleModalInfo }: CardProps) => {
     case 'testimony':
       return <TestimonyCard cards={cards} handleModalInfo={handleModalInfo} />;
     default:
-      return <>ando ala mierda</>;
+      return null;
   }
 };
 
@@ -35,11 +34,12 @@ const ServiceCard = ({ cards }: ServiceCardProps) => {
       {cards.map((item, index) => (
         <li key={`card -${index}`} className="service-item">
           <div className="service-icon-box">
-            <img src={item.image} alt={t(item.alt)} width="40" height="40" />
+            {/* Decorative: the heading next to it already names the service. */}
+            <img src={item.image} alt="" width="40" height="40" />
           </div>
 
           <div className="service-content-box">
-            <h4 className="h4 service-item-title">{t(item.title)}</h4>
+            <h3 className="h4 service-item-title">{t(item.title)}</h3>
 
             <p className="service-item-text">{t(item.description)}</p>
           </div>
@@ -54,32 +54,30 @@ const TestimonyCard = ({ cards, handleModalInfo }: TestimonyCardProps) => {
     handleModalInfo && (
       <ul className="testimonials-list has-scrollbar">
         {cards.map((item, index) => (
-          <li
-            key={`testimony-${index}`}
-            className="testimonials-item"
-            onClick={() =>
-              handleModalInfo({
-                icon: item.image,
-                title: item.title,
-                date: item.date,
-                description: item.description,
-              })
-            }
-          >
+          <li key={`testimony-${index}`} className="testimonials-item">
             <div className="content-card" data-testimonials-item>
               <figure className="testimonials-avatar-box">
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  width="60"
-                  height="59"
-                  data-testimonials-avatar
-                />
+                <img src={item.image} alt="" width="60" height="59" data-testimonials-avatar />
               </figure>
 
-              <h4 className="h4 testimonials-item-title" data-testimonials-title>
-                {item.title}
-              </h4>
+              <h3 className="h4 testimonials-item-title" data-testimonials-title>
+                {/* The button's ::after stretches over the whole card, so the card stays
+                    clickable while only valid phrasing content lives inside the button. */}
+                <button
+                  type="button"
+                  className="testimonials-open-btn"
+                  onClick={() =>
+                    handleModalInfo({
+                      icon: item.image,
+                      title: item.title,
+                      date: item.date,
+                      description: item.description,
+                    })
+                  }
+                >
+                  {item.title}
+                </button>
+              </h3>
 
               <div className="testimonials-text" data-testimonials-text>
                 <p>{item.description}</p>

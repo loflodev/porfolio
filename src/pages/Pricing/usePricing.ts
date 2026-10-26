@@ -13,7 +13,7 @@ const LANGUAGE_BASE_INDEX = 0;
 // Stripe only needs the base language (e.g. "en"), not region-qualified tags like "en-US" that
 // the browser-based language detector can produce; anything unsupported falls back to Stripe
 // auto-detecting the locale from the buyer's browser.
-const resolveStripeLocale = (language: string): string => {
+export const resolveStripeLocale = (language: string): string => {
   const base = language.split('-')[LANGUAGE_BASE_INDEX];
 
   return SUPPORTED_STRIPE_LOCALES.includes(base) ? base : 'auto';

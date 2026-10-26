@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { IonIcon } from '@ionic/react';
-import { bookOutline } from 'ionicons/icons';
+import { IoBookOutline } from 'react-icons/io5';
 
 import type { TimelineType } from '../../../types';
 import Section from '../Section';
@@ -15,16 +14,16 @@ const Timeline = ({ name, data }: TimelineProps) => {
     <Section className="timeline">
       <div className="title-wrapper">
         <div className="icon-box">
-          <IonIcon icon={bookOutline} />
+          <IoBookOutline aria-hidden="true" />
         </div>
 
-        <h3 className="h3">{name}</h3>
+        <h2 className="h3">{name}</h2>
       </div>
 
       <ol className="timeline-list">
         {data.map((item, index) => (
           <li key={`timeline-${index}`} className="timeline-item">
-            <h4 className="h4 timeline-item-title">{item.title}</h4>
+            <h3 className="h4 timeline-item-title">{item.title}</h3>
 
             <span>{item.time}</span>
 
