@@ -1,7 +1,7 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 
 import { getHeaders } from './_shared/cors';
-import { isRateLimited, resolveClientIp } from './_shared/rate-limit';
+import { isRateLimited } from './_shared/rate-limit';
 import { captureAndFlush, initSentry } from './_shared/sentry';
 import { getStripeClient } from './_shared/stripe-client';
 
@@ -41,7 +41,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
     return { statusCode: HTTP_METHOD_NOT_ALLOWED, headers, body: 'Method Not Allowed' };
   }
 
-  if (await isRateLimited(resolveClientIp(event), VERIFY_RATE_LIMIT_STORE)) {
+  if (await isRateLimited(event, VERIFY_RATE_LIMIT_STORE)) {
     return jsonResponse(headers, { verified: false }, HTTP_TOO_MANY_REQUESTS);
   }
 

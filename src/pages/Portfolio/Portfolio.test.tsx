@@ -6,16 +6,20 @@ import Portfolio from './Portfolio';
 import { renderWithProviders } from '../../test/renderWithProviders';
 
 describe('Portfolio page', () => {
-  it('names the icon-only project links and opens them in a new tab', () => {
+  it('links each card to its project page, named by title and described by its summary', () => {
     renderWithProviders(<Portfolio />);
 
-    const live = screen.getByRole('link', { name: 'View Boisson SolutionX live site' });
-    expect(live).toHaveAttribute('href', 'https://boissonsolutionx.ca');
-    expect(live).toHaveAttribute('target', '_blank');
-    expect(live).toHaveAttribute('rel', 'noopener noreferrer');
-    expect(
-      screen.getByRole('link', { name: 'View Boisson SolutionX source code' })
-    ).toBeInTheDocument();
+    const card = screen.getByRole('link', { name: /^Boisson SolutionX/ });
+    expect(card).toHaveAttribute('href', '/portfolio/boisson-solutionx');
+    expect(card).toHaveAccessibleDescription(/headless WordPress/);
+  });
+
+  it('fits the hover panel badges on one row of three, collapsing extras into +N', () => {
+    renderWithProviders(<Portfolio />);
+
+    const card = screen.getByRole('link', { name: /^Boisson SolutionX/ });
+    const badges = within(card).getAllByRole('listitem', { hidden: true });
+    expect(badges.map((badge) => badge.textContent)).toEqual(['React', 'TypeScript', '+6']);
   });
 
   it('exposes the selected filter with aria-pressed', async () => {
@@ -45,9 +49,13 @@ describe('Portfolio page', () => {
   });
 
   it('reserves image space and lazy-loads screenshots', () => {
-    renderWithProviders(<Portfolio />);
+    const { container } = renderWithProviders(<Portfolio />);
+    const images = container.querySelectorAll('.project-img img');
 
-    for (const image of screen.getAllByRole('img')) {
+    expect(images).toHaveLength(5);
+    for (const image of images) {
+      // Decorative: the card link is named by the project title and category.
+      expect(image).toHaveAttribute('alt', '');
       expect(image).toHaveAttribute('loading', 'lazy');
       expect(image).toHaveAttribute('width');
       expect(image).toHaveAttribute('height');

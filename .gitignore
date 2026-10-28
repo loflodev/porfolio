@@ -27,6 +27,8 @@ pnpm-lock.yaml
 *.sln
 *.sw?
 
+.shots.mjs
+
 # ESLint cache
 .eslintcache
 

@@ -66,7 +66,11 @@ describe('create-checkout-session', () => {
     const result = await run(post({ plan: 'growth' }, { 'x-nf-client-connection-ip': '1.2.3.4' }));
 
     expect(result.statusCode).toBe(429);
-    expect(isRateLimited).toHaveBeenCalledWith('1.2.3.4');
+    expect(isRateLimited).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headers: expect.objectContaining({ 'x-nf-client-connection-ip': '1.2.3.4' }),
+      })
+    );
     expect(createSession).not.toHaveBeenCalled();
   });
 

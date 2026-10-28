@@ -30,6 +30,16 @@ describe('Pricing page', () => {
     expect(screen.getByRole('link', { name: "Let's Discuss" })).toHaveAttribute('href', '/contact');
   });
 
+  it('invites unsure visitors to book a free consultation', () => {
+    renderWithProviders(<Pricing />, { route: '/pricing' });
+
+    expect(screen.getByText(/requirements or scope/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Book a free consultation' })).toHaveAttribute(
+      'href',
+      '/contact'
+    );
+  });
+
   it('shows the success dialog when a returning session verifies', async () => {
     verify.mockResolvedValue(true);
     renderWithProviders(<Pricing />, { route: '/pricing?checkout=success&session_id=cs_test_1' });

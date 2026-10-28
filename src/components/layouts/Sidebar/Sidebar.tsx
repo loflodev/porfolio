@@ -50,7 +50,7 @@ const SOCIAL_ICON_LIST: Omit<SidebarMenuType, 'label'>[] = [
   {
     icon: <IoLogoInstagram className="socials-icons" aria-hidden="true" />,
     title: 'Instagram',
-    to: 'https://www.instagram.com/louis_thereborn',
+    to: 'https://www.instagram.com/loflo.dev',
     itemType: 'link',
   },
   {

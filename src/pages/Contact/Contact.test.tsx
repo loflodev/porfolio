@@ -3,12 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Contact from './Contact';
+import { bookConsultation, fetchConsultationSlots } from '../../services/api/consultation';
 import { saveContactForm } from '../../services/api/contactForm';
 import { renderWithProviders } from '../../test/renderWithProviders';
 
 vi.mock('../../services/api/contactForm', () => ({ saveContactForm: vi.fn() }));
+vi.mock('../../services/api/consultation', () => ({
+  fetchConsultationSlots: vi.fn(),
+  bookConsultation: vi.fn(),
+}));
 
 const save = vi.mocked(saveContactForm);
+const fetchSlots = vi.mocked(fetchConsultationSlots);
+const book = vi.mocked(bookConsultation);
 
 const fill = async (user: ReturnType<typeof userEvent.setup>) => {
   await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
@@ -18,7 +25,15 @@ const fill = async (user: ReturnType<typeof userEvent.setup>) => {
 
 afterEach(() => {
   save.mockReset();
+  fetchSlots.mockReset();
+  book.mockReset();
 });
+
+const chooseConsultation = async (user: ReturnType<typeof userEvent.setup>) => {
+  await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
+  await user.type(screen.getByLabelText('Email'), 'ada@example.com');
+  await user.selectOptions(screen.getByLabelText('Subject'), 'consultation');
+};
 
 describe('Contact page', () => {
   it('labels every field and titles the map', () => {
@@ -78,6 +93,7 @@ describe('Contact page', () => {
     expect(save).toHaveBeenCalledWith({
       fullName: 'Ada Lovelace',
       email: 'ada@example.com',
+      subject: 'general',
       yourMessage: 'I would like a website.',
       website: '',
     });
@@ -105,5 +121,122 @@ describe('Contact page', () => {
       'Network problem. Please check your connection and try again.'
     );
     expect(screen.getByLabelText('Full Name')).toHaveValue('Ada Lovelace');
+  });
+
+  it('defaults the subject to General Inquiry and lists every subject', () => {
+    renderWithProviders(<Contact />);
+
+    const subject = screen.getByLabelText('Subject');
+    expect(subject).toHaveValue('general');
+    expect(Array.from((subject as HTMLSelectElement).options).map((option) => option.text)).toEqual(
+      ['General Inquiry', 'Consultation', 'Join the Team', 'Report an Issue']
+    );
+  });
+
+  it('sends the chosen subject with a normal message', async () => {
+    const user = userEvent.setup();
+    save.mockResolvedValue({ success: true });
+    renderWithProviders(<Contact />);
+
+    await fill(user);
+    await user.selectOptions(screen.getByLabelText('Subject'), 'reportIssue');
+    await user.click(screen.getByRole('button', { name: 'Send Message' }));
+
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ subject: 'reportIssue' }));
+  });
+
+  it('swaps the message for a date and the open times of that day on Consultation', async () => {
+    const user = userEvent.setup();
+    fetchSlots.mockResolvedValue(['09:00', '09:30']);
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+
+    expect(screen.queryByLabelText('Your Message')).not.toBeInTheDocument();
+    const time = screen.getByLabelText('Preferred time');
+    expect(time).toBeDisabled();
+    expect(time).toHaveDisplayValue('Pick a date first');
+
+    await user.type(screen.getByLabelText('Preferred date'), '2030-01-07');
+
+    await waitFor(() => expect(time).toBeEnabled());
+    expect(fetchSlots).toHaveBeenLastCalledWith('2030-01-07');
+    expect(screen.getByRole('option', { name: '09:30' })).toBeInTheDocument();
+    expect(time).toHaveAccessibleDescription(/Montreal time/);
+  });
+
+  it('says when a day has no open times', async () => {
+    const user = userEvent.setup();
+    fetchSlots.mockResolvedValue([]);
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await user.type(screen.getByLabelText('Preferred date'), '2030-01-05');
+
+    expect(
+      await screen.findByRole('option', { name: 'No times available that day (weekdays only)' })
+    ).toBeInTheDocument();
+  });
+
+  it('requires a date and a time for a consultation', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await user.click(screen.getByRole('button', { name: 'Book Consultation' }));
+
+    expect(screen.getByLabelText('Preferred date')).toHaveAccessibleDescription(
+      'This field is required'
+    );
+    expect(screen.getByLabelText('Preferred time')).toHaveAttribute('aria-invalid', 'true');
+    expect(book).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+  });
+
+  it('books the consultation and confirms the date and time', async () => {
+    const user = userEvent.setup();
+    fetchSlots.mockResolvedValue(['09:00', '09:30']);
+    book.mockResolvedValue({ success: true });
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await user.type(screen.getByLabelText('Preferred date'), '2030-01-07');
+    await waitFor(() => expect(screen.getByLabelText('Preferred time')).toBeEnabled());
+    await user.selectOptions(screen.getByLabelText('Preferred time'), '09:30');
+    await user.click(screen.getByRole('button', { name: 'Book Consultation' }));
+
+    expect(book).toHaveBeenCalledWith({
+      fullName: 'Ada Lovelace',
+      email: 'ada@example.com',
+      consultationDate: '2030-01-07',
+      consultationTime: '09:30',
+      website: '',
+    });
+    expect(save).not.toHaveBeenCalled();
+    const dialog = await screen.findByRole('dialog', { name: 'Consultation booked!' });
+    expect(dialog).toHaveTextContent('2030-01-07 at 09:30');
+    await waitFor(() => expect(screen.getByLabelText('Subject')).toHaveValue('general'));
+  });
+
+  it('asks for another time and reloads the times when the slot was just taken', async () => {
+    const user = userEvent.setup();
+    fetchSlots.mockResolvedValue(['09:00', '09:30']);
+    book.mockResolvedValue({ success: false, error: 'errors.slotTaken' });
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await user.type(screen.getByLabelText('Preferred date'), '2030-01-07');
+    await waitFor(() => expect(screen.getByLabelText('Preferred time')).toBeEnabled());
+    await user.selectOptions(screen.getByLabelText('Preferred time'), '09:30');
+    fetchSlots.mockResolvedValue(['09:00']);
+    await user.click(screen.getByRole('button', { name: 'Book Consultation' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Sorry, that time was just booked. Please pick another one.'
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole('option', { name: '09:30' })).not.toBeInTheDocument()
+    );
+    expect(screen.getByLabelText('Preferred time')).toHaveValue('');
   });
 });

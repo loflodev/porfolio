@@ -65,7 +65,10 @@ describe('verify-checkout-session', () => {
     const result = await run(get('cs_test_1'));
 
     expect(result.statusCode).toBe(429);
-    expect(isRateLimited).toHaveBeenCalledWith('unknown', 'verify-checkout-rate-limit');
+    expect(isRateLimited).toHaveBeenCalledWith(
+      expect.objectContaining({ httpMethod: 'GET' }),
+      'verify-checkout-rate-limit'
+    );
   });
 
   it.each([undefined, '', 'pi_123', 'garbage'])('does not verify session id %j', async (id) => {

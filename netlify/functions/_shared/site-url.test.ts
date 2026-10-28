@@ -22,4 +22,12 @@ describe('resolveSiteUrl', () => {
     vi.stubEnv('URL', '');
     expect(resolveSiteUrl()).toBe('http://localhost:8888');
   });
+
+  it('ignores the placeholder DEPLOY_PRIME_URL under netlify dev', () => {
+    vi.stubEnv('NETLIFY_DEV', 'true');
+    vi.stubEnv('DEPLOY_PRIME_URL', 'https://feat/branch--site-name.netlify.app');
+    vi.stubEnv('URL', 'http://localhost:8888');
+
+    expect(resolveSiteUrl()).toBe('http://localhost:8888');
+  });
 });

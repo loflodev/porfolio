@@ -9,6 +9,7 @@ const HTTP_REDIRECT_LIMIT = 300;
 type FormData = {
   fullName: string;
   email: string;
+  subject: string;
   yourMessage: string;
   website?: string; // Honeypot field
 };

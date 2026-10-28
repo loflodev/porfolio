@@ -66,7 +66,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
       return { statusCode: HTTP_OK, body: JSON.stringify({ received: true }) };
     }
 
-    const processedEvents = getBlobStore(PROCESSED_EVENTS_STORE);
+    const processedEvents = getBlobStore(PROCESSED_EVENTS_STORE, event);
     // Atomically claim this event id before doing any work: `onlyIfNew` makes this a
     // compare-and-swap, so two concurrent deliveries of the same event can't both pass a
     // read-then-write dedup check and both submit the purchase form.

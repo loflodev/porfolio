@@ -25,22 +25,6 @@ test('main navigation links are reachable and activate with Enter', async ({ pag
   await expect(resume).toHaveAttribute('aria-current', 'page');
 });
 
-test('the More menu works from the keyboard', async ({ page }) => {
-  await page.goto('/');
-  const more = page.getByRole('button', { name: 'More' });
-
-  await more.focus();
-  await page.keyboard.press('Enter');
-  await expect(more).toHaveAttribute('aria-expanded', 'true');
-
-  await page.keyboard.press('Tab');
-  await expect(page.getByRole('link', { name: 'Contact' })).toBeFocused();
-
-  await page.keyboard.press('Escape');
-  await expect(more).toHaveAttribute('aria-expanded', 'false');
-  await expect(more).toBeFocused();
-});
-
 test('a testimonial opens as a modal dialog and returns focus on Escape', async ({ page }) => {
   await page.goto('/');
   const trigger = page.getByRole('button', { name: 'Guise S' });

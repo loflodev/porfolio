@@ -1,15 +1,30 @@
 import type { ChangeEvent, FormEvent } from 'react';
-import { IoPaperPlane } from 'react-icons/io5';
+import { IoCalendarOutline, IoChevronDown, IoPaperPlane } from 'react-icons/io5';
 import PulseLoader from 'react-spinners/PulseLoader';
 
-import { MAX_EMAIL_LENGTH, MAX_MESSAGE_LENGTH, MAX_NAME_LENGTH } from '../../../constants';
+import {
+  CONSULTATION_SUBJECT,
+  CONTACT_SUBJECTS,
+  MAX_EMAIL_LENGTH,
+  MAX_MESSAGE_LENGTH,
+  MAX_NAME_LENGTH,
+} from '../../../constants';
 import useTranslation from '../../../hooks/useTransalation';
+import type { SlotsStatus } from '../../../pages/Contact/useConsultationSlots';
 import type { ContactFormInputType } from '../../../types';
+import { consultationDateRange } from '../../../utils/consultationDates';
+
+type ConsultationSlots = { slots: string[]; status: SlotsStatus };
+
+const NO_SLOTS = 0;
 
 type ContactFormProps = {
   data: ContactFormInputType;
+  consultationSlots: ConsultationSlots;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => void;
   loading: boolean;
 };
 
@@ -40,9 +55,98 @@ const FieldError = ({
 const errorProps = (name: FieldName, message: string) =>
   message ? { 'aria-invalid': true, 'aria-describedby': errorId(name) } : {};
 
-const ContactForm = ({ data, handleSubmit, handleChange, loading }: ContactFormProps) => {
+// What the time picker says before it has times to offer, or when there are none.
+const timePlaceholderKey = (hasDate: boolean, { slots, status }: ConsultationSlots): string => {
+  if (!hasDate) return 'consultation.pickDateFirst';
+  if (status === 'loading') return 'consultation.loadingTimes';
+  if (status === 'error') return 'consultation.timesUnavailable';
+  return slots.length ? 'consultation.selectTime' : 'consultation.noTimes';
+};
+
+const ConsultationFields = ({
+  data,
+  consultationSlots,
+  handleChange,
+}: Pick<ContactFormProps, 'data' | 'consultationSlots' | 'handleChange'>) => {
   const { t } = useTranslation();
   const errors = data.errorMessage;
+  const { min, max } = consultationDateRange();
+  const hasTimes =
+    consultationSlots.status === 'ready' && consultationSlots.slots.length > NO_SLOTS;
+
+  return (
+    <div className="input-wrapper consultation-fields">
+      <div>
+        <label htmlFor={fieldId('consultationDate')} className="form-label">
+          {t('consultation.date')}
+        </label>
+        <div className="form-control-icon">
+          <input
+            id={fieldId('consultationDate')}
+            type="date"
+            name="consultationDate"
+            value={data.consultationDate}
+            onChange={handleChange}
+            className="form-input max-input-heigth"
+            min={min}
+            max={max}
+            aria-required="true"
+            {...errorProps('consultationDate', errors.consultationDate)}
+          />
+          <IoCalendarOutline aria-hidden="true" />
+        </div>
+        <FieldError name="consultationDate" message={errors.consultationDate} className="pl-4" />
+      </div>
+
+      <div>
+        <label htmlFor={fieldId('consultationTime')} className="form-label">
+          {t('consultation.time')}
+        </label>
+        <div className="form-control-icon">
+          <select
+            id={fieldId('consultationTime')}
+            name="consultationTime"
+            value={data.consultationTime}
+            onChange={handleChange}
+            className="form-input max-input-heigth"
+            disabled={!hasTimes}
+            aria-required="true"
+            aria-describedby={
+              errors.consultationTime ? errorId('consultationTime') : 'contact-time-zone-hint'
+            }
+            aria-invalid={errors.consultationTime ? true : undefined}
+          >
+            <option value="" disabled>
+              {t(timePlaceholderKey(Boolean(data.consultationDate), consultationSlots))}
+            </option>
+            {hasTimes &&
+              consultationSlots.slots.map((slot) => (
+                <option key={slot} value={slot}>
+                  {slot}
+                </option>
+              ))}
+          </select>
+          <IoChevronDown aria-hidden="true" />
+        </div>
+        <p id="contact-time-zone-hint" className="form-hint">
+          {t('consultation.timeZoneHint')}
+        </p>
+        <FieldError name="consultationTime" message={errors.consultationTime} className="pl-4" />
+      </div>
+    </div>
+  );
+};
+
+const ContactForm = ({
+  data,
+  consultationSlots,
+  handleSubmit,
+  handleChange,
+  loading,
+}: ContactFormProps) => {
+  const { t } = useTranslation();
+  const errors = data.errorMessage;
+  const isConsultation = data.subject === CONSULTATION_SUBJECT;
 
   return (
     <section className="contact-form">
@@ -112,26 +216,58 @@ const ContactForm = ({ data, handleSubmit, handleChange, loading }: ContactFormP
           </div>
         </div>
 
-        <label htmlFor={fieldId('yourMessage')} className="sr-only">
-          {t('yourMessage')}
-        </label>
-        <textarea
-          id={fieldId('yourMessage')}
-          name="yourMessage"
-          value={data.yourMessage}
-          className="form-input"
-          onChange={handleChange}
-          placeholder={t('yourMessage')}
-          maxLength={MAX_MESSAGE_LENGTH}
-          aria-required="true"
-          {...errorProps('yourMessage', errors.yourMessage)}
-          data-form-input
-        ></textarea>
-        <FieldError
-          name="yourMessage"
-          message={errors.yourMessage}
-          className="pl-4 text-orange-yellow-crayola"
-        />
+        <div className="form-subject">
+          <label htmlFor="contact-subject" className="sr-only">
+            {t('contactSubject.label')}
+          </label>
+          <div className="form-control-icon">
+            <select
+              id="contact-subject"
+              name="subject"
+              value={data.subject}
+              onChange={handleChange}
+              className="form-input max-input-heigth"
+            >
+              {CONTACT_SUBJECTS.map((subject) => (
+                <option key={subject} value={subject}>
+                  {t(`contactSubject.${subject}`)}
+                </option>
+              ))}
+            </select>
+            <IoChevronDown aria-hidden="true" />
+          </div>
+        </div>
+
+        {isConsultation ? (
+          <ConsultationFields
+            data={data}
+            consultationSlots={consultationSlots}
+            handleChange={handleChange}
+          />
+        ) : (
+          <>
+            <label htmlFor={fieldId('yourMessage')} className="sr-only">
+              {t('yourMessage')}
+            </label>
+            <textarea
+              id={fieldId('yourMessage')}
+              name="yourMessage"
+              value={data.yourMessage}
+              className="form-input"
+              onChange={handleChange}
+              placeholder={t('yourMessage')}
+              maxLength={MAX_MESSAGE_LENGTH}
+              aria-required="true"
+              {...errorProps('yourMessage', errors.yourMessage)}
+              data-form-input
+            ></textarea>
+            <FieldError
+              name="yourMessage"
+              message={errors.yourMessage}
+              className="pl-4 text-orange-yellow-crayola"
+            />
+          </>
+        )}
 
         <button className="form-btn" type="submit" disabled={loading} data-form-btn>
           {loading ? (
@@ -145,7 +281,9 @@ const ContactForm = ({ data, handleSubmit, handleChange, loading }: ContactFormP
             <IoPaperPlane aria-hidden="true" />
           )}
 
-          <span>{loading ? t('sending') : t('sendMessage')}</span>
+          <span>
+            {loading ? t('sending') : t(isConsultation ? 'consultation.submit' : 'sendMessage')}
+          </span>
         </button>
       </form>
     </section>

@@ -54,6 +54,8 @@
     "experience3": "Web developer using Vue.js for dynamic interfaces, Tailwind CSS for styling, TypeScript for clean code, Axios for data fetching, and Git for version control."
   },
   "pricingPage": {
+    "consultationText": "Not sure yet about your project's requirements or scope? Book a free consultation: we'll talk through your goals and I'll help you pick the right plan, or put together a custom quote.",
+    "consultationCta": "Book a free consultation",
     "plans": {
       "essentialTitle": "Essential",
       "essentialPrice": "$1,200 CAD",
@@ -108,6 +110,15 @@
   "contactSuccessDescription": "Thank you for reaching out. I've received your message and will get back to you as soon as possible.",
   "viewLiveSite": "View {{project}} live site",
   "viewSourceCode": "View {{project}} source code",
+  "backToPortfolio": "Back to portfolio",
+  "stack": "Stack",
+  "gallery": "Gallery",
+  "openImage": "Open image {{current}} of {{total}} full screen",
+  "closeImage": "Close image",
+  "previousImage": "Previous image",
+  "nextImage": "Next image",
+  "liveSite": "Live site",
+  "sourceCode": "Source code",
   "notFoundTitle": "Page not found",
   "notFoundDescription": "The page you're looking for doesn't exist or has moved.",
   "backHome": "Back to home",
@@ -117,6 +128,74 @@
     "minLength": "Please enter at least 3 characters",
     "submitFailed": "Your message couldn't be sent. Please try again.",
     "network": "Network problem. Please check your connection and try again.",
-    "unexpected": "An unexpected error occurred. Please try again."
+    "unexpected": "An unexpected error occurred. Please try again.",
+    "slotTaken": "Sorry, that time was just booked. Please pick another one."
+  },
+  "projects": {
+    "boissonSolutionx": {
+      "summary": "Marketing site for a local beverage brand: a fast React front end on headless WordPress, so the client edits content without touching code.",
+      "description": {
+        "p1": "The client needed a site they could update on their own (hero, product cards, retailer and distributor calls to action) without the speed and theme limits of a classic WordPress build.",
+        "p2": "I built a headless setup. WordPress + ACF stays the editing tool, and a React/TypeScript single-page app pulls page content through WPGraphQL. The contact form uses a custom GraphQL mutation (createContactMessage, registered in functions.php) that cleans each input with sanitize_text_field and saves the message as a WordPress post.",
+        "p3": "Architecture: a layered client. Components call custom hooks (useHomePageData, useContactFormQuery), hooks call a service layer (homePageService) that uses one shared Axios instance, and GraphQL queries live in their own module. TanStack Query (useQuery/useMutation) manages server state, with a retry rule that never retries validation errors and retries network errors up to 3 times.",
+        "p4": "Best practices: strict TypeScript models for the GraphQL responses; typed error classes (GraphQLServiceError, NetworkError, ValidationError) that turn transport failures into clear outcomes; client-side form validation before sending, with loading and success/error states; ESLint with typescript-eslint, and Tailwind v4 through the Vite plugin."
+      }
+    },
+    "assurelis": {
+      "summary": "Insurance quoting and CRM platform: guided chat-style quote forms for clients and a dashboard for advisors to track leads, deals and renewals.",
+      "description": {
+        "p1": "The brokerage collected auto, home, life and disability quote requests through long, hard-to-finish forms and followed leads by hand, so renewals and follow-ups slipped through the cracks.",
+        "p2": "Assurelis replaces this with a step-by-step conversational quote flow in French and English, and a role-based back office (admin, agent, client) where advisors manage clients and deals, see pipeline stats and get a list of upcoming and overdue policy renewals.",
+        "p3": "Architecture: a monorepo with a React 19 + Vite client and a NestJS 11 + MongoDB API. The server is split into feature modules (auth, auto/home/life forms, client, deal, CRM, email, stats), each following the controller → service → Mongoose schema pattern, with DTOs checked by a global ValidationPipe. Auth uses Passport JWT with a custom @Roles decorator and RolesGuard, and shared helpers (buildPagination, buildKeywordQuery, form-merge utils) keep the modules DRY. On the client: file-based TanStack Router, a Zustand auth store, Zod schemas, Context providers for form and advisor state, and a features/ folder layout for the CRM.",
+        "p4": "Best practices: Helmet, an explicit CORS allow-list and rate limiting (@nestjs/throttler); bcrypt password hashing; Swagger/OpenAPI docs; Jest unit tests next to each service plus API e2e specs; Playwright accessibility, responsive, security and visual tests on the client. CI runs lint, Prettier, type checks, pnpm audit and coverage, complexity and function-length limits are enforced, and Docker images ship with an nginx Content Security Policy, deployed on Railway."
+      }
+    },
+    "safrozenFoods": {
+      "summary": "Brand site and online shop for a Haitian frozen-food maker whose Legim Express stews are ready in about 20 minutes and sold in Quebec grocery stores.",
+      "description": {
+        "p1": "Safrozen needed a website that matched its packaging, explained a new product category (pre-cooked, frozen traditional Haitian vegetable stews) and helped shoppers buy online or find a store.",
+        "p2": "I designed the site in Figma from a documented design system, then built it in WordPress with Elementor Pro and WooCommerce (product bundles, Square payments). Shoppers can order online, and a points-of-sale section lists the retailers that carry the products (IGA, Wawa, Palumbo…).",
+        "p3": "Design approach: a token-based system with orange #EA652D for calls to action and one accent color per product line (green for Lalo, purple for eggplant, gold for chayote), DM Serif Text headings with Poppins body text, and reusable section blocks: hero, three-benefit grid, product showcase, partner carousel and testimonials. Content is written in French first.",
+        "p4": "Best practices: the lightweight Hello Elementor theme, global styles instead of one-off styling, and on-page SEO with clear page titles, meta descriptions and a structured heading hierarchy."
+      }
+    },
+    "izipey": {
+      "summary": "Provider-agnostic payment API for Haiti: builders integrate once to accept and send mobile money through MonCash today and other wallets tomorrow.",
+      "description": {
+        "p1": "Developers who want to accept or send mobile money in Haiti have to integrate MonCash directly: undocumented edge cases, dropped callbacks, no real sandbox, and a rewrite the day they add a second wallet. There is no Stripe-like layer for the Haitian market.",
+        "p2": "Izipey is a single REST API with universal payment objects (payment intents, refunds, payouts), signed webhooks, an isolated sandbox and a ledger merchants can trust. Adding a new provider such as NatCash means writing one adapter, with no change to the public API.",
+        "p3": "Architecture: a NestJS modular monolith on MongoDB replica-set transactions, using the native driver with $jsonSchema validators. The adapter pattern hides each provider behind one interface; explicit state machines drive intents (created → requires_action → processing → succeeded | failed | expired | canceled) and payouts; an append-only double-entry ledger, where every transaction group balances inside a Mongo transaction, derives balances instead of storing them. Scheduled jobs handle reserve release, intent expiry and reconciliation, and a circuit breaker covers payout failover.",
+        "p4": "Best practices: amounts stored as integer minor units only; idempotency keys on intents and payouts plus deduplication of provider callbacks; at-least-once webhooks with HMAC + timestamp signatures, backoff retries, a dead-letter queue and replay; envelope-encrypted provider credentials and API key rotation; Zod-validated configuration and structured Pino logging. 28 e2e suites (ledger, trial balance, reconciliation, webhooks) and unit tests with coverage gates, Lefthook pre-commit and pre-push hooks (oxlint, Prettier, tsc, tests), and CI and deploy workflows."
+      }
+    },
+    "qaitless": {
+      "summary": "Appointment and live-queue SaaS for barbershops, salons and clinics: online booking, automatic rescheduling and fewer no-shows.",
+      "description": {
+        "p1": "Micro-businesses with predictable service times (barbershops, salons, repair shops, clinics) still manage their client flow by hand: walk-in queues, phone bookings, no-shows and days that are either overbooked or half empty.",
+        "p2": "Qaitless gives each business a public booking page, a dashboard with a live queue, and daily capacity planned from staff availability and service length. Late arrivals and no-shows are reordered automatically, and an end-of-day process reschedules whatever is left.",
+        "p3": "Architecture: a multi-tenant NestJS 11 + MongoDB API where every query is scoped by companyId, split into feature modules (auth, companies, employees, appointments, slots, queue, analytics, scheduler, events). Three separate auth paths: slug-based public booking, JWT for the dashboard and an x-api-key header for integrations. The live queue reaches the dashboard through Server-Sent Events fed by an event emitter, and cron jobs handle auto-rescheduling and end-of-day processing. The React 19 client is organized by feature, with TanStack Query (centralized query keys) for server state, React Hook Form + Zod for forms, and types that mirror the backend DTOs.",
+        "p4": "Best practices: Helmet, rate limiting and bcrypt; class-validator DTOs with custom guards, filters and interceptors; UTC-normalized dates; e2e suites covering multi-tenant isolation, queue management, auto-rescheduling and public booking; CI with lint, Prettier, unit and e2e tests and build. On the client: a semantic design-token system with no hard-coded colors or arbitrary Tailwind values, EN/FR/ES translations, consistent loading, error and empty states, MSW mocks and Playwright."
+      }
+    }
+  },
+  "contactSubject": {
+    "label": "Subject",
+    "general": "General Inquiry",
+    "consultation": "Consultation",
+    "joinTeam": "Join the Team",
+    "reportIssue": "Report an Issue"
+  },
+  "consultation": {
+    "date": "Preferred date",
+    "time": "Preferred time",
+    "pickDateFirst": "Pick a date first",
+    "loadingTimes": "Loading available times…",
+    "selectTime": "Select a time",
+    "noTimes": "No times available that day (weekdays only)",
+    "timesUnavailable": "Couldn't load the times. Please try another date.",
+    "timeZoneHint": "30-minute call, Monday to Friday, 9:00–17:00 Montreal time (ET).",
+    "submit": "Book Consultation",
+    "successTitle": "Consultation booked!",
+    "successDescription": "Your free consultation is booked for {{date}} at {{time}} (Montreal time). I'll email you shortly with the meeting details."
   }
 }

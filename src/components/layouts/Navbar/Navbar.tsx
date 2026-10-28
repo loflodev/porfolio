@@ -17,6 +17,7 @@ type NavbarProps = {
 };
 
 const MORE_MENU_ID = 'navbar-more-menu';
+const EMPTY = 0;
 
 const linkClassName =
   (base: string) =>
@@ -55,37 +56,39 @@ const Navbar = ({
           </li>
         ))}
 
-        <li className="navbar-item navbar-item-more" ref={moreRef}>
-          <button
-            ref={moreButtonRef}
-            type="button"
-            className={`navbar-link ${isMoreActive ? 'active' : ''}`}
-            onClick={toggleMoreMenu}
-            aria-expanded={isMoreOpen}
-            aria-controls={MORE_MENU_ID}
-            data-nav-link
-          >
-            {t('more')}
-            <IoChevronUpOutline
-              className={`navbar-more-icon ${isMoreOpen ? 'open' : ''}`}
-              aria-hidden="true"
-            />
-          </button>
+        {moreMenu.length > EMPTY && (
+          <li className="navbar-item navbar-item-more" ref={moreRef}>
+            <button
+              ref={moreButtonRef}
+              type="button"
+              className={`navbar-link ${isMoreActive ? 'active' : ''}`}
+              onClick={toggleMoreMenu}
+              aria-expanded={isMoreOpen}
+              aria-controls={MORE_MENU_ID}
+              data-nav-link
+            >
+              {t('more')}
+              <IoChevronUpOutline
+                className={`navbar-more-icon ${isMoreOpen ? 'open' : ''}`}
+                aria-hidden="true"
+              />
+            </button>
 
-          <ul id={MORE_MENU_ID} className="navbar-dropdown" hidden={!isMoreOpen}>
-            {moreMenu.map((item) => (
-              <li key={item.to}>
-                <NavLink
-                  to={item.to}
-                  className={linkClassName('navbar-dropdown-link')}
-                  onClick={closeMoreMenu}
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </li>
+            <ul id={MORE_MENU_ID} className="navbar-dropdown" hidden={!isMoreOpen}>
+              {moreMenu.map((item) => (
+                <li key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    className={linkClassName('navbar-dropdown-link')}
+                    onClick={closeMoreMenu}
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
       </ul>
     </nav>
   );

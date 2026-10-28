@@ -44,7 +44,7 @@
         "sameAs": [
           "https://github.com/loflodev/",
           "https://www.linkedin.com/in/ljunit25",
-          "https://www.instagram.com/louis_thereborn"
+          "https://www.instagram.com/loflo.dev"
         ]
       }
     </script>
@@ -56,7 +56,12 @@
       <input type="hidden" name="form-name" value="contact" />
       <input type="text" name="fullName" />
       <input type="email" name="email" />
+      <input type="text" name="subject" />
       <textarea name="yourMessage"></textarea>
+      <!-- Consultation bookings, submitted server-to-server by book-consultation.ts. -->
+      <input type="text" name="consultationDate" />
+      <input type="text" name="consultationTime" />
+      <input type="text" name="verificationToken" />
       <input type="text" name="website" />
     </form>
     <!-- Static form for Netlify's build-time form detection; submitted server-to-server from

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { EXPECTED_TITLES, INDEXABLE_PATHS, PATHS } from './routes';
+import { EXPECTED_TITLES, INDEXABLE_PATHS, NAV_PATHS, OFF_NAV_PATHS, PATHS } from './routes';
 
 const count = (html: string, pattern: RegExp) => html.match(pattern)?.length ?? 0;
 
@@ -32,7 +32,23 @@ test.describe('prerendered HTML', () => {
   test('navigation is crawlable without JavaScript', async ({ request }) => {
     const html = await (await request.get('/')).text();
 
-    for (const path of PATHS) {
+    for (const path of NAV_PATHS) {
+      expect(html).toContain(`href="${path}"`);
+    }
+  });
+
+  for (const [path, linkedFrom] of Object.entries(OFF_NAV_PATHS)) {
+    test(`${path} is linked from ${linkedFrom} without JavaScript`, async ({ request }) => {
+      const html = await (await request.get(linkedFrom)).text();
+
+      expect(html).toContain(`href="${path}"`);
+    });
+  }
+
+  test('project pages are linked from the portfolio without JavaScript', async ({ request }) => {
+    const html = await (await request.get('/portfolio')).text();
+
+    for (const path of PATHS.filter((p) => p.startsWith('/portfolio/'))) {
       expect(html).toContain(`href="${path}"`);
     }
   });

@@ -18,10 +18,12 @@ const IP = '203.0.113.7';
 
 let store: FakeBlobStore;
 
+const fromIp = (ip: string) => makeEvent({ headers: { 'x-nf-client-connection-ip': ip } });
+
 const hit = async (times: number, ip = IP) => {
   const results: boolean[] = [];
   for (let i = 0; i < times; i += 1) {
-    results.push(await isRateLimited(ip));
+    results.push(await isRateLimited(fromIp(ip)));
   }
   return results;
 };
@@ -49,14 +51,14 @@ describe('isRateLimited', () => {
   it('tracks each IP separately', async () => {
     await hit(MAX_PER_MINUTE + 1);
 
-    expect(await isRateLimited('198.51.100.1')).toBe(false);
+    expect(await isRateLimited(fromIp('198.51.100.1'))).toBe(false);
   });
 
   it('resets the minute window but keeps counting the hour', async () => {
     await hit(MAX_PER_MINUTE);
     vi.advanceTimersByTime(60_000);
 
-    expect(await isRateLimited(IP)).toBe(false);
+    expect(await isRateLimited(fromIp(IP))).toBe(false);
   });
 
   it(`blocks after ${MAX_PER_HOUR} requests in an hour even across minute windows`, async () => {
@@ -65,13 +67,14 @@ describe('isRateLimited', () => {
       vi.advanceTimersByTime(60_000);
     }
 
-    expect(await isRateLimited(IP)).toBe(true);
+    expect(await isRateLimited(fromIp(IP))).toBe(true);
   });
 
   it('uses the store name it is given', async () => {
-    await isRateLimited(IP, 'verify-checkout-rate-limit');
+    const event = fromIp(IP);
+    await isRateLimited(event, 'verify-checkout-rate-limit');
 
-    expect(getBlobStore).toHaveBeenCalledWith('verify-checkout-rate-limit');
+    expect(getBlobStore).toHaveBeenCalledWith('verify-checkout-rate-limit', event);
   });
 
   it('retries a conditional write that lost a race instead of under-counting', async () => {
@@ -85,7 +88,7 @@ describe('isRateLimited', () => {
       return realSet(...args);
     });
 
-    await isRateLimited(IP);
+    await isRateLimited(fromIp(IP));
 
     const counts = [...store.entries.values()].map((entry) => entry.data);
     expect(counts).toEqual([{ count: 1 }, { count: 1 }]);
@@ -103,7 +106,7 @@ describe('isRateLimited', () => {
       throw error;
     });
 
-    expect(await isRateLimited(IP)).toBe(false);
+    expect(await isRateLimited(fromIp(IP))).toBe(false);
     expect(captureAndFlush).toHaveBeenCalledWith(error);
   });
 });

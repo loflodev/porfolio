@@ -8,6 +8,7 @@ const Blog = lazy(() => import('./pages/Blog'));
 const Contact = lazy(() => import('./pages/Contact/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
 const Portfolio = lazy(() => import('./pages/Portfolio/Portfolio'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail/ProjectDetail'));
 const Pricing = lazy(() => import('./pages/Pricing/Pricing'));
 const Resume = lazy(() => import('./pages/Resume/Resume'));
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<About />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/:slug" element={<ProjectDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/pricing" element={<Pricing />} />

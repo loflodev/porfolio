@@ -12,6 +12,17 @@ export const MAX_NAME_LENGTH = 100;
 export const MAX_EMAIL_LENGTH = 254;
 export const MAX_MESSAGE_LENGTH = 5000;
 
+// Contact form subjects (must match backend: netlify/functions/submission-created.ts).
+export const CONTACT_SUBJECTS = ['general', 'consultation', 'joinTeam', 'reportIssue'] as const;
+export type ContactSubject = (typeof CONTACT_SUBJECTS)[number];
+export const DEFAULT_CONTACT_SUBJECT: ContactSubject = 'general';
+export const CONSULTATION_SUBJECT: ContactSubject = 'consultation';
+
+// Consultation booking rules shared with netlify/functions/_shared/consultation-slots.ts:
+// times are Montreal local time, bookable from today up to this many days ahead.
+export const CONSULTATION_TIME_ZONE = 'America/Toronto';
+export const CONSULTATION_WINDOW_DAYS = 60;
+
 // Client logos served from public folder
 export const CLIENTS: ClientSectionType[] = [
   {
@@ -40,11 +51,16 @@ export const POSTS: PostType[] = [];
 export const CONTACT_FORM_DEFAULT: ContactFormInputType = {
   fullName: '',
   email: '',
+  subject: DEFAULT_CONTACT_SUBJECT,
   yourMessage: '',
+  consultationDate: '',
+  consultationTime: '',
   website: '', // Honeypot - must remain empty
   errorMessage: {
     fullName: '',
     email: '',
     yourMessage: '',
+    consultationDate: '',
+    consultationTime: '',
   },
 };

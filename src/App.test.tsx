@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest';
 
 import App from './App';
 import { ROUTES } from './constants';
+import { PROJECTS } from './constants/projects';
+import { getProjectPath } from './constants/projectSlugs';
 import { axe } from './test/axe';
 import { renderWithProviders } from './test/renderWithProviders';
 
@@ -14,6 +16,7 @@ const EXPECTED_H1: Record<string, string> = {
   '/blog': 'Blog',
   '/pricing': 'Pricing',
   '/contact': 'Contact',
+  ...Object.fromEntries(PROJECTS.map((item) => [getProjectPath(item.slug), item.title])),
 };
 
 describe.each(ROUTES.map((route) => route.path))('route %s', (path) => {

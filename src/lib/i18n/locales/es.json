@@ -54,6 +54,8 @@
     "experience3": "Desarrollador web usando Vue.js para interfaces dinámicas, Tailwind CSS para estilos, TypeScript para código limpio, Axios para obtención de datos y Git para control de versiones."
   },
   "pricingPage": {
+    "consultationText": "¿Aún no tienes claros los requisitos o el alcance de tu proyecto? Reserva una consulta gratuita: hablaremos de tus objetivos y te ayudaré a elegir el plan adecuado o a preparar un presupuesto a medida.",
+    "consultationCta": "Reservar una consulta gratuita",
     "plans": {
       "essentialTitle": "Esencial",
       "essentialPrice": "$1,200 CAD",
@@ -108,6 +110,15 @@
   "contactSuccessDescription": "Gracias por escribirme. He recibido tu mensaje y te responderé lo antes posible.",
   "viewLiveSite": "Ver el sitio de {{project}}",
   "viewSourceCode": "Ver el código fuente de {{project}}",
+  "backToPortfolio": "Volver al portafolio",
+  "stack": "Tecnologías",
+  "gallery": "Galería",
+  "openImage": "Abrir la imagen {{current}} de {{total}} en pantalla completa",
+  "closeImage": "Cerrar imagen",
+  "previousImage": "Imagen anterior",
+  "nextImage": "Imagen siguiente",
+  "liveSite": "Sitio en vivo",
+  "sourceCode": "Código fuente",
   "notFoundTitle": "Página no encontrada",
   "notFoundDescription": "La página que buscas no existe o se ha movido.",
   "backHome": "Volver al inicio",
@@ -117,6 +128,74 @@
     "minLength": "Introduce al menos 3 caracteres",
     "submitFailed": "No se pudo enviar tu mensaje. Inténtalo de nuevo.",
     "network": "Problema de red. Comprueba tu conexión e inténtalo de nuevo.",
-    "unexpected": "Se produjo un error inesperado. Inténtalo de nuevo."
+    "unexpected": "Se produjo un error inesperado. Inténtalo de nuevo.",
+    "slotTaken": "Lo siento, esa hora acaba de reservarse. Por favor, elige otra."
+  },
+  "projects": {
+    "boissonSolutionx": {
+      "summary": "Sitio de marketing para una marca local de bebidas: un front-end React rápido sobre WordPress headless, para que el cliente edite el contenido sin tocar código.",
+      "description": {
+        "p1": "El cliente necesitaba un sitio que pudiera actualizar por su cuenta (portada, fichas de productos, llamadas a la acción para minoristas y distribuidores) sin los límites de velocidad y de tema de un WordPress clásico.",
+        "p2": "Monté una arquitectura headless. WordPress + ACF sigue siendo la herramienta de edición, y una aplicación de una sola página en React/TypeScript obtiene el contenido a través de WPGraphQL. El formulario de contacto usa una mutación GraphQL personalizada (createContactMessage, registrada en functions.php) que limpia cada campo con sanitize_text_field y guarda el mensaje como una entrada de WordPress.",
+        "p3": "Arquitectura: un cliente por capas. Los componentes llaman a hooks personalizados (useHomePageData, useContactFormQuery), los hooks llaman a una capa de servicios (homePageService) que usa una única instancia compartida de Axios, y las consultas GraphQL viven en su propio módulo. TanStack Query (useQuery/useMutation) gestiona el estado del servidor, con una regla que nunca reintenta los errores de validación y reintenta los errores de red hasta 3 veces.",
+        "p4": "Buenas prácticas: modelos TypeScript estrictos para las respuestas GraphQL; clases de error tipadas (GraphQLServiceError, NetworkError, ValidationError) que convierten los fallos de transporte en resultados claros; validación del formulario en el cliente antes del envío, con estados de carga, éxito y error; ESLint con typescript-eslint, y Tailwind v4 mediante el plugin de Vite."
+      }
+    },
+    "assurelis": {
+      "summary": "Plataforma de cotizaciones de seguros y CRM: formularios guiados tipo chat para los clientes y un panel para que los asesores sigan prospectos, ventas y renovaciones.",
+      "description": {
+        "p1": "La correduría recibía las solicitudes de cotización de auto, hogar, vida e invalidez mediante formularios largos y difíciles de terminar, y seguía a sus prospectos a mano, así que se perdían renovaciones y seguimientos.",
+        "p2": "Assurelis lo sustituye por un flujo de cotización conversacional, paso a paso, en francés e inglés, y por un back office basado en roles (admin, agente, cliente) donde los asesores gestionan clientes y ventas, consultan las estadísticas del pipeline y ven la lista de renovaciones próximas o vencidas.",
+        "p3": "Arquitectura: un monorepo con un cliente React 19 + Vite y una API NestJS 11 + MongoDB. El servidor se divide en módulos por funcionalidad (auth, formularios de auto/hogar/vida, cliente, venta, CRM, correo, estadísticas), cada uno con el patrón controlador → servicio → esquema Mongoose y DTO validados por un ValidationPipe global. La autenticación usa Passport JWT con un decorador @Roles y un RolesGuard propios, y utilidades compartidas (buildPagination, buildKeywordQuery, fusión de formularios) evitan la duplicación. En el cliente: TanStack Router basado en archivos, un store de autenticación con Zustand, esquemas Zod, Context providers para el estado de formularios y del asesor, y una estructura de carpetas features/ para el CRM.",
+        "p4": "Buenas prácticas: Helmet, una lista blanca de CORS explícita y limitación de peticiones (@nestjs/throttler); hash de contraseñas con bcrypt; documentación Swagger/OpenAPI; pruebas unitarias con Jest junto a cada servicio y pruebas e2e de la API; pruebas Playwright de accesibilidad, responsive, seguridad y visuales en el cliente. La CI ejecuta lint, Prettier, comprobación de tipos, pnpm audit y cobertura, se imponen límites de complejidad y de longitud de funciones, y las imágenes Docker incluyen una Content Security Policy de nginx, desplegadas en Railway."
+      }
+    },
+    "safrozenFoods": {
+      "summary": "Sitio de marca y tienda en línea de un fabricante haitiano de comida congelada: sus guisos Legim Express están listos en unos 20 minutos y se venden en Quebec.",
+      "description": {
+        "p1": "Safrozen necesitaba un sitio fiel a su empaque, que explicara una nueva categoría de producto (guisos tradicionales haitianos de verduras, precocidos y congelados) y ayudara a comprar en línea o encontrar una tienda.",
+        "p2": "Diseñé el sitio en Figma a partir de un sistema de diseño documentado y luego lo construí en WordPress con Elementor Pro y WooCommerce (paquetes de productos, pagos con Square). Los clientes pueden pedir en línea, y una sección de puntos de venta lista los comercios que ofrecen los productos (IGA, Wawa, Palumbo…).",
+        "p3": "Enfoque de diseño: un sistema basado en tokens, con el naranja #EA652D para las llamadas a la acción y un color de acento por línea de producto (verde para el Lalo, morado para la berenjena, dorado para el chayote), títulos en DM Serif Text y texto en Poppins, y bloques de sección reutilizables: portada, cuadrícula de tres ventajas, vitrina de productos, carrusel de socios y testimonios. El contenido se redacta primero en francés.",
+        "p4": "Buenas prácticas: el tema ligero Hello Elementor, estilos globales en lugar de ajustes puntuales, y SEO on-page con títulos de página claros, meta descripciones y una jerarquía de encabezados estructurada."
+      }
+    },
+    "izipey": {
+      "summary": "API de pagos agnóstica para Haití: una sola integración para cobrar y enviar dinero móvil con MonCash hoy y con otras billeteras mañana.",
+      "description": {
+        "p1": "Los desarrolladores que quieren cobrar o enviar dinero móvil en Haití tienen que integrar MonCash directamente: casos límite sin documentar, callbacks perdidos, ningún sandbox real y una reescritura el día que añaden una segunda billetera. No existe una capa tipo Stripe para el mercado haitiano.",
+        "p2": "Izipey es una única API REST con objetos de pago universales (intenciones de pago, reembolsos, pagos salientes), webhooks firmados, un sandbox aislado y un libro contable en el que los comercios pueden confiar. Añadir un proveedor nuevo como NatCash solo requiere escribir un adaptador, sin cambiar la API pública.",
+        "p3": "Arquitectura: un monolito modular NestJS sobre transacciones de un replica set de MongoDB, con el driver nativo y validadores $jsonSchema. El patrón adaptador oculta cada proveedor tras una sola interfaz; máquinas de estados explícitas gobiernan las intenciones (created → requires_action → processing → succeeded | failed | expired | canceled) y los pagos salientes; un libro contable de partida doble, solo de inserción, donde cada grupo de transacciones cuadra dentro de una transacción de Mongo, calcula los saldos en lugar de guardarlos. Tareas programadas se encargan de liberar reservas, expirar intenciones y conciliar, y un circuit breaker cubre la conmutación de los pagos salientes.",
+        "p4": "Buenas prácticas: importes guardados solo como unidades menores enteras; claves de idempotencia en intenciones y pagos salientes, y deduplicación de los callbacks de proveedores; webhooks entregados al menos una vez, firmados con HMAC + marca de tiempo, con reintentos con backoff, cola de mensajes fallidos y reenvío; credenciales de proveedores cifradas por sobre y rotación de claves de API; configuración validada con Zod y logs estructurados con Pino. 28 suites e2e (libro contable, balance de comprobación, conciliación, webhooks) y pruebas unitarias con umbrales de cobertura, hooks de Lefthook pre-commit y pre-push (oxlint, Prettier, tsc, pruebas), y workflows de CI y despliegue."
+      }
+    },
+    "qaitless": {
+      "summary": "SaaS de citas y fila en vivo para barberías, salones y clínicas: reservas en línea, reprogramación automática y menos ausencias.",
+      "description": {
+        "p1": "Los micronegocios con tiempos de servicio predecibles (barberías, salones, talleres de reparación, clínicas) siguen gestionando su flujo de clientes a mano: filas sin cita, reservas por teléfono, ausencias y días que quedan sobrecargados o medio vacíos.",
+        "p2": "Qaitless da a cada negocio una página pública de reservas, un panel con la fila en vivo y una capacidad diaria calculada según la disponibilidad del personal y la duración de los servicios. Las llegadas tarde y las ausencias se reordenan automáticamente, y un proceso de fin de día reprograma lo que queda pendiente.",
+        "p3": "Arquitectura: una API NestJS 11 + MongoDB multi-inquilino donde cada consulta se filtra por companyId, dividida en módulos por funcionalidad (auth, empresas, empleados, citas, horarios, fila, estadísticas, planificador, eventos). Tres vías de autenticación separadas: reserva pública por slug, JWT para el panel y una cabecera x-api-key para integraciones. La fila en vivo llega al panel mediante Server-Sent Events alimentados por un emisor de eventos, y tareas cron se encargan de la reprogramación automática y del cierre del día. El cliente React 19 se organiza por funcionalidad, con TanStack Query (claves de consulta centralizadas) para el estado del servidor, React Hook Form + Zod para los formularios y tipos que reflejan los DTO del backend.",
+        "p4": "Buenas prácticas: Helmet, limitación de peticiones y bcrypt; DTO con class-validator y guards, filtros e interceptores propios; fechas normalizadas en UTC; suites e2e sobre aislamiento multi-inquilino, gestión de la fila, reprogramación automática y reserva pública; CI con lint, Prettier, pruebas unitarias y e2e, y build. En el cliente: un sistema de design tokens semánticos, sin colores fijos ni valores arbitrarios de Tailwind, traducciones EN/FR/ES, estados de carga, error y vacío coherentes, mocks con MSW y Playwright."
+      }
+    }
+  },
+  "contactSubject": {
+    "label": "Asunto",
+    "general": "Consulta general",
+    "consultation": "Asesoría",
+    "joinTeam": "Unirse al equipo",
+    "reportIssue": "Reportar un problema"
+  },
+  "consultation": {
+    "date": "Fecha preferida",
+    "time": "Hora preferida",
+    "pickDateFirst": "Elige primero una fecha",
+    "loadingTimes": "Cargando horarios disponibles…",
+    "selectTime": "Elige una hora",
+    "noTimes": "No hay horarios disponibles ese día (solo días laborables)",
+    "timesUnavailable": "No se pudieron cargar los horarios. Prueba otra fecha.",
+    "timeZoneHint": "Llamada de 30 minutos, de lunes a viernes, de 9:00 a 17:00, hora de Montreal (ET).",
+    "submit": "Reservar asesoría",
+    "successTitle": "¡Asesoría reservada!",
+    "successDescription": "Tu asesoría gratuita está reservada para el {{date}} a las {{time}} (hora de Montreal). Te escribiré pronto con los detalles de la reunión."
   }
 }

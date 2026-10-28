@@ -1,3 +1,6 @@
+import { IoCalendarOutline } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
+
 import usePricing from './usePricing';
 import Seo from '../../components/common/Seo';
 import Article from '../../components/ui/Article';
@@ -18,6 +21,14 @@ const Pricing = () => {
         description="Service plans and pricing for full stack web development work with Louis Florival."
         path="/pricing"
       />
+      <Section className="pricing-intro">
+        <p className="about-text">{t('pricingPage.consultationText')}</p>
+        <Link className="form-btn" to="/contact">
+          <IoCalendarOutline aria-hidden="true" />
+          <span>{t('pricingPage.consultationCta')}</span>
+        </Link>
+      </Section>
+
       <Section className="plans">
         <PricingCard data={plans} onSelect={handlePlanSelect} isRedirecting={isRedirecting} />
       </Section>

@@ -13,6 +13,7 @@ const Contact = () => {
     toggleModal,
     modalData,
     contactFormInput,
+    consultationSlots,
     handleChange,
     handleSubmit,
     isLoading,
@@ -29,6 +30,7 @@ const Contact = () => {
 
       <ContactForm
         data={contactFormInput}
+        consultationSlots={consultationSlots}
         handleChange={handleChange}
         loading={isLoading}
         handleSubmit={handleSubmit}

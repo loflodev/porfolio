@@ -331,7 +331,8 @@
 
   .layout {
     margin: 15px 12px;
-    margin-bottom: 75px;
+    /* Room for the floating navbar pill. */
+    margin-bottom: 96px;
     min-width: 259px;
   }
 
@@ -493,41 +494,102 @@
 
   /* @section: Navbar */
 
+  /* Liquid-glass tokens shared by the floating bar and its link states. */
+  :root {
+    --glass-bar-bg: hsla(240, 1%, 17%, 0.55);
+    --glass-bar-border: hsla(0, 0%, 100%, 0.1);
+    --glass-blur: blur(20px) saturate(180%);
+    --glass-highlight: inset 0 1px 0 hsla(0, 0%, 100%, 0.14);
+    --glass-hover-bg: hsla(0, 0%, 100%, 0.07);
+    --glass-lens-bg: linear-gradient(180deg, hsla(0, 0%, 100%, 0.18), hsla(0, 0%, 100%, 0.05));
+    --glass-lens-shadow:
+      inset 0 1px 0 hsla(0, 0%, 100%, 0.35), inset 0 -1px 1px hsla(0, 0%, 0%, 0.25),
+      0 0 0 1px hsla(0, 0%, 100%, 0.1), 0 4px 12px hsla(0, 0%, 0%, 0.3);
+    --glass-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --navbar-gutter: 16px;
+  }
+
+  /* Mobile/tablet: a pill floating above the bottom edge, detached from the sides. */
   .navbar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: hsla(240, 1%, 17%, 0.75);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--color-jet);
-    border-radius: 12px 12px 0 0;
-    box-shadow: var(--shadow-2);
+    bottom: max(var(--navbar-gutter), env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 2 * var(--navbar-gutter));
+    background: var(--glass-bar-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-bar-border);
+    border-radius: 999px;
+    box-shadow:
+      var(--glass-highlight),
+      inset 0 -1px 0 hsla(0, 0%, 0%, 0.2),
+      0 12px 32px hsla(0, 0%, 0%, 0.45);
     z-index: 5;
   }
 
   .navbar-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    padding: 0 10px;
+    gap: 2px;
+    padding: 6px;
   }
 
   .navbar-link {
+    position: relative;
+    display: block;
     color: var(--color-light-gray);
     font-size: var(--font-size-xx);
-    padding: 20px 7px;
-    transition: color var(--transition-1);
+    padding: 9px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition:
+      color var(--transition-1),
+      background var(--transition-1),
+      box-shadow var(--transition-1),
+      transform 0.35s var(--glass-spring);
   }
 
-  .navbar-link:hover,
-  .navbar-link:focus {
-    color: var(--color-light-gray-70);
+  @media (hover: hover) {
+    .navbar-link:hover {
+      color: var(--color-white-1);
+      background: var(--glass-hover-bg);
+      box-shadow: var(--glass-highlight);
+    }
   }
 
+  .navbar-link:focus-visible {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 2px;
+  }
+
+  /* Selected page: a raised glass lens. */
   .navbar-link.active {
     color: var(--color-orange-yellow-crayola);
+    background: var(--glass-lens-bg);
+    box-shadow: var(--glass-lens-shadow);
+  }
+
+  /* Pressing squishes the lens, then springs back on release. */
+  .navbar-link:active {
+    transform: scale(0.92);
+    transition-duration: 0.1s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .navbar-link {
+      transition:
+        color var(--transition-1),
+        background var(--transition-1),
+        box-shadow var(--transition-1);
+    }
+
+    .navbar-link:active {
+      transform: none;
+    }
   }
 
   .navbar-item-more {
@@ -1265,66 +1327,25 @@
   }
 
   .project-item > .project-link-a {
-    width: 100%;
+    display: block;
+    border-radius: 16px;
+  }
+
+  .project-item > .project-link-a:focus-visible {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 4px;
   }
 
   .project-img {
     position: relative;
     width: 100%;
     height: 200px;
+    border: 1px solid var(--color-jet);
     border-radius: 16px;
     overflow: hidden;
+    /* Forces the image and hover panel to be clipped as one layer (see .project-img::after). */
+    mask-image: linear-gradient(#000, #000);
     margin-bottom: 15px;
-  }
-
-  .project-img::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    z-index: 1;
-    transition: var(--transition-1);
-  }
-
-  .project-item > .project-link-a:hover .project-img::before {
-    background: hsla(0, 0%, 0%, 0.5);
-  }
-
-  .project-item-icon-box {
-    --scale: 0.8;
-
-    display: flex;
-    gap: 20px;
-    background: var(--color-jet);
-    color: var(--color-orange-yellow-crayola);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(var(--scale));
-    font-size: 20px;
-    padding: 18px;
-    border-radius: 12px;
-    opacity: 0;
-    z-index: 1;
-    transition: var(--transition-1);
-  }
-
-  .vertical-line {
-    background: var(--color-orange-yellow-crayola);
-    width: 2px;
-    height: 20px;
-  }
-
-  .project-item > .project-link-a:hover .project-item-icon-box {
-    --scale: 1;
-    opacity: 1;
-  }
-
-  .project-item-icon-box svg [stroke-width] {
-    stroke-width: 50px;
   }
 
   .project-img img {
@@ -1334,8 +1355,121 @@
     transition: var(--transition-1);
   }
 
-  .project-item > .project-link-a:hover img {
-    transform: scale(1.1);
+  /* Hover/focus panel: slides up from the bottom to cover the whole screenshot. */
+  .project-reveal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    background: hsla(240, 2%, 12%, 0.92);
+    backdrop-filter: blur(8px);
+    transform: translateY(101%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
+  }
+
+  .project-reveal-text {
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    line-height: 1.55;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Chromium clips the screenshot and the panel as separate layers, so the white screenshot's
+     antialiased edge leaked through as a thin line around the corners. The mask above, this ring
+     in the panel colour and dimming the screenshot under the panel together hide it. */
+  .project-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 2px hsl(240, 2%, 12%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 2;
+  }
+
+  /* Touch screens have no hover: keep the screenshot clean, a tap opens the project page. */
+  @media (hover: hover) {
+    .project-link-a:hover .project-reveal,
+    .project-link-a:focus-visible .project-reveal {
+      transform: translateY(0);
+    }
+
+    .project-link-a:hover .project-img::after,
+    .project-link-a:focus-visible .project-img::after {
+      opacity: 1;
+    }
+
+    .project-link-a:hover .project-img img,
+    .project-link-a:focus-visible .project-img img {
+      opacity: 0.35;
+      transform: scale(1.06);
+    }
+  }
+
+  @media (hover: none) {
+    .project-reveal {
+      display: none;
+    }
+  }
+
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-reveal .stack-list {
+    max-width: 100%;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  /* Only the last named badge gives way: a long name (WooCommerce) ends in an ellipsis instead
+     of being cut mid-word, and the badges before it stay whole. */
+  .project-reveal .stack-badge:last-child:not(.stack-badge-more),
+  .project-reveal .stack-badge:has(+ .stack-badge-more) {
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stack-badge {
+    flex-shrink: 0;
+    background: var(--color-onyx);
+    color: var(--color-orange-yellow-crayola);
+    border: 1px solid var(--color-jet);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: var(--font-size-xx);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .stack-badge-more {
+    color: var(--color-light-gray);
+  }
+
+  .stack-list-lg {
+    gap: 10px;
+  }
+
+  .stack-list-lg .stack-badge {
+    padding: 6px 14px;
+    font-size: var(--font-size-sm);
   }
 
   .project-title,
@@ -1355,6 +1489,253 @@
     color: var(--color-light-gray-70);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-light);
+  }
+  /* @endsection */
+
+  /* @section: #PROJECT DETAIL */
+
+  .project-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 20px;
+    margin-bottom: 25px;
+  }
+
+  .project-detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-orange-yellow-crayola);
+    font-size: var(--font-size-sm);
+    border-radius: 8px;
+    transition: var(--transition-1);
+  }
+
+  .project-detail-back:hover {
+    color: var(--color-light-gray);
+  }
+
+  .project-detail-back:hover svg {
+    transform: translateX(-3px);
+  }
+
+  .project-detail-back svg {
+    transition: var(--transition-1);
+  }
+
+  .project-detail .project-category {
+    background: var(--color-onyx);
+    border-radius: 8px;
+    padding: 4px 10px;
+  }
+
+  .project-detail-section {
+    margin-bottom: 30px;
+  }
+
+  .project-detail-title {
+    margin-bottom: 15px;
+  }
+
+  .project-detail-about p {
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    line-height: 1.6;
+  }
+
+  .project-detail-about p:not(:last-child) {
+    margin-bottom: 15px;
+  }
+
+  .project-detail-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 25px;
+  }
+
+  .project-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* First image (the real screenshot) leads the gallery at full width. */
+  .project-gallery-item:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .project-gallery-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--border-gradient-onyx);
+    box-shadow: var(--shadow-2);
+    cursor: zoom-in;
+  }
+
+  .project-gallery-item:first-child .project-gallery-btn {
+    aspect-ratio: 16 / 9;
+  }
+
+  .project-gallery-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-1);
+  }
+
+  .project-gallery-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-jet);
+    border-radius: inherit;
+    transition: var(--transition-1);
+  }
+
+  .project-gallery-btn:hover img,
+  .project-gallery-btn:focus-visible img {
+    transform: scale(1.04);
+  }
+
+  .project-gallery-btn:hover::after,
+  .project-gallery-btn:focus-visible::after {
+    border-color: var(--color-orange-yellow-crayola);
+  }
+
+  .project-gallery-btn:focus-visible {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 3px;
+  }
+
+  /* Full-screen gallery viewer (native <dialog>). */
+  dialog.lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: hsla(0, 0%, 5%, 0.94);
+    color: var(--color-white-2);
+    overscroll-behavior: contain;
+  }
+
+  dialog.lightbox[open] {
+    display: grid;
+    animation: fade 0.25s ease;
+  }
+
+  dialog.lightbox::backdrop {
+    background: transparent;
+  }
+
+  .lightbox-stage {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 64px 16px;
+  }
+
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: var(--shadow-5);
+  }
+
+  .lightbox-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    background: var(--color-jet);
+    color: var(--color-orange-yellow-crayola);
+    border: 1px solid var(--color-onyx);
+    border-radius: 12px;
+    font-size: 22px;
+    z-index: 1;
+    transition: var(--transition-1);
+  }
+
+  .lightbox-btn:hover,
+  .lightbox-btn:focus-visible {
+    background: var(--color-onyx);
+    color: var(--color-white-1);
+  }
+
+  .lightbox-btn:focus-visible {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 2px;
+  }
+
+  .lightbox-close {
+    top: 16px;
+    right: 16px;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    bottom: 16px;
+  }
+
+  .lightbox-prev {
+    left: 16px;
+  }
+
+  .lightbox-next {
+    right: 16px;
+  }
+
+  .lightbox-counter {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 580px) {
+    .project-detail-links {
+      grid-template-columns: repeat(2, max-content);
+    }
+
+    .project-detail-links .form-btn {
+      width: auto;
+    }
+
+    .project-gallery {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lightbox-stage {
+      padding: 64px 96px;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
   }
   /* @endsection */
 
@@ -1532,6 +1913,67 @@
     border-color: var(--color-orange-yellow-crayola);
   }
 
+  /* Subject select and consultation date/time: same field look, with a trailing icon. */
+  .form-subject {
+    margin-bottom: 25px;
+  }
+
+  .form-control-icon {
+    position: relative;
+  }
+
+  .form-control-icon select.form-input,
+  .form-control-icon input.form-input {
+    width: 100%;
+    padding-right: 48px;
+    appearance: none;
+    background: none;
+    cursor: pointer;
+    color-scheme: dark;
+  }
+
+  .form-control-icon select.form-input:disabled {
+    cursor: not-allowed;
+    color: var(--color-light-gray-70);
+  }
+
+  .form-control-icon option {
+    background: var(--color-eerie-black-2);
+    color: var(--color-white-2);
+  }
+
+  .form-control-icon svg {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: var(--color-orange-yellow-crayola);
+    pointer-events: none;
+  }
+
+  /* The native picker icon stays clickable but invisible; ours is drawn on top. */
+  .form-control-icon input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0;
+    width: 56px;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .form-label {
+    display: block;
+    margin: 0 0 8px 4px;
+    color: var(--color-light-gray);
+    font-size: var(--font-size-sx);
+  }
+
+  .form-hint {
+    margin: 6px 0 0 4px;
+    color: var(--color-light-gray-70);
+    font-size: var(--font-size-xx);
+  }
+
   textarea.form-input {
     min-height: 100px;
     height: 120px;
@@ -1603,6 +2045,22 @@
   /* @endsection */
 
   /* @section: #PRICING */
+
+  .pricing-intro {
+    margin-bottom: 30px;
+  }
+
+  .pricing-intro .about-text {
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 580px) {
+    /* Overrides the desktop .form-btn right alignment meant for the contact form. */
+    .pricing-intro .form-btn {
+      width: max-content;
+      margin-left: 0;
+    }
+  }
 
   .pricing-list {
     display: grid;
@@ -1706,10 +2164,6 @@
       --font-size-xx: 14px;
     }
 
-    .navbar-list {
-      gap: 8px;
-    }
-
     .navbar-link {
       font-weight: var(--font-weight-medium);
     }
@@ -1731,10 +2185,6 @@
 
     .navbar-link {
       --font-size-xx: 14px;
-    }
-
-    .navbar-list {
-      gap: 8px;
     }
 
     .navbar-link {
@@ -1880,16 +2330,13 @@
    * #NAVBAR
    */
 
-    .navbar {
-      border-radius: 20px 20px 0 0;
-    }
-
     .navbar-list {
-      gap: 20px;
+      gap: 4px;
     }
 
     .navbar-link {
       --font-size-xx: 14px;
+      padding: 10px 16px;
     }
 
     /**
@@ -2252,21 +2699,23 @@
    * NAVBAR
    */
 
+    /* Desktop: back to the tab attached to the top-right corner of the content card. */
     .navbar {
       position: absolute;
       bottom: auto;
       top: 0;
       left: auto;
       right: 0;
-      width: max-content;
+      transform: none;
+      max-width: none;
       border-radius: 0 20px;
       padding: 0 20px;
-      box-shadow: none;
+      box-shadow: var(--glass-highlight);
     }
 
     .navbar-list {
-      gap: 30px;
-      padding: 0 20px;
+      gap: 12px;
+      padding: 14px 8px;
     }
 
     .navbar-link {

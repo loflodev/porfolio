@@ -58,11 +58,13 @@ const checkWindow = async (
 };
 
 export const isRateLimited = async (
-  ip: string,
+  event: HandlerEvent,
   storeName = DEFAULT_RATE_LIMIT_STORE
 ): Promise<boolean> => {
+  const ip = resolveClientIp(event);
+
   try {
-    const store = getBlobStore(storeName);
+    const store = getBlobStore(storeName, event);
     const [minuteLimited, hourLimited] = await Promise.all([
       checkWindow(store, ip, MINUTE_MS, MAX_PER_MINUTE, 'm'),
       checkWindow(store, ip, HOUR_MS, MAX_PER_HOUR, 'h'),

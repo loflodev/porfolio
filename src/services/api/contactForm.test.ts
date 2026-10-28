@@ -8,7 +8,13 @@ vi.mock('./axiosInstance', () => ({ default: { post: vi.fn() } }));
 
 const post = vi.mocked(axiosInstance.post);
 
-const FORM = { fullName: 'Ada', email: 'ada@example.com', yourMessage: 'Hi & bye', website: '' };
+const FORM = {
+  fullName: 'Ada',
+  email: 'ada@example.com',
+  subject: 'joinTeam',
+  yourMessage: 'Hi & bye',
+  website: '',
+};
 
 afterEach(() => {
   post.mockReset();
@@ -21,7 +27,7 @@ describe('saveContactForm', () => {
     expect(await saveContactForm(FORM)).toEqual({ success: true });
     expect(post).toHaveBeenCalledWith(
       '/',
-      'form-name=contact&fullName=Ada&email=ada%40example.com&yourMessage=Hi+%26+bye&website=',
+      'form-name=contact&fullName=Ada&email=ada%40example.com&subject=joinTeam&yourMessage=Hi+%26+bye&website=',
       expect.objectContaining({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       })

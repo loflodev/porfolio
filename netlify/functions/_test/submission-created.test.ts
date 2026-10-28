@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { makeEvent, type HandlerResult } from './fakes';
+import { signConsultation } from '../_shared/consultation-signature';
 import { signPurchase } from '../_shared/purchase-signature';
 
 const { captureAndFlush, sendEmail } = vi.hoisted(() => ({
@@ -40,6 +41,60 @@ beforeEach(() => {
 afterEach(() => {
   vi.clearAllMocks();
   vi.unstubAllEnvs();
+});
+
+describe('submission-created: contact subjects', () => {
+  it('labels the email with the chosen subject', async () => {
+    await run({
+      form_name: 'contact',
+      data: { fullName: 'Ada', email: 'ada@example.com', subject: 'joinTeam', yourMessage: 'Hi' },
+    });
+
+    const email = sendEmail.mock.calls[0][0];
+    expect(email.subject).toBe('[Join the Team] New Message from Ada');
+    expect(email.text).toContain('Subject: Join the Team');
+  });
+
+  it('treats a missing or unknown subject as a general inquiry', async () => {
+    await run({
+      form_name: 'contact',
+      data: { fullName: 'Ada', email: 'ada@example.com', subject: '<b>x</b>', yourMessage: 'Hi' },
+    });
+
+    expect(sendEmail.mock.calls[0][0].subject).toBe('[General Inquiry] New Message from Ada');
+  });
+});
+
+describe('submission-created: consultation bookings', () => {
+  const booking = (overrides: Record<string, string> = {}) => ({
+    fullName: 'Ada',
+    email: 'ada@example.com',
+    subject: 'consultation',
+    consultationDate: '2026-10-27',
+    consultationTime: '09:00',
+    verificationToken: signConsultation('2026-10-27', '09:00', 'ada@example.com'),
+    ...overrides,
+  });
+
+  it('emails a signed booking with its date and time, replying to the visitor', async () => {
+    await run({ form_name: 'contact', data: booking() });
+
+    const email = sendEmail.mock.calls[0][0];
+    expect(email.subject).toBe('Consultation booked - 2026-10-27 09:00 - Ada');
+    expect(email.replyTo).toBe('ada@example.com');
+    expect(email.text).toContain('When: 2026-10-27 at 09:00 (America/Toronto)');
+  });
+
+  it('drops a booking posted straight to the form without a valid signature', async () => {
+    const result = await run({
+      form_name: 'contact',
+      data: booking({ consultationTime: '10:00' }),
+    });
+
+    expect(result.statusCode).toBe(200);
+    expect(sendEmail).not.toHaveBeenCalled();
+    expect(captureAndFlush).toHaveBeenCalled();
+  });
 });
 
 describe('submission-created: contact form', () => {

@@ -3,7 +3,7 @@ import type { Handler, HandlerEvent } from '@netlify/functions';
 import type Stripe from 'stripe';
 
 import { getHeaders } from './_shared/cors';
-import { isRateLimited, resolveClientIp } from './_shared/rate-limit';
+import { isRateLimited } from './_shared/rate-limit';
 import { captureAndFlush, initSentry } from './_shared/sentry';
 import { resolveSiteUrl } from './_shared/site-url';
 import { getStripeClient } from './_shared/stripe-client';
@@ -81,9 +81,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
     return jsonResponse(headers, HTTP_METHOD_NOT_ALLOWED, { error: 'Method Not Allowed' });
   }
 
-  const clientIp = resolveClientIp(event);
-
-  if (await isRateLimited(clientIp)) {
+  if (await isRateLimited(event)) {
     return jsonResponse(headers, HTTP_TOO_MANY_REQUESTS, {
       success: false,
       error: 'Too many requests',

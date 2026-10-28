@@ -1,7 +1,7 @@
 // Bakes each route's HTML (and its <head> meta) into dist/ after `vite build`, so crawlers and
 // link-preview scrapers that don't run JavaScript see real content and per-page tags.
 // Run after both the client build (dist/) and the SSR build (dist-ssr/).
-import { readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -61,7 +61,10 @@ const main = async () => {
   const template = await readFile(join(DIST, 'index.html'), 'utf8');
 
   for (const route of ROUTES) {
-    await writeFile(outputPathFor(route.path), fillTemplate(template, splitHoisted(await render(route.path))));
+    const outputPath = outputPathFor(route.path);
+    // Nested routes (/portfolio/<slug>) land in subfolders: dist/portfolio/<slug>.html.
+    await mkdir(dirname(outputPath), { recursive: true });
+    await writeFile(outputPath, fillTemplate(template, splitHoisted(await render(route.path))));
   }
 
   // Netlify serves 404.html with a 404 status for any path without a file.

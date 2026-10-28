@@ -1,4 +1,5 @@
 import { DEFAULT_STATE_NUMBER, POSTS } from './app.constants';
+import { getProjectPath, PROJECT_SLUGS } from './projectSlugs';
 
 export type SiteRoute = {
   path: string;
@@ -18,6 +19,7 @@ export const ROUTES: SiteRoute[] = [
   { path: '/blog', priority: 0.7, indexable: POSTS.length > DEFAULT_STATE_NUMBER },
   { path: '/pricing', priority: 0.6, indexable: true },
   { path: '/contact', priority: 0.6, indexable: true },
+  ...PROJECT_SLUGS.map((slug) => ({ path: getProjectPath(slug), priority: 0.5, indexable: true })),
 ];
 
 export const isIndexable = (path: string): boolean =>

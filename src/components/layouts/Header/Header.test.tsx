@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
 import Header from './Header';
+import { MAX_VISIBLE_ITEMS, splitMenu } from './useHeader';
 import { renderWithProviders } from '../../../test/renderWithProviders';
 
 describe('Header navigation', () => {
@@ -24,52 +24,31 @@ describe('Header navigation', () => {
     expect(screen.getByRole('link', { name: 'About' })).not.toHaveAttribute('aria-current');
   });
 
-  it('keeps the More menu links in the DOM (hidden) so crawlers can follow them', () => {
+  it('shows every page in the bar and no More menu when it fits', () => {
     renderWithProviders(<Header />);
 
-    expect(screen.getByRole('link', { name: 'Contact', hidden: true })).toHaveAttribute(
-      'href',
-      '/contact'
-    );
-    expect(screen.queryByRole('link', { name: 'Contact' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Pricing' })).toHaveAttribute('href', '/pricing');
+    expect(screen.queryByRole('link', { name: 'Contact', hidden: true })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'More' })).not.toBeInTheDocument();
+  });
+});
+
+describe('splitMenu', () => {
+  const items = (count: number) =>
+    Array.from({ length: count }, (_, index) => ({ label: `Page ${index}`, to: `/page-${index}` }));
+
+  it(`keeps up to ${MAX_VISIBLE_ITEMS} items in the bar`, () => {
+    const { menu, moreMenu } = splitMenu(items(MAX_VISIBLE_ITEMS));
+
+    expect(menu).toHaveLength(MAX_VISIBLE_ITEMS);
+    expect(moreMenu).toEqual([]);
   });
 
-  it('opens the More menu, closes it on Escape and returns focus', async () => {
-    const user = userEvent.setup();
-    renderWithProviders(<Header />);
-    const more = screen.getByRole('button', { name: 'More' });
+  it('moves the overflow into More, which takes the last slot', () => {
+    const all = items(MAX_VISIBLE_ITEMS + 2);
+    const { menu, moreMenu } = splitMenu(all);
 
-    expect(more).toHaveAttribute('aria-expanded', 'false');
-    expect(more).toHaveAttribute('aria-controls', 'navbar-more-menu');
-
-    await user.click(more);
-    expect(more).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('link', { name: 'Pricing' })).toBeVisible();
-
-    await user.keyboard('{Escape}');
-    expect(more).toHaveAttribute('aria-expanded', 'false');
-    expect(more).toHaveFocus();
-  });
-
-  it('closes the More menu after choosing a page and flags More as active', async () => {
-    const user = userEvent.setup();
-    renderWithProviders(<Header />);
-
-    await user.click(screen.getByRole('button', { name: 'More' }));
-    await user.click(screen.getByRole('link', { name: 'Pricing' }));
-
-    const more = screen.getByRole('button', { name: 'More' });
-    expect(more).toHaveAttribute('aria-expanded', 'false');
-    expect(more).toHaveClass('active');
-  });
-
-  it('closes the More menu on an outside click', async () => {
-    const user = userEvent.setup();
-    renderWithProviders(<Header />);
-
-    await user.click(screen.getByRole('button', { name: 'More' }));
-    await user.click(document.body);
-
-    expect(screen.getByRole('button', { name: 'More' })).toHaveAttribute('aria-expanded', 'false');
+    expect(menu).toEqual(all.slice(0, MAX_VISIBLE_ITEMS - 1));
+    expect(moreMenu).toEqual(all.slice(MAX_VISIBLE_ITEMS - 1));
   });
 });

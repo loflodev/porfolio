@@ -1,4 +1,4 @@
-import type { PlanSlug } from '../constants/app.constants';
+import type { ContactSubject, PlanSlug } from '../constants/app.constants';
 
 export type TopMenuType = {
   label: string;
@@ -43,13 +43,27 @@ export type PricingPlanType = {
   isFeatured?: boolean;
 };
 
+export type GalleryImageType = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
 export type PortfolioType = {
+  slug: string;
   title: string;
   category: string;
   image: string;
   alt: string;
   linkTo1: string;
   linkTo2: string;
+  /** One or two sentences shown on the card's hover panel. */
+  summary: string;
+  /** Detail page paragraphs. */
+  description: string[];
+  stacks: string[];
+  gallery: GalleryImageType[];
 };
 
 export type TabType = {
@@ -77,6 +91,7 @@ export type ErrorType =
   | 'errors.minLength'
   | 'errors.submitFailed'
   | 'errors.network'
+  | 'errors.slotTaken'
   | 'errors.unexpected';
 
 export type ValidationType = {
@@ -92,12 +107,19 @@ export type ModalType = {
   date?: string;
 };
 
-type ErrorMessageType = Record<'fullName' | 'email' | 'yourMessage', ErrorType | string>;
+type ErrorMessageType = Record<
+  'fullName' | 'email' | 'yourMessage' | 'consultationDate' | 'consultationTime',
+  ErrorType | string
+>;
 
 export type ContactFormInputType = {
   fullName: string;
   email: string;
+  subject: ContactSubject;
   yourMessage: string;
+  /** Consultation only: Montreal-local YYYY-MM-DD and HH:MM. */
+  consultationDate: string;
+  consultationTime: string;
   website: string; // Honeypot field - should always be empty
   errorMessage: ErrorMessageType;
 };
