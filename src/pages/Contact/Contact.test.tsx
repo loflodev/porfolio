@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Contact from './Contact';
 import {
@@ -32,7 +32,6 @@ const booked = (...times: string[]) => times.map((time) => ({ time, available: f
 const [, OPEN_DAY, FULL_DAY] = weekdaysInWindow();
 const SATURDAY = 6;
 const WEEK = 7;
-const LAZY_LOAD_MS = 5000;
 
 const dayButton = (date: string) =>
   document.querySelector<HTMLButtonElement>(`[data-day="${date}"] button`);
@@ -44,10 +43,7 @@ const openCalendarAt = async (user: ReturnType<typeof userEvent.setup>, date: st
   await waitFor(() => expect(fetchDates).toHaveBeenCalled());
   await user.click(dateField());
   await screen.findByRole('dialog', { name: 'Preferred date' });
-  // The calendar is lazy-loaded; the first import in a run can take over a second.
-  await waitFor(() => expect(document.querySelector('[data-day]')).not.toBeNull(), {
-    timeout: LAZY_LOAD_MS,
-  });
+  await waitFor(() => expect(document.querySelector('[data-day]')).not.toBeNull());
   if (!dayButton(date)) {
     await user.click(screen.getByRole('button', { name: /next month/i }));
   }
@@ -70,6 +66,12 @@ afterEach(() => {
   fetchSlots.mockReset();
   fetchDates.mockReset();
   book.mockReset();
+});
+
+// The calendar is lazy-loaded; importing it up front keeps that one-off cost (slow on CI) out
+// of whichever test opens it first.
+beforeAll(async () => {
+  await import('../../components/ui/Contact/ConsultationCalendar');
 });
 
 beforeEach(() => {

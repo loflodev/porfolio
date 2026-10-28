@@ -1,11 +1,14 @@
+import { es } from 'date-fns/locale/es';
+import { fr } from 'date-fns/locale/fr';
 import { useEffect, useRef, type ReactNode } from 'react';
 import { DayPicker, type Locale } from 'react-day-picker';
-import { enUS, es, fr } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
 
 import { fromIsoDate, toIsoDate } from '../../../utils/consultationDates';
 
-const CALENDAR_LOCALES: Record<string, Locale> = { en: enUS, es, fr };
+// Only the site's languages: `react-day-picker/locale` re-exports every date-fns locale. English
+// is DayPicker's default (undefined).
+const CALENDAR_LOCALES: Record<string, Locale> = { es, fr };
 const MONDAY = 1;
 const DAY_LABEL_FORMAT: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -60,7 +63,7 @@ const ConsultationCalendar = ({
         endMonth={fromIsoDate(max)}
         disabled={(day) => !bookableDates.has(toIsoDate(day))}
         weekStartsOn={MONDAY}
-        locale={CALENDAR_LOCALES[language] ?? enUS}
+        locale={CALENDAR_LOCALES[language]}
         labels={{ labelDayButton: (day) => dayLabel.format(day) }}
         footer={footer}
       />
