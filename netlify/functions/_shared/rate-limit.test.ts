@@ -41,6 +41,17 @@ afterEach(() => {
 });
 
 describe('isRateLimited', () => {
+  it('applies custom limits when given', async () => {
+    const limits = { perMinute: 2, perHour: 10 };
+    const event = fromIp(IP);
+    const results = [];
+    for (let i = 0; i < 3; i += 1) {
+      results.push(await isRateLimited(event, 'reads', limits));
+    }
+
+    expect(results).toEqual([false, false, true]);
+  });
+
   it(`allows ${MAX_PER_MINUTE} requests per minute and blocks the next`, async () => {
     const results = await hit(MAX_PER_MINUTE + 1);
 

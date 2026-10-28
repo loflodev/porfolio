@@ -1,26 +1,42 @@
-import type { ChangeEvent, FormEvent } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from 'react';
 import { IoCalendarOutline, IoChevronDown, IoPaperPlane } from 'react-icons/io5';
 import PulseLoader from 'react-spinners/PulseLoader';
 
 import {
   CONSULTATION_SUBJECT,
+  CONTACT_FORM_ID,
   CONTACT_SUBJECTS,
   MAX_EMAIL_LENGTH,
   MAX_MESSAGE_LENGTH,
   MAX_NAME_LENGTH,
 } from '../../../constants';
+import useEscapeKey from '../../../hooks/useEscapeKey';
+import useOutsideClick from '../../../hooks/useOutsideClick';
 import useTranslation from '../../../hooks/useTransalation';
+import type { BookableDatesStatus } from '../../../pages/Contact/useBookableDates';
 import type { SlotsStatus } from '../../../pages/Contact/useConsultationSlots';
+import type { ConsultationSlot } from '../../../services/api/consultation';
 import type { ContactFormInputType } from '../../../types';
-import { consultationDateRange } from '../../../utils/consultationDates';
+import { consultationDateRange, fromIsoDate } from '../../../utils/consultationDates';
 
-type ConsultationSlots = { slots: string[]; status: SlotsStatus };
+const ConsultationCalendar = lazy(() => import('./ConsultationCalendar'));
 
-const NO_SLOTS = 0;
+type ConsultationSlots = { slots: ConsultationSlot[]; status: SlotsStatus };
+type BookableDates = { dates: ReadonlySet<string>; status: BookableDatesStatus };
 
 type ContactFormProps = {
   data: ContactFormInputType;
   consultationSlots: ConsultationSlots;
+  bookableDates: BookableDates;
+  handleDateSelect: (date: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -60,43 +76,161 @@ const timePlaceholderKey = (hasDate: boolean, { slots, status }: ConsultationSlo
   if (!hasDate) return 'consultation.pickDateFirst';
   if (status === 'loading') return 'consultation.loadingTimes';
   if (status === 'error') return 'consultation.timesUnavailable';
-  return slots.length ? 'consultation.selectTime' : 'consultation.noTimes';
+  return slots.some((slot) => slot.available) ? 'consultation.selectTime' : 'consultation.noTimes';
+};
+
+// The calendar's live-region footer: progress while the open days load, or why they're a guess.
+const calendarStatusKey = (status: BookableDates['status']): string | null => {
+  if (status === 'loading') return 'consultation.loadingDays';
+  if (status === 'error') return 'consultation.daysUnavailable';
+  return null;
+};
+
+const LANGUAGE_PART = 0;
+
+const DATE_POPOVER_ID = 'contact-consultationDate-calendar';
+const SHORT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
+  weekday: 'short',
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+};
+
+// Tallest the popover gets (a six-week month plus the footer), to pick a side before it renders.
+const POPOVER_HEIGHT = 380;
+
+type PopoverPlacement = 'below' | 'above';
+
+// Below the field unless that would push past the bottom of the page (adding empty space) or
+// of the screen while there's room above.
+const popoverPlacement = (field: HTMLElement): PopoverPlacement => {
+  const rect = field.getBoundingClientRect();
+  const fitsAboveOnScreen = rect.top >= POPOVER_HEIGHT;
+  const fitsBelowOnScreen = window.innerHeight - rect.bottom >= POPOVER_HEIGHT;
+  const pageBottom = document.documentElement.scrollHeight;
+  const fitsBelowInPage = rect.bottom + window.scrollY + POPOVER_HEIGHT <= pageBottom;
+  const fitsAboveInPage = rect.top + window.scrollY >= POPOVER_HEIGHT;
+
+  if (fitsAboveOnScreen && !fitsBelowOnScreen) return 'above';
+  return !fitsBelowInPage && fitsAboveInPage ? 'above' : 'below';
+};
+
+// A field-styled button that opens the calendar in a popover; picking a day, Escape or a click
+// outside closes it and hands focus back to the button.
+const ConsultationDateField = ({
+  value,
+  error,
+  bookableDates,
+  handleDateSelect,
+}: {
+  value: string;
+  error: string;
+  bookableDates: BookableDates;
+  handleDateSelect: (date: string) => void;
+}) => {
+  const { t, getCurrentLanguage } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [placement, setPlacement] = useState<PopoverPlacement>('below');
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const { min, max } = consultationDateRange();
+  const statusKey = calendarStatusKey(bookableDates.status);
+  const language = getCurrentLanguage().split('-')[LANGUAGE_PART];
+
+  const closeAndRefocus = useCallback(() => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }, []);
+  const close = useCallback(() => setIsOpen(false), []);
+
+  useEscapeKey(closeAndRefocus, isOpen);
+  useOutsideClick(wrapperRef, close);
+
+  const toggle = () => {
+    if (!isOpen && triggerRef.current) {
+      setPlacement(popoverPlacement(triggerRef.current));
+    }
+    setIsOpen((open) => !open);
+  };
+
+  const selectDate = (date: string) => {
+    handleDateSelect(date);
+    closeAndRefocus();
+  };
+
+  return (
+    <div ref={wrapperRef} className="consultation-date">
+      <label htmlFor={fieldId('consultationDate')} className="form-label">
+        {t('consultation.date')}
+      </label>
+      <div className="date-anchor">
+        <div className="form-control-icon">
+          <button
+            ref={triggerRef}
+            id={fieldId('consultationDate')}
+            type="button"
+            className={`form-input max-input-heigth date-trigger ${value ? '' : 'is-empty'}`}
+            onClick={toggle}
+            aria-haspopup="dialog"
+            aria-expanded={isOpen}
+            aria-controls={DATE_POPOVER_ID}
+            {...errorProps('consultationDate', error)}
+          >
+            {value
+              ? new Intl.DateTimeFormat(language, SHORT_DATE_FORMAT).format(fromIsoDate(value))
+              : t('consultation.selectDate')}
+          </button>
+          <IoCalendarOutline aria-hidden="true" />
+        </div>
+        {isOpen && (
+          <div
+            id={DATE_POPOVER_ID}
+            role="dialog"
+            aria-label={t('consultation.date')}
+            className={`consultation-popover is-${placement}`}
+          >
+            <Suspense fallback={<p className="form-hint">{t('consultation.loadingDays')}</p>}>
+              <ConsultationCalendar
+                value={value}
+                onSelect={selectDate}
+                min={min}
+                max={max}
+                bookableDates={bookableDates.dates}
+                language={language}
+                footer={statusKey ? <p className="form-hint">{t(statusKey)}</p> : undefined}
+              />
+            </Suspense>
+          </div>
+        )}
+      </div>
+      <FieldError name="consultationDate" message={error} className="pl-4" />
+    </div>
+  );
 };
 
 const ConsultationFields = ({
   data,
   consultationSlots,
+  bookableDates,
   handleChange,
-}: Pick<ContactFormProps, 'data' | 'consultationSlots' | 'handleChange'>) => {
+  handleDateSelect,
+}: Pick<
+  ContactFormProps,
+  'data' | 'consultationSlots' | 'bookableDates' | 'handleChange' | 'handleDateSelect'
+>) => {
   const { t } = useTranslation();
   const errors = data.errorMessage;
-  const { min, max } = consultationDateRange();
-  const hasTimes =
-    consultationSlots.status === 'ready' && consultationSlots.slots.length > NO_SLOTS;
+  const isReady = consultationSlots.status === 'ready';
+  const hasOpenTime = isReady && consultationSlots.slots.some((slot) => slot.available);
 
   return (
     <div className="input-wrapper consultation-fields">
-      <div>
-        <label htmlFor={fieldId('consultationDate')} className="form-label">
-          {t('consultation.date')}
-        </label>
-        <div className="form-control-icon">
-          <input
-            id={fieldId('consultationDate')}
-            type="date"
-            name="consultationDate"
-            value={data.consultationDate}
-            onChange={handleChange}
-            className="form-input max-input-heigth"
-            min={min}
-            max={max}
-            aria-required="true"
-            {...errorProps('consultationDate', errors.consultationDate)}
-          />
-          <IoCalendarOutline aria-hidden="true" />
-        </div>
-        <FieldError name="consultationDate" message={errors.consultationDate} className="pl-4" />
-      </div>
+      <ConsultationDateField
+        value={data.consultationDate}
+        error={errors.consultationDate}
+        bookableDates={bookableDates}
+        handleDateSelect={handleDateSelect}
+      />
 
       <div>
         <label htmlFor={fieldId('consultationTime')} className="form-label">
@@ -109,7 +243,7 @@ const ConsultationFields = ({
             value={data.consultationTime}
             onChange={handleChange}
             className="form-input max-input-heigth"
-            disabled={!hasTimes}
+            disabled={!hasOpenTime}
             aria-required="true"
             aria-describedby={
               errors.consultationTime ? errorId('consultationTime') : 'contact-time-zone-hint'
@@ -119,10 +253,10 @@ const ConsultationFields = ({
             <option value="" disabled>
               {t(timePlaceholderKey(Boolean(data.consultationDate), consultationSlots))}
             </option>
-            {hasTimes &&
-              consultationSlots.slots.map((slot) => (
-                <option key={slot} value={slot}>
-                  {slot}
+            {isReady &&
+              consultationSlots.slots.map(({ time, available }) => (
+                <option key={time} value={time} disabled={!available}>
+                  {available ? time : `${time} — ${t('consultation.booked')}`}
                 </option>
               ))}
           </select>
@@ -140,8 +274,10 @@ const ConsultationFields = ({
 const ContactForm = ({
   data,
   consultationSlots,
+  bookableDates,
   handleSubmit,
   handleChange,
+  handleDateSelect,
   loading,
 }: ContactFormProps) => {
   const { t } = useTranslation();
@@ -149,7 +285,7 @@ const ContactForm = ({
   const isConsultation = data.subject === CONSULTATION_SUBJECT;
 
   return (
-    <section className="contact-form">
+    <section id={CONTACT_FORM_ID} className="contact-form">
       <h2 className="h3 form-title">{t('contactForm')}</h2>
 
       <form
@@ -242,7 +378,9 @@ const ContactForm = ({
           <ConsultationFields
             data={data}
             consultationSlots={consultationSlots}
+            bookableDates={bookableDates}
             handleChange={handleChange}
+            handleDateSelect={handleDateSelect}
           />
         ) : (
           <>

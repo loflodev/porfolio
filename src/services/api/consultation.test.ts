@@ -2,7 +2,7 @@ import { AxiosError, AxiosHeaders } from 'axios';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import axiosInstance from './axiosInstance';
-import { bookConsultation, fetchConsultationSlots } from './consultation';
+import { bookConsultation, fetchBookableDates, fetchConsultationSlots } from './consultation';
 
 vi.mock('./axiosInstance', () => ({ default: { get: vi.fn(), post: vi.fn() } }));
 
@@ -31,13 +31,30 @@ afterEach(() => {
 });
 
 describe('consultation API', () => {
-  it('fetches the open times of a date', async () => {
-    get.mockResolvedValue({ data: { date: '2030-01-07', slots: ['09:00'] } });
+  it('fetches the times of a date', async () => {
+    const slots = [{ time: '09:00', available: false }];
+    get.mockResolvedValue({ data: { date: '2030-01-07', slots } });
 
-    expect(await fetchConsultationSlots('2030-01-07')).toEqual(['09:00']);
+    expect(await fetchConsultationSlots('2030-01-07')).toEqual(slots);
     expect(get).toHaveBeenCalledWith('/.netlify/functions/consultation-slots', {
       params: { date: '2030-01-07' },
     });
+  });
+
+  it('rejects a body without a slots array', async () => {
+    get.mockResolvedValue({ data: '<!doctype html><html></html>' });
+
+    await expect(fetchConsultationSlots('2030-01-07')).rejects.toThrow();
+  });
+
+  it('fetches the bookable dates and rejects a malformed body', async () => {
+    get.mockResolvedValue({ data: { dates: ['2030-01-07'] } });
+
+    expect(await fetchBookableDates()).toEqual(['2030-01-07']);
+    expect(get).toHaveBeenCalledWith('/.netlify/functions/consultation-slots');
+
+    get.mockResolvedValue({ data: '<!doctype html>' });
+    await expect(fetchBookableDates()).rejects.toThrow();
   });
 
   it('books a consultation', async () => {

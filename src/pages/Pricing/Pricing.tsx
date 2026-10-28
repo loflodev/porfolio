@@ -23,7 +23,7 @@ const Pricing = () => {
       />
       <Section className="pricing-intro">
         <p className="about-text">{t('pricingPage.consultationText')}</p>
-        <Link className="form-btn" to="/contact">
+        <Link className="form-btn" to="/contact?subject=consultation">
           <IoCalendarOutline aria-hidden="true" />
           <span>{t('pricingPage.consultationCta')}</span>
         </Link>

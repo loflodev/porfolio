@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { fetchConsultationSlots } from '../../services/api/consultation';
+import { fetchConsultationSlots, type ConsultationSlot } from '../../services/api/consultation';
 
 const FIRST_LOAD = 0;
 const NEXT = 1;
 
 export type SlotsStatus = 'idle' | 'loading' | 'ready' | 'error';
 
-/** Loads the open consultation times for `date`; idle while there's no date. */
+/** Loads the consultation times of `date`, each marked available or not; idle without a date. */
 const useConsultationSlots = (date: string) => {
-  const [slots, setSlots] = useState<string[]>([]);
+  const [slots, setSlots] = useState<ConsultationSlot[]>([]);
   const [status, setStatus] = useState<SlotsStatus>('idle');
   const [reloadCount, setReloadCount] = useState(FIRST_LOAD);
 

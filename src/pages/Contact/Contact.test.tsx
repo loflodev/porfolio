@@ -1,21 +1,63 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Contact from './Contact';
-import { bookConsultation, fetchConsultationSlots } from '../../services/api/consultation';
+import {
+  bookConsultation,
+  fetchBookableDates,
+  fetchConsultationSlots,
+} from '../../services/api/consultation';
 import { saveContactForm } from '../../services/api/contactForm';
 import { renderWithProviders } from '../../test/renderWithProviders';
+import { fromIsoDate, toIsoDate, weekdaysInWindow } from '../../utils/consultationDates';
 
 vi.mock('../../services/api/contactForm', () => ({ saveContactForm: vi.fn() }));
 vi.mock('../../services/api/consultation', () => ({
   fetchConsultationSlots: vi.fn(),
+  fetchBookableDates: vi.fn(),
   bookConsultation: vi.fn(),
 }));
 
 const save = vi.mocked(saveContactForm);
 const fetchSlots = vi.mocked(fetchConsultationSlots);
 const book = vi.mocked(bookConsultation);
+const fetchDates = vi.mocked(fetchBookableDates);
+
+const open = (...times: string[]) => times.map((time) => ({ time, available: true }));
+const booked = (...times: string[]) => times.map((time) => ({ time, available: false }));
+
+// The calendar opens on the current month; the second weekday of the window is always in it or
+// one "next month" click away, so tests pick that one.
+const [, OPEN_DAY, FULL_DAY] = weekdaysInWindow();
+const SATURDAY = 6;
+const WEEK = 7;
+const LAZY_LOAD_MS = 5000;
+
+const dayButton = (date: string) =>
+  document.querySelector<HTMLButtonElement>(`[data-day="${date}"] button`);
+
+const dateField = () => screen.getByRole('button', { name: /^Preferred date/ });
+
+// Opens the calendar popover from the date field and shows the month holding `date`.
+const openCalendarAt = async (user: ReturnType<typeof userEvent.setup>, date: string) => {
+  await waitFor(() => expect(fetchDates).toHaveBeenCalled());
+  await user.click(dateField());
+  await screen.findByRole('dialog', { name: 'Preferred date' });
+  // The calendar is lazy-loaded; the first import in a run can take over a second.
+  await waitFor(() => expect(document.querySelector('[data-day]')).not.toBeNull(), {
+    timeout: LAZY_LOAD_MS,
+  });
+  if (!dayButton(date)) {
+    await user.click(screen.getByRole('button', { name: /next month/i }));
+  }
+};
+
+const pickDay = async (user: ReturnType<typeof userEvent.setup>, date: string) => {
+  await openCalendarAt(user, date);
+  await waitFor(() => expect(dayButton(date)).toBeEnabled());
+  await user.click(dayButton(date) as HTMLButtonElement);
+};
 
 const fill = async (user: ReturnType<typeof userEvent.setup>) => {
   await user.type(screen.getByLabelText('Full Name'), 'Ada Lovelace');
@@ -26,7 +68,13 @@ const fill = async (user: ReturnType<typeof userEvent.setup>) => {
 afterEach(() => {
   save.mockReset();
   fetchSlots.mockReset();
+  fetchDates.mockReset();
   book.mockReset();
+});
+
+beforeEach(() => {
+  fetchDates.mockResolvedValue([OPEN_DAY]);
+  fetchSlots.mockResolvedValue([]);
 });
 
 const chooseConsultation = async (user: ReturnType<typeof userEvent.setup>) => {
@@ -36,6 +84,23 @@ const chooseConsultation = async (user: ReturnType<typeof userEvent.setup>) => {
 };
 
 describe('Contact page', () => {
+  it('preselects the subject from the query string and scrolls to the form', async () => {
+    fetchSlots.mockResolvedValue([]);
+    const scrollIntoView = vi.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+    renderWithProviders(<Contact />, { route: '/contact?subject=consultation' });
+
+    await waitFor(() => expect(screen.getByLabelText('Subject')).toHaveValue('consultation'));
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    delete (Element.prototype as Partial<Element>).scrollIntoView;
+  });
+
+  it('ignores an unknown subject in the query string', () => {
+    renderWithProviders(<Contact />, { route: '/contact?subject=nope' });
+
+    expect(screen.getByLabelText('Subject')).toHaveValue('general');
+  });
+
   it('labels every field and titles the map', () => {
     renderWithProviders(<Contact />);
 
@@ -145,37 +210,99 @@ describe('Contact page', () => {
     expect(save).toHaveBeenCalledWith(expect.objectContaining({ subject: 'reportIssue' }));
   });
 
-  it('swaps the message for a date and the open times of that day on Consultation', async () => {
+  it('swaps the message for a calendar and the times of the picked day on Consultation', async () => {
     const user = userEvent.setup();
-    fetchSlots.mockResolvedValue(['09:00', '09:30']);
+    fetchSlots.mockResolvedValue([...booked('09:00'), ...open('09:30')]);
     renderWithProviders(<Contact />);
 
     await chooseConsultation(user);
 
     expect(screen.queryByLabelText('Your Message')).not.toBeInTheDocument();
+    expect(dateField()).toHaveAttribute('aria-expanded', 'false');
+    expect(dateField()).toHaveTextContent('Select a date');
+    expect(screen.queryByRole('dialog', { name: 'Preferred date' })).not.toBeInTheDocument();
     const time = screen.getByLabelText('Preferred time');
     expect(time).toBeDisabled();
     expect(time).toHaveDisplayValue('Pick a date first');
 
-    await user.type(screen.getByLabelText('Preferred date'), '2030-01-07');
+    await pickDay(user, OPEN_DAY);
 
+    expect(screen.queryByRole('dialog', { name: 'Preferred date' })).not.toBeInTheDocument();
+    expect(dateField()).toHaveFocus();
+    expect(dateField()).not.toHaveTextContent('Select a date');
     await waitFor(() => expect(time).toBeEnabled());
-    expect(fetchSlots).toHaveBeenLastCalledWith('2030-01-07');
-    expect(screen.getByRole('option', { name: '09:30' })).toBeInTheDocument();
+    expect(fetchSlots).toHaveBeenLastCalledWith(OPEN_DAY);
+    expect(screen.getByRole('option', { name: '09:30' })).toBeEnabled();
+    expect(screen.getByRole('option', { name: '09:00 — booked' })).toBeDisabled();
     expect(time).toHaveAccessibleDescription(/Montreal time/);
   });
 
-  it('says when a day has no open times', async () => {
+  it('disables weekends and days the server says are fully booked', async () => {
     const user = userEvent.setup();
-    fetchSlots.mockResolvedValue([]);
     renderWithProviders(<Contact />);
 
     await chooseConsultation(user);
-    await user.type(screen.getByLabelText('Preferred date'), '2030-01-05');
+    await openCalendarAt(user, OPEN_DAY);
+
+    await waitFor(() => expect(dayButton(OPEN_DAY)).toBeEnabled());
+    expect(dayButton(FULL_DAY)).toBeDisabled();
+    const saturday = fromIsoDate(OPEN_DAY);
+    saturday.setDate(saturday.getDate() + ((SATURDAY - saturday.getDay() + WEEK) % WEEK));
+    if (!dayButton(toIsoDate(saturday))) {
+      await user.click(screen.getByRole('button', { name: /next month/i }));
+    }
+    expect(dayButton(toIsoDate(saturday))).toBeDisabled();
+  });
+
+  it('closes the calendar on Escape and on a click outside', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await openCalendarAt(user, OPEN_DAY);
+    expect(dateField()).toHaveAttribute('aria-expanded', 'true');
+    await waitFor(() => expect(document.activeElement).toHaveClass('rdp-day_button'));
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog', { name: 'Preferred date' })).not.toBeInTheDocument();
+    expect(dateField()).toHaveFocus();
+
+    await user.click(dateField());
+    expect(await screen.findByRole('dialog', { name: 'Preferred date' })).toBeInTheDocument();
+    await user.click(screen.getByLabelText('Full Name'));
+    expect(screen.queryByRole('dialog', { name: 'Preferred date' })).not.toBeInTheDocument();
+  });
+
+  it('falls back to weekdays when the open days cannot be loaded', async () => {
+    const user = userEvent.setup();
+    fetchDates.mockRejectedValue(new Error('offline'));
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await openCalendarAt(user, FULL_DAY);
 
     expect(
-      await screen.findByRole('option', { name: 'No times available that day (weekdays only)' })
+      await screen.findByText(/Couldn't check which days are fully booked/)
     ).toBeInTheDocument();
+    await waitFor(() => expect(dayButton(FULL_DAY)).toBeEnabled());
+    await user.click(dayButton(FULL_DAY) as HTMLButtonElement);
+    expect(fetchSlots).toHaveBeenLastCalledWith(FULL_DAY);
+  });
+
+  it('says when a day has no times left', async () => {
+    const user = userEvent.setup();
+    fetchSlots.mockResolvedValue(booked('09:00'));
+    renderWithProviders(<Contact />);
+
+    await chooseConsultation(user);
+    await pickDay(user, OPEN_DAY);
+
+    expect(
+      await screen.findByRole('option', {
+        name: 'No times left that day. Please pick another date.',
+      })
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Preferred time')).toBeDisabled();
   });
 
   it('requires a date and a time for a consultation', async () => {
@@ -185,9 +312,7 @@ describe('Contact page', () => {
     await chooseConsultation(user);
     await user.click(screen.getByRole('button', { name: 'Book Consultation' }));
 
-    expect(screen.getByLabelText('Preferred date')).toHaveAccessibleDescription(
-      'This field is required'
-    );
+    expect(dateField()).toHaveAccessibleDescription('This field is required');
     expect(screen.getByLabelText('Preferred time')).toHaveAttribute('aria-invalid', 'true');
     expect(book).not.toHaveBeenCalled();
     expect(save).not.toHaveBeenCalled();
@@ -195,12 +320,12 @@ describe('Contact page', () => {
 
   it('books the consultation and confirms the date and time', async () => {
     const user = userEvent.setup();
-    fetchSlots.mockResolvedValue(['09:00', '09:30']);
+    fetchSlots.mockResolvedValue(open('09:00', '09:30'));
     book.mockResolvedValue({ success: true });
     renderWithProviders(<Contact />);
 
     await chooseConsultation(user);
-    await user.type(screen.getByLabelText('Preferred date'), '2030-01-07');
+    await pickDay(user, OPEN_DAY);
     await waitFor(() => expect(screen.getByLabelText('Preferred time')).toBeEnabled());
     await user.selectOptions(screen.getByLabelText('Preferred time'), '09:30');
     await user.click(screen.getByRole('button', { name: 'Book Consultation' }));
@@ -208,35 +333,37 @@ describe('Contact page', () => {
     expect(book).toHaveBeenCalledWith({
       fullName: 'Ada Lovelace',
       email: 'ada@example.com',
-      consultationDate: '2030-01-07',
+      consultationDate: OPEN_DAY,
       consultationTime: '09:30',
       website: '',
     });
     expect(save).not.toHaveBeenCalled();
     const dialog = await screen.findByRole('dialog', { name: 'Consultation booked!' });
-    expect(dialog).toHaveTextContent('2030-01-07 at 09:30');
+    expect(dialog).toHaveTextContent(`${OPEN_DAY} at 09:30`);
     await waitFor(() => expect(screen.getByLabelText('Subject')).toHaveValue('general'));
   });
 
-  it('asks for another time and reloads the times when the slot was just taken', async () => {
+  it('asks for another time and reloads times and days when the slot was just taken', async () => {
     const user = userEvent.setup();
-    fetchSlots.mockResolvedValue(['09:00', '09:30']);
+    fetchSlots.mockResolvedValue(open('09:00', '09:30'));
     book.mockResolvedValue({ success: false, error: 'errors.slotTaken' });
     renderWithProviders(<Contact />);
 
     await chooseConsultation(user);
-    await user.type(screen.getByLabelText('Preferred date'), '2030-01-07');
+    await pickDay(user, OPEN_DAY);
     await waitFor(() => expect(screen.getByLabelText('Preferred time')).toBeEnabled());
     await user.selectOptions(screen.getByLabelText('Preferred time'), '09:30');
-    fetchSlots.mockResolvedValue(['09:00']);
+    fetchSlots.mockResolvedValue([...open('09:00'), ...booked('09:30')]);
+    const dateLoads = fetchDates.mock.calls.length;
     await user.click(screen.getByRole('button', { name: 'Book Consultation' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Sorry, that time was just booked. Please pick another one.'
     );
     await waitFor(() =>
-      expect(screen.queryByRole('option', { name: '09:30' })).not.toBeInTheDocument()
+      expect(screen.getByRole('option', { name: '09:30 — booked' })).toBeDisabled()
     );
     expect(screen.getByLabelText('Preferred time')).toHaveValue('');
+    expect(fetchDates.mock.calls.length).toBeGreaterThan(dateLoads);
   });
 });

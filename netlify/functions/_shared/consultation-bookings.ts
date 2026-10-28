@@ -36,6 +36,28 @@ export const getTakenSlots = async (event: HandlerEvent, date: string): Promise<
   return new Set(Object.keys(bookings));
 };
 
+/**
+ * Booked times of every day from `fromDate` (YYYY-MM-DD) on, keyed by date. Only days that have
+ * a bookings blob are read; past days are skipped.
+ */
+export const getTakenSlotsByDate = async (
+  event: HandlerEvent,
+  fromDate: string
+): Promise<Map<string, Set<string>>> => {
+  const store = getBlobStore(BOOKINGS_STORE, event);
+  const { blobs } = await store.list();
+  const days = await Promise.all(
+    blobs
+      .filter(({ key }) => key >= fromDate)
+      .map(async ({ key }) => {
+        const { bookings } = await readDay(store, key);
+        return [key, new Set(Object.keys(bookings))] as const;
+      })
+  );
+
+  return new Map(days);
+};
+
 /** Reserves a slot; false when it's already taken. Throws if the store stays contended. */
 export const reserveSlot = async (
   event: HandlerEvent,

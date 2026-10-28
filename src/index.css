@@ -1923,7 +1923,8 @@
   }
 
   .form-control-icon select.form-input,
-  .form-control-icon input.form-input {
+  .form-control-icon input.form-input,
+  .form-control-icon button.form-input {
     width: 100%;
     padding-right: 48px;
     appearance: none;
@@ -2928,4 +2929,113 @@
   /* @endsection */
 
   /* @endsection Responsive */
+}
+
+/* Consultation date: a field-styled button opening the calendar in a popover under it. */
+.consultation-date {
+  position: relative;
+}
+
+.date-trigger {
+  text-align: left;
+}
+
+.date-trigger.is-empty {
+  color: var(--color-light-gray-70);
+}
+
+/* Anchors the popover to the field itself (not the label or error), above or below it. */
+.date-anchor {
+  position: relative;
+}
+
+/* Out of the page flow, so it floats over the content instead of making the page taller. */
+.consultation-popover {
+  position: absolute;
+  left: 0;
+  z-index: 20;
+  max-width: 100%;
+  border-radius: 14px;
+  background: var(--color-eerie-black-2);
+  box-shadow: var(--shadow-2);
+}
+
+.consultation-popover.is-below {
+  top: calc(100% + 8px);
+}
+
+.consultation-popover.is-above {
+  bottom: calc(100% + 8px);
+}
+
+/* Consultation calendar (react-day-picker). Its stylesheet is unlayered, so this theme is too. */
+.consultation-calendar.rdp-root {
+  --rdp-accent-color: var(--color-orange-yellow-crayola);
+  --rdp-accent-background-color: hsla(45, 100%, 72%, 0.12);
+  --rdp-today-color: var(--color-orange-yellow-crayola);
+  --rdp-day-width: 40px;
+  --rdp-day-height: 40px;
+  --rdp-day_button-width: 38px;
+  --rdp-day_button-height: 38px;
+  --rdp-nav-height: 2.5rem;
+  --rdp-disabled-opacity: 1;
+  --rdp-weekday-opacity: 1;
+
+  width: max-content;
+  max-width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-jet);
+  border-radius: 14px;
+  color: var(--color-white-2);
+  font-size: var(--font-size-sm);
+}
+
+.consultation-calendar .rdp-caption_label {
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+}
+
+.consultation-calendar .rdp-weekday {
+  color: var(--color-light-gray-70);
+  font-size: var(--font-size-xx);
+  text-transform: uppercase;
+}
+
+.consultation-calendar .rdp-chevron {
+  fill: var(--color-orange-yellow-crayola);
+}
+
+.consultation-calendar .rdp-day:not(.rdp-disabled, .rdp-selected) .rdp-day_button:hover {
+  background: var(--rdp-accent-background-color);
+}
+
+.consultation-calendar .rdp-selected {
+  font-size: inherit;
+}
+
+.consultation-calendar .rdp-selected .rdp-day_button {
+  background: var(--color-orange-yellow-crayola);
+  color: var(--color-smoky-black);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Unavailable days: dimmed (not via opacity, so axe can still measure contrast) and struck. */
+.consultation-calendar .rdp-disabled .rdp-day_button {
+  color: hsl(0, 0%, 52%);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.consultation-calendar .rdp-footer {
+  margin-top: 8px;
+}
+
+@media (max-width: 360px) {
+  .consultation-calendar.rdp-root {
+    --rdp-day-width: 36px;
+    --rdp-day-height: 36px;
+    --rdp-day_button-width: 34px;
+    --rdp-day_button-height: 34px;
+    padding: 10px;
+  }
 }

@@ -36,7 +36,7 @@ describe('Pricing page', () => {
     expect(screen.getByText(/requirements or scope/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Book a free consultation' })).toHaveAttribute(
       'href',
-      '/contact'
+      '/contact?subject=consultation'
     );
   });
 

@@ -1,7 +1,15 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
+import useBookableDates from './useBookableDates';
 import useConsultationSlots from './useConsultationSlots';
-import { CONSULTATION_SUBJECT, CONTACT_FORM_DEFAULT } from '../../constants';
+import {
+  CONSULTATION_SUBJECT,
+  CONTACT_FORM_DEFAULT,
+  CONTACT_FORM_ID,
+  CONTACT_SUBJECTS,
+  type ContactSubject,
+} from '../../constants';
 import useMainContext from '../../hooks/useMainContext';
 import useTranslation from '../../hooks/useTransalation';
 import { bookConsultation } from '../../services/api/consultation';
@@ -107,6 +115,16 @@ const applyFieldChange = (
     ? { ...prev, consultationDate: value, consultationTime: '' }
     : { ...prev, [name]: value };
 
+const isContactSubject = (value: string | null): value is ContactSubject =>
+  CONTACT_SUBJECTS.some((subject) => subject === value);
+
+const scrollToForm = () => {
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  document
+    .getElementById(CONTACT_FORM_ID)
+    ?.scrollIntoView?.({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+};
+
 const useContact = () => {
   const { t } = useTranslation();
   const { showModal, toggleModal, modalData, handleModalData } = useMainContext();
@@ -116,6 +134,19 @@ const useContact = () => {
   const consultationSlots = useConsultationSlots(
     isConsultation(contactFormInput) ? contactFormInput.consultationDate : ''
   );
+  const bookableDates = useBookableDates(isConsultation(contactFormInput));
+
+  const [searchParams] = useSearchParams();
+  const requestedSubject = searchParams.get('subject');
+
+  // Links like /contact?subject=consultation preselect the subject and bring the form into view.
+  // Applied after mount so the prerendered (default) form hydrates without a mismatch.
+  useEffect(() => {
+    if (!isContactSubject(requestedSubject)) return;
+
+    setContactFormInput((prev) => ({ ...prev, subject: requestedSubject }));
+    scrollToForm();
+  }, [requestedSubject]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -123,6 +154,10 @@ const useContact = () => {
     const { name, value } = e.target;
 
     setContactFormInput((prev) => applyFieldChange(prev, name, value));
+  };
+
+  const handleDateSelect = (date: string) => {
+    setContactFormInput((prev) => applyFieldChange(prev, 'consultationDate', date));
   };
 
   const inputValidation = () => {
@@ -173,6 +208,7 @@ const useContact = () => {
 
     if (error === 'errors.slotTaken') {
       consultationSlots.reload();
+      bookableDates.reload();
     }
 
     const field = isConsultation(submitted) ? 'consultationTime' : 'yourMessage';
@@ -211,11 +247,13 @@ const useContact = () => {
   return {
     contactFormInput,
     consultationSlots,
+    bookableDates,
     showModal,
     toggleModal,
     modalData,
     handleModalData,
     handleChange,
+    handleDateSelect,
     handleSubmit,
     isLoading,
     setIsLoading,

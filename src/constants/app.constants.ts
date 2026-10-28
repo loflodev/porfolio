@@ -17,6 +17,8 @@ export const CONTACT_SUBJECTS = ['general', 'consultation', 'joinTeam', 'reportI
 export type ContactSubject = (typeof CONTACT_SUBJECTS)[number];
 export const DEFAULT_CONTACT_SUBJECT: ContactSubject = 'general';
 export const CONSULTATION_SUBJECT: ContactSubject = 'consultation';
+// Anchor for links that should land on the contact form (e.g. /contact?subject=consultation).
+export const CONTACT_FORM_ID = 'contact-form';
 
 // Consultation booking rules shared with netlify/functions/_shared/consultation-slots.ts:
 // times are Montreal local time, bookable from today up to this many days ahead.

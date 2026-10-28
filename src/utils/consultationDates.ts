@@ -19,3 +19,38 @@ export const consultationDateRange = (now = Date.now()) => ({
   min: montrealDate.format(now),
   max: montrealDate.format(now + CONSULTATION_WINDOW_DAYS * DAY_MS),
 });
+
+const TWO_DIGITS = 2;
+const MONTH_OFFSET = 1;
+const SATURDAY = 6;
+const SUNDAY = 0;
+const DAY_STEP = 1;
+
+const pad = (value: number) => String(value).padStart(TWO_DIGITS, '0');
+
+/** A calendar day (as the date picker hands it, in local time) as YYYY-MM-DD. */
+export const toIsoDate = (day: Date): string =>
+  `${day.getFullYear()}-${pad(day.getMonth() + MONTH_OFFSET)}-${pad(day.getDate())}`;
+
+/** A YYYY-MM-DD date as a local-time Date at midnight, for the date picker. */
+export const fromIsoDate = (date: string): Date => {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - MONTH_OFFSET, day);
+};
+
+/**
+ * Weekdays of the booking window, used when the server's list of bookable dates can't be loaded.
+ * The times of a picked day still come from the server.
+ */
+export const weekdaysInWindow = (now = Date.now()): string[] => {
+  const { min, max } = consultationDateRange(now);
+  const dates: string[] = [];
+
+  for (let day = fromIsoDate(min); toIsoDate(day) <= max; day.setDate(day.getDate() + DAY_STEP)) {
+    const weekday = day.getDay();
+    if (weekday !== SATURDAY && weekday !== SUNDAY) {
+      dates.push(toIsoDate(day));
+    }
+  }
+  return dates;
+};

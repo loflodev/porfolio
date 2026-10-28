@@ -16,6 +16,10 @@ const MAX_CAS_ATTEMPTS = 5;
 const ATTEMPT_STEP = 1;
 
 type WindowCount = { count: number };
+export type RateLimits = { perMinute: number; perHour: number };
+
+// Sized for checkout; read-only endpoints that a visitor calls repeatedly pass looser limits.
+const DEFAULT_LIMITS: RateLimits = { perMinute: MAX_PER_MINUTE, perHour: MAX_PER_HOUR };
 type Store = ReturnType<typeof getBlobStore>;
 
 // A plain get-then-set would let concurrent requests from the same IP all read the same stale
@@ -59,15 +63,16 @@ const checkWindow = async (
 
 export const isRateLimited = async (
   event: HandlerEvent,
-  storeName = DEFAULT_RATE_LIMIT_STORE
+  storeName = DEFAULT_RATE_LIMIT_STORE,
+  { perMinute, perHour }: RateLimits = DEFAULT_LIMITS
 ): Promise<boolean> => {
   const ip = resolveClientIp(event);
 
   try {
     const store = getBlobStore(storeName, event);
     const [minuteLimited, hourLimited] = await Promise.all([
-      checkWindow(store, ip, MINUTE_MS, MAX_PER_MINUTE, 'm'),
-      checkWindow(store, ip, HOUR_MS, MAX_PER_HOUR, 'h'),
+      checkWindow(store, ip, MINUTE_MS, perMinute, 'm'),
+      checkWindow(store, ip, HOUR_MS, perHour, 'h'),
     ]);
 
     return minuteLimited || hourLimited;

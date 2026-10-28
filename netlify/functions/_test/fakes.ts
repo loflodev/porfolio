@@ -34,6 +34,7 @@ export const createFakeBlobStore = () => {
       entries.set(key, { data: value, etag });
       return { modified: true, etag };
     },
+    list: async () => ({ blobs: [...entries.keys()].map((key) => ({ key })), directories: [] }),
     delete: async (key: string) => {
       entries.delete(key);
     },

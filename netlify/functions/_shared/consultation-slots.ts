@@ -21,6 +21,8 @@ const MONTH_OFFSET = 1;
 const TWO_DIGITS = 2;
 const ISO_DATE_START = 0;
 const ISO_DATE_LENGTH = 10;
+const DAY_STEP = 1;
+const NOTHING_TAKEN: ReadonlySet<string> = new Set();
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_PATTERN = /^\d{2}:\d{2}$/;
@@ -113,16 +115,49 @@ export const listDaySlots = (date: string): string[] => {
   return slots;
 };
 
-/** Slots of `date` that are still open: in the booking window, not too soon and not taken. */
-export const availableSlots = (date: string, now: number, taken: ReadonlySet<string>): string[] => {
+export type ScheduledSlot = { time: string; available: boolean };
+
+/**
+ * Every slot of `date` with whether it can still be booked (not taken, not too soon); none on
+ * weekends or outside the booking window.
+ */
+export const daySchedule = (
+  date: string,
+  now: number,
+  taken: ReadonlySet<string>
+): ScheduledSlot[] => {
   if (!isValidDate(date) || !isWithinWindow(date, now)) {
     return [];
   }
 
   const earliestStart = now + MIN_LEAD_MINUTES * MINUTE_MS;
-  return listDaySlots(date).filter(
-    (time) => !taken.has(time) && slotStartsAt(date, time) >= earliestStart
-  );
+  return listDaySlots(date).map((time) => ({
+    time,
+    available: !taken.has(time) && slotStartsAt(date, time) >= earliestStart,
+  }));
+};
+
+/** Slots of `date` that are still open: in the booking window, not too soon and not taken. */
+export const availableSlots = (date: string, now: number, taken: ReadonlySet<string>): string[] =>
+  daySchedule(date, now, taken)
+    .filter((slot) => slot.available)
+    .map((slot) => slot.time);
+
+/** Days of the booking window with at least one open slot, oldest first. */
+export const bookableDates = (
+  now: number,
+  takenByDate: ReadonlyMap<string, ReadonlySet<string>>
+): string[] => {
+  const firstDay = parseDate(todayInZone(now));
+  const dates: string[] = [];
+
+  for (let offset = 0; offset <= CONSULTATION_WINDOW_DAYS; offset += DAY_STEP) {
+    const date = formatDate(firstDay + offset * DAY_MS);
+    if (availableSlots(date, now, takenByDate.get(date) ?? NOTHING_TAKEN).length) {
+      dates.push(date);
+    }
+  }
+  return dates;
 };
 
 /** Whether a slot follows the booking rules, ignoring whether someone already took it. */

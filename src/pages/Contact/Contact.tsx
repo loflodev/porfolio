@@ -14,7 +14,9 @@ const Contact = () => {
     modalData,
     contactFormInput,
     consultationSlots,
+    bookableDates,
     handleChange,
+    handleDateSelect,
     handleSubmit,
     isLoading,
   } = useContact();
@@ -31,7 +33,9 @@ const Contact = () => {
       <ContactForm
         data={contactFormInput}
         consultationSlots={consultationSlots}
+        bookableDates={bookableDates}
         handleChange={handleChange}
+        handleDateSelect={handleDateSelect}
         loading={isLoading}
         handleSubmit={handleSubmit}
       />
