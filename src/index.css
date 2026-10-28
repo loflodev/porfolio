@@ -506,7 +506,7 @@
       inset 0 1px 0 hsla(0, 0%, 100%, 0.35), inset 0 -1px 1px hsla(0, 0%, 0%, 0.25),
       0 0 0 1px hsla(0, 0%, 100%, 0.1), 0 4px 12px hsla(0, 0%, 0%, 0.3);
     --glass-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --navbar-gutter: 16px;
+    --navbar-gutter: 12px;
   }
 
   /* Mobile/tablet: a pill floating above the bottom edge, detached from the sides. */
@@ -515,8 +515,8 @@
     bottom: max(var(--navbar-gutter), env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%);
-    width: max-content;
-    max-width: calc(100% - 2 * var(--navbar-gutter));
+    /* Phones: nearly edge to edge, links spread evenly; from 580px it hugs its links. */
+    width: calc(100% - 2 * var(--navbar-gutter));
     background: var(--glass-bar-bg);
     -webkit-backdrop-filter: var(--glass-blur);
     backdrop-filter: var(--glass-blur);
@@ -532,7 +532,7 @@
   .navbar-list {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 2px;
     padding: 6px;
@@ -2330,7 +2330,14 @@
    * #NAVBAR
    */
 
+    .navbar {
+      --navbar-gutter: 16px;
+      width: max-content;
+      max-width: calc(100% - 2 * var(--navbar-gutter));
+    }
+
     .navbar-list {
+      justify-content: center;
       gap: 4px;
     }
 
