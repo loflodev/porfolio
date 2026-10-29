@@ -49,19 +49,12 @@ type FieldName = keyof ContactFormInputType['errorMessage'];
 const fieldId = (name: FieldName) => `contact-${name}`;
 const errorId = (name: FieldName) => `contact-${name}-error`;
 
-const FieldError = ({
-  name,
-  message,
-  className,
-}: {
-  name: FieldName;
-  message?: string;
-  className?: string;
-}) => {
+// Errors use the focus accent: the dark page makes the default text color unreadable.
+const FieldError = ({ name, message }: { name: FieldName; message?: string }) => {
   const { t } = useTranslation();
 
   return message ? (
-    <p id={errorId(name)} className={className} role="alert">
+    <p id={errorId(name)} className="pl-4 text-orange-yellow-crayola" role="alert">
       {t(message)}
     </p>
   ) : null;
@@ -203,7 +196,7 @@ const ConsultationDateField = ({
           </div>
         )}
       </div>
-      <FieldError name="consultationDate" message={error} className="pl-4" />
+      <FieldError name="consultationDate" message={error} />
     </div>
   );
 };
@@ -265,7 +258,7 @@ const ConsultationFields = ({
         <p id="contact-time-zone-hint" className="form-hint">
           {t('consultation.timeZoneHint')}
         </p>
-        <FieldError name="consultationTime" message={errors.consultationTime} className="pl-4" />
+        <FieldError name="consultationTime" message={errors.consultationTime} />
       </div>
     </div>
   );
@@ -327,7 +320,7 @@ const ContactForm = ({
               {...errorProps('fullName', errors.fullName)}
               data-form-input
             />
-            <FieldError name="fullName" message={errors.fullName} className="pl-4 text-white-2" />
+            <FieldError name="fullName" message={errors.fullName} />
           </div>
 
           <div>
@@ -348,7 +341,7 @@ const ContactForm = ({
               {...errorProps('email', errors.email)}
               data-form-input
             />
-            <FieldError name="email" message={errors.email} className="pl-4" />
+            <FieldError name="email" message={errors.email} />
           </div>
         </div>
 
@@ -399,11 +392,7 @@ const ContactForm = ({
               {...errorProps('yourMessage', errors.yourMessage)}
               data-form-input
             ></textarea>
-            <FieldError
-              name="yourMessage"
-              message={errors.yourMessage}
-              className="pl-4 text-orange-yellow-crayola"
-            />
+            <FieldError name="yourMessage" message={errors.yourMessage} />
           </>
         )}
 

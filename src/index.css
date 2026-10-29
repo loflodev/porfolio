@@ -1905,6 +1905,13 @@
     border-radius: 14px;
   }
 
+  /* iOS zooms into focused fields under 16px, which breaks the layout. */
+  @media (hover: none) and (pointer: coarse) {
+    .form-input {
+      font-size: max(16px, var(--font-size-sm));
+    }
+  }
+
   .form-input::placeholder {
     font-weight: var(--font-weight-medium);
   }
