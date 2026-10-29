@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useTranslation from '../../../hooks/useTransalation';
 import useTypewriter from '../../../hooks/useTypewriter';
 import Section from '../Section';
-import TechIconCluster from './TechIconCluster';
+import CodeRain from './CodeRain';
 
 const NAME_HIGHLIGHT = 'Louis';
 const ICONS_REVEAL_DELAY_MS = 200;
@@ -73,7 +73,7 @@ const Hero = () => {
         </p>
       </div>
 
-      <TechIconCluster popIn={iconsVisible} />
+      <CodeRain popIn={iconsVisible} />
     </Section>
   );
 };
