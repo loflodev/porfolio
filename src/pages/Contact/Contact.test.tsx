@@ -36,6 +36,16 @@ const WEEK = 7;
 const dayButton = (date: string) =>
   document.querySelector<HTMLButtonElement>(`[data-day="${date}"] button`);
 
+// Moves the open calendar to the month holding `date`, backwards or forwards.
+const showMonthOf = async (user: ReturnType<typeof userEvent.setup>, date: string) => {
+  while (!dayButton(date)) {
+    // Days outside the shown month keep a `data-day` cell but have no button.
+    const shown = document.querySelector('[data-day]:has(button)')?.getAttribute('data-day') ?? '';
+    const direction = date < shown ? /previous month/i : /next month/i;
+    await user.click(screen.getByRole('button', { name: direction }));
+  }
+};
+
 const dateField = () => screen.getByRole('button', { name: /^Preferred date/ });
 
 // Opens the calendar popover from the date field and shows the month holding `date`.
@@ -247,12 +257,12 @@ describe('Contact page', () => {
     await openCalendarAt(user, OPEN_DAY);
 
     await waitFor(() => expect(dayButton(OPEN_DAY)).toBeEnabled());
+    // Near a month's end the next weekday or the Saturday can fall in the following month.
+    await showMonthOf(user, FULL_DAY);
     expect(dayButton(FULL_DAY)).toBeDisabled();
     const saturday = fromIsoDate(OPEN_DAY);
     saturday.setDate(saturday.getDate() + ((SATURDAY - saturday.getDay() + WEEK) % WEEK));
-    if (!dayButton(toIsoDate(saturday))) {
-      await user.click(screen.getByRole('button', { name: /next month/i }));
-    }
+    await showMonthOf(user, toIsoDate(saturday));
     expect(dayButton(toIsoDate(saturday))).toBeDisabled();
   });
 
