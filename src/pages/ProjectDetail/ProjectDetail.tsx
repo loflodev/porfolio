@@ -14,10 +14,20 @@ import NotFound from '../NotFound/NotFound';
 // Image numbers shown to people start at 1.
 const FIRST_IMAGE_NUMBER = 1;
 
+const DESCRIPTION_ID = 'project-description';
+
 const ProjectDetail = () => {
   const { t } = useTranslation();
-  const { project, hasLiveSite, hasSourceCode, lightboxIndex, openLightbox, closeLightbox } =
-    useProjectDetail();
+  const {
+    project,
+    hasLiveSite,
+    hasSourceCode,
+    descriptionExpanded,
+    toggleDescription,
+    lightboxIndex,
+    openLightbox,
+    closeLightbox,
+  } = useProjectDetail();
 
   if (!project) {
     return <NotFound />;
@@ -41,10 +51,26 @@ const ProjectDetail = () => {
         <p className="project-category">{project.category}</p>
       </div>
 
+      {/* Every paragraph stays in the (prerendered) HTML; on small screens CSS collapses them to
+          the first one until Read more is pressed. */}
       <Section className="project-detail-section project-detail-about">
-        {project.description.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+        <div
+          id={DESCRIPTION_ID}
+          className={`project-detail-description ${descriptionExpanded ? '' : 'collapsed'}`}
+        >
+          {project.description.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="project-detail-read-more"
+          aria-expanded={descriptionExpanded}
+          aria-controls={DESCRIPTION_ID}
+          onClick={toggleDescription}
+        >
+          {descriptionExpanded ? t('readLess') : t('readMore')}
+        </button>
       </Section>
 
       <Section className="project-detail-section" name="project-detail" title={t('stack')}>

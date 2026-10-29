@@ -10,7 +10,25 @@ import type { PortfolioType } from '../../types';
 
 // Badge slots on the hover panel's single row; with more stacks the last slot becomes "+N".
 const MAX_CARD_BADGES = 3;
+// Touch screens show the stack under the card, where badges can wrap onto a second row.
+const MAX_TOUCH_BADGES = 4;
 const MORE_BADGE_SLOT = 1;
+
+const StackBadges = ({ stacks, max }: { stacks: string[]; max: number }) => {
+  const shownCount = stacks.length > max ? max - MORE_BADGE_SLOT : max;
+  const hiddenStacks = stacks.length - shownCount;
+
+  return (
+    <>
+      {stacks.slice(DEFAULT_STATE_NUMBER, shownCount).map((stack) => (
+        <StackBadge key={stack} label={stack} />
+      ))}
+      {hiddenStacks > DEFAULT_STATE_NUMBER && (
+        <StackBadge label={`+${hiddenStacks}`} variant="more" />
+      )}
+    </>
+  );
+};
 
 interface ThumbnailCardProps {
   data: PortfolioType[];
@@ -27,11 +45,6 @@ const ThumbnailCard = ({ data, category }: ThumbnailCardProps) => {
     <ul className="project-list">
       {tabCategory.map((item) => {
         const summaryId = `project-${item.slug}-summary`;
-        const shownCount =
-          item.stacks.length > MAX_CARD_BADGES
-            ? MAX_CARD_BADGES - MORE_BADGE_SLOT
-            : MAX_CARD_BADGES;
-        const hiddenStacks = item.stacks.length - shownCount;
 
         return (
           <li key={item.slug} className="project-item active" data-filter-item>
@@ -57,19 +70,24 @@ const ThumbnailCard = ({ data, category }: ThumbnailCardProps) => {
                     {item.summary}
                   </p>
                   <ul className="stack-list">
-                    {item.stacks.slice(DEFAULT_STATE_NUMBER, shownCount).map((stack) => (
-                      <StackBadge key={stack} label={stack} />
-                    ))}
-                    {hiddenStacks > DEFAULT_STATE_NUMBER && (
-                      <StackBadge label={`+${hiddenStacks}`} variant="more" />
-                    )}
+                    <StackBadges stacks={item.stacks} max={MAX_CARD_BADGES} />
                   </ul>
                 </figcaption>
               </figure>
 
-              <h2 className="project-title">{item.title}</h2>
+              <div className="project-heading">
+                <h2 className="project-title">{item.title}</h2>
+                <p className="project-category">{item.category}</p>
+              </div>
 
-              <p className="project-category">{item.category}</p>
+              {/* Touch screens have no hover panel, so the stack and summary sit under the title.
+                  Hidden from screen readers: the summary already is the link description. */}
+              <div className="project-touch-info" aria-hidden="true">
+                <ul className="stack-list">
+                  <StackBadges stacks={item.stacks} max={MAX_TOUCH_BADGES} />
+                </ul>
+                <p className="project-summary">{item.summary}</p>
+              </div>
             </Link>
           </li>
         );

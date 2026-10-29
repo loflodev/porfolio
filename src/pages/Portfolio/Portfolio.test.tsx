@@ -18,8 +18,20 @@ describe('Portfolio page', () => {
     renderWithProviders(<Portfolio />);
 
     const card = screen.getByRole('link', { name: /^Boisson SolutionX/ });
-    const badges = within(card).getAllByRole('listitem', { hidden: true });
+    const panel = card.querySelector('.project-reveal') as HTMLElement;
+    const badges = within(panel).getAllByRole('listitem', { hidden: true });
     expect(badges.map((badge) => badge.textContent)).toEqual(['React', 'TypeScript', '+6']);
+  });
+
+  it('repeats the summary and a wrapping row of four badges under the card for touch screens', () => {
+    renderWithProviders(<Portfolio />);
+
+    const card = screen.getByRole('link', { name: /^Boisson SolutionX/ });
+    const touchInfo = card.querySelector('.project-touch-info') as HTMLElement;
+    expect(touchInfo).toHaveAttribute('aria-hidden', 'true');
+    expect(touchInfo).toHaveTextContent(/headless WordPress/);
+    const badges = within(touchInfo).getAllByRole('listitem', { hidden: true });
+    expect(badges.map((badge) => badge.textContent)).toEqual(['React', 'TypeScript', 'Vite', '+5']);
   });
 
   it('exposes the selected filter with aria-pressed', async () => {

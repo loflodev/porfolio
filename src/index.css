@@ -1362,9 +1362,75 @@
     }
   }
 
+  .project-touch-info {
+    display: none;
+  }
+
   @media (hover: none) {
     .project-reveal {
       display: none;
+    }
+
+    /* A grid item won't shrink below its content by default; the one-row badge list must not
+       widen the column (and the page) beyond the screen. */
+    .project-item {
+      min-width: 0;
+    }
+
+    /* Each project is framed like the About page's service cards, so the stacked
+       image + text blocks read as separate projects. */
+    .project-item > .project-link-a {
+      position: relative;
+      padding: 12px 12px 18px;
+      background: var(--border-gradient-onyx);
+      box-shadow: var(--shadow-2);
+      z-index: 1;
+    }
+
+    .project-item > .project-link-a::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      background: var(--bg-gradient-jet);
+      border-radius: inherit;
+      z-index: -1;
+    }
+
+    .project-item .project-img {
+      border-radius: 12px;
+    }
+
+    /* "Title – Category" on one line; inline so a long title wraps like plain text. */
+    .project-heading {
+      margin: 0 4px;
+    }
+
+    .project-heading .project-title,
+    .project-heading .project-category {
+      display: inline;
+      margin-left: 0;
+    }
+
+    .project-heading .project-category::before {
+      content: ' – ';
+    }
+
+    .project-touch-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 10px 4px 0;
+    }
+
+    .project-summary {
+      color: var(--color-light-gray);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-light);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   }
 
@@ -1374,16 +1440,19 @@
     gap: 6px;
   }
 
-  .project-reveal .stack-list {
+  .project-reveal .stack-list,
+  .project-touch-info .stack-list {
     max-width: 100%;
     flex-wrap: nowrap;
     overflow: hidden;
   }
 
   /* Only the last named badge gives way: a long name (WooCommerce) ends in an ellipsis instead
-     of being cut mid-word, and the badges before it stay whole. */
+     of being cut mid-word, and the badges before it stay whole. Same for the touch-screen row. */
   .project-reveal .stack-badge:last-child:not(.stack-badge-more),
-  .project-reveal .stack-badge:has(+ .stack-badge-more) {
+  .project-reveal .stack-badge:has(+ .stack-badge-more),
+  .project-touch-info .stack-badge:last-child:not(.stack-badge-more),
+  .project-touch-info .stack-badge:has(+ .stack-badge-more) {
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
@@ -1405,15 +1474,6 @@
 
   .stack-badge-more {
     color: var(--color-light-gray);
-  }
-
-  .stack-list-lg {
-    gap: 10px;
-  }
-
-  .stack-list-lg .stack-badge {
-    padding: 6px 14px;
-    font-size: var(--font-size-sm);
   }
 
   .project-title,
@@ -1492,6 +1552,32 @@
 
   .project-detail-about p:not(:last-child) {
     margin-bottom: 15px;
+  }
+
+  /* Small screens: only the first paragraph, clamped to 4 lines, until Read more. */
+  .project-detail-description.collapsed p:not(:first-child) {
+    display: none;
+  }
+
+  .project-detail-description.collapsed p:first-child {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .project-detail-read-more {
+    margin-top: 10px;
+    color: var(--color-orange-yellow-crayola);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .project-detail-read-more:focus-visible {
+    outline: 2px solid var(--color-orange-yellow-crayola);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   .project-detail-links {
@@ -1655,6 +1741,30 @@
   }
 
   @media (min-width: 580px) {
+    /* The project page's larger badges; phones keep the portfolio list size. */
+    .stack-list-lg {
+      gap: 10px;
+    }
+
+    .stack-list-lg .stack-badge {
+      padding: 6px 14px;
+      font-size: var(--font-size-sm);
+    }
+
+    .project-detail-description.collapsed p:not(:first-child) {
+      display: block;
+    }
+
+    .project-detail-description.collapsed p:first-child {
+      display: block;
+      overflow: visible;
+      margin-bottom: 15px;
+    }
+
+    .project-detail-read-more {
+      display: none;
+    }
+
     .project-detail-links {
       grid-template-columns: repeat(2, max-content);
     }

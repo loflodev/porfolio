@@ -37,6 +37,24 @@ describe('Project detail page', () => {
     expect(within(stack as HTMLElement).getAllByRole('listitem')).toHaveLength(8);
   });
 
+  it('keeps every description paragraph in the page and toggles them with Read more', async () => {
+    const user = userEvent.setup();
+    renderProject('boisson-solutionx');
+    const toggle = screen.getByRole('button', { name: 'Read more' });
+    const description = document.getElementById(
+      toggle.getAttribute('aria-controls') as string
+    ) as HTMLElement;
+
+    expect(description.querySelectorAll('p')).toHaveLength(4);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(description).toHaveClass('collapsed');
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(toggle).toHaveAccessibleName('Read less');
+    expect(description).not.toHaveClass('collapsed');
+  });
+
   it('links to the live site and source code in a new tab', () => {
     renderProject('boisson-solutionx');
 
