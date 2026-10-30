@@ -1307,8 +1307,8 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
-    gap: 16px;
-    padding: 18px 20px;
+    gap: 12px;
+    padding: 14px 20px;
     background: hsla(240, 2%, 12%, 0.92);
     backdrop-filter: blur(8px);
     transform: translateY(101%);
@@ -1323,7 +1323,7 @@
     line-height: 1.55;
     text-align: left;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -1447,6 +1447,11 @@
     overflow: hidden;
   }
 
+  /* In a short panel the summary gives way, never the badges' padding. */
+  .project-reveal .stack-list {
+    flex-shrink: 0;
+  }
+
   /* Only the last named badge gives way: a long name (WooCommerce) ends in an ellipsis instead
      of being cut mid-word, and the badges before it stay whole. Same for the touch-screen row. */
   .project-reveal .stack-badge:last-child:not(.stack-badge-more),
@@ -1462,18 +1467,14 @@
   .stack-badge {
     flex-shrink: 0;
     background: var(--color-onyx);
-    color: var(--color-orange-yellow-crayola);
+    color: var(--color-light-gray-70);
     border: 1px solid var(--color-jet);
-    border-radius: 999px;
+    border-radius: 8px;
     padding: 3px 10px;
     font-size: var(--font-size-xx);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
     white-space: nowrap;
-  }
-
-  .stack-badge-more {
-    color: var(--color-light-gray);
   }
 
   .project-title,
@@ -1554,7 +1555,7 @@
     margin-bottom: 15px;
   }
 
-  /* Small screens: only the first paragraph, clamped to 4 lines, until Read more. */
+  /* Only the first paragraph, clamped to 4 lines, until Read more. */
   .project-detail-description.collapsed p:not(:first-child) {
     display: none;
   }
@@ -1741,30 +1742,6 @@
   }
 
   @media (min-width: 580px) {
-    /* The project page's larger badges; phones keep the portfolio list size. */
-    .stack-list-lg {
-      gap: 10px;
-    }
-
-    .stack-list-lg .stack-badge {
-      padding: 6px 14px;
-      font-size: var(--font-size-sm);
-    }
-
-    .project-detail-description.collapsed p:not(:first-child) {
-      display: block;
-    }
-
-    .project-detail-description.collapsed p:first-child {
-      display: block;
-      overflow: visible;
-      margin-bottom: 15px;
-    }
-
-    .project-detail-read-more {
-      display: none;
-    }
-
     .project-detail-links {
       grid-template-columns: repeat(2, max-content);
     }
@@ -2260,6 +2237,11 @@
     .project-img,
     .blog-banner-box {
       height: auto;
+    }
+
+    /* Same shape for every card (the 16:10 section screenshots), whatever the cover's ratio. */
+    .project-img {
+      aspect-ratio: 16 / 10;
     }
 
     .info_more-btn svg {

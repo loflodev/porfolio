@@ -51,8 +51,8 @@ const ProjectDetail = () => {
         <p className="project-category">{project.category}</p>
       </div>
 
-      {/* Every paragraph stays in the (prerendered) HTML; on small screens CSS collapses them to
-          the first one until Read more is pressed. */}
+      {/* Every paragraph stays in the (prerendered) HTML; CSS collapses them to the first one
+          until Read more is pressed. */}
       <Section className="project-detail-section project-detail-about">
         <div
           id={DESCRIPTION_ID}
@@ -71,14 +71,6 @@ const ProjectDetail = () => {
         >
           {descriptionExpanded ? t('readLess') : t('readMore')}
         </button>
-      </Section>
-
-      <Section className="project-detail-section" name="project-detail" title={t('stack')}>
-        <ul className="stack-list stack-list-lg">
-          {project.stacks.map((stack) => (
-            <StackBadge key={stack} label={stack} />
-          ))}
-        </ul>
 
         {(hasLiveSite || hasSourceCode) && (
           <div className="project-detail-links">
@@ -108,6 +100,14 @@ const ProjectDetail = () => {
             )}
           </div>
         )}
+      </Section>
+
+      <Section className="project-detail-section" name="project-detail" title={t('stack')}>
+        <ul className="stack-list">
+          {project.stacks.map((stack) => (
+            <StackBadge key={stack} label={stack} />
+          ))}
+        </ul>
       </Section>
 
       <Section className="project-detail-section" name="project-detail" title={t('gallery')}>

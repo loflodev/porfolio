@@ -2,17 +2,23 @@ import placeholder1200x800 from '@/assets/images/placeholders/placeholder-1200x8
 import placeholder1600x900 from '@/assets/images/placeholders/placeholder-1600x900.svg';
 import placeholder1920x1080 from '@/assets/images/placeholders/placeholder-1920x1080.svg';
 import placeholder800x1000 from '@/assets/images/placeholders/placeholder-800x1000.svg';
-import project4 from '@/assets/images/project-4.webp';
 import project5 from '@/assets/images/project-5.webp';
 import project6 from '@/assets/images/project-6.webp';
+import boissonHero from '@/assets/images/projects/boisson-solutionx/01-hero.webp';
+import boissonProducts from '@/assets/images/projects/boisson-solutionx/02-products.webp';
+import boissonAbout from '@/assets/images/projects/boisson-solutionx/03-about.webp';
+import boissonLocations from '@/assets/images/projects/boisson-solutionx/04-locations.webp';
+import boissonContact from '@/assets/images/projects/boisson-solutionx/05-contact.webp';
+import boissonFooter from '@/assets/images/projects/boisson-solutionx/06-footer.webp';
 
 import { type ProjectSlug } from './projectSlugs';
 import type { GalleryImageType, PortfolioType } from '../types';
 
 // Projects are stored with i18n keys for their category and case-study copy (`copyKey` →
 // projects.<name>.summary / .description.p1…p4 in the locales); usePortfolio/useProjectDetail
-// translate them. Gallery images after the cover are placeholders, and projects without a
-// screenshot yet use a placeholder cover.
+// translate them. A project with section `screenshots` uses them as its gallery (the first one is
+// also its cover); others show their cover then placeholders, and projects without a screenshot
+// yet use a placeholder cover.
 type ProjectSource = Omit<PortfolioType, 'category' | 'slug' | 'summary' | 'description'> & {
   slug: ProjectSlug;
   categoryKey: string;
@@ -35,6 +41,17 @@ const PLACEHOLDERS = [
   { src: placeholder1920x1080, width: 1920, height: 1080 },
 ];
 
+// Width of the section screenshots (captured at 2x, resized for the gallery and lightbox).
+const SCREENSHOT_WIDTH = 1600;
+
+const placeholderGallery = (title: string, screenshot: string): GalleryImageType[] =>
+  PLACEHOLDERS.filter((placeholder) => placeholder.src !== screenshot).map(
+    (placeholder, index) => ({
+      ...placeholder,
+      alt: `${title} placeholder screenshot ${index + FIRST_IMAGE_NUMBER} (${placeholder.width} × ${placeholder.height})`,
+    })
+  );
+
 const buildGallery = (title: string, screenshot: string): GalleryImageType[] => [
   {
     src: screenshot,
@@ -42,25 +59,32 @@ const buildGallery = (title: string, screenshot: string): GalleryImageType[] => 
     width: PROJECT_IMAGE_WIDTH,
     height: PROJECT_IMAGE_HEIGHT,
   },
-  ...PLACEHOLDERS.filter((placeholder) => placeholder.src !== screenshot).map(
-    (placeholder, index) => ({
-      ...placeholder,
-      alt: `${title} placeholder screenshot ${index + FIRST_IMAGE_NUMBER} (${placeholder.width} × ${placeholder.height})`,
-    })
-  ),
+  ...placeholderGallery(title, screenshot),
 ];
 
-const project = (source: Omit<ProjectSource, 'gallery'>): ProjectSource => ({
+const project = ({
+  screenshots,
+  ...source
+}: Omit<ProjectSource, 'gallery'> & { screenshots?: GalleryImageType[] }): ProjectSource => ({
   ...source,
-  gallery: buildGallery(source.title, source.image),
+  gallery: screenshots ?? buildGallery(source.title, source.image),
 });
+
+const BOISSON_SCREENSHOTS: GalleryImageType[] = [
+  { src: boissonHero, alt: 'Boisson SolutionX hero section', height: 1000 },
+  { src: boissonProducts, alt: 'Boisson SolutionX products section', height: 1122 },
+  { src: boissonAbout, alt: 'Boisson SolutionX about section', height: 1184 },
+  { src: boissonLocations, alt: 'Boisson SolutionX where to buy section', height: 799 },
+  { src: boissonContact, alt: 'Boisson SolutionX contact form section', height: 1168 },
+  { src: boissonFooter, alt: 'Boisson SolutionX footer', height: 318 },
+].map((image) => ({ ...image, width: SCREENSHOT_WIDTH }));
 
 export const PROJECTS: ProjectSource[] = [
   project({
     slug: 'boisson-solutionx',
     linkTo1: 'https://boissonsolutionx.ca',
     linkTo2: 'https://github.com/loflodev/react-boissonsolutionx',
-    image: project4,
+    image: boissonHero,
     title: 'Boisson SolutionX',
     categoryKey: 'webDevelopment',
     copyKey: 'projects.boissonSolutionx',
@@ -75,6 +99,7 @@ export const PROJECTS: ProjectSource[] = [
       'WPGraphQL',
       'ACF',
     ],
+    screenshots: BOISSON_SCREENSHOTS,
   }),
   project({
     slug: 'assurelis',

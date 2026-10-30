@@ -95,6 +95,19 @@ describe('Project detail page', () => {
     }
   });
 
+  it('shows the section screenshots instead of placeholders when a project has them', async () => {
+    const user = userEvent.setup();
+    renderProject('boisson-solutionx');
+
+    expect(
+      screen.getAllByRole('button', { name: /^Open image \d of 6 full screen$/ })
+    ).toHaveLength(6);
+    await user.click(screen.getByRole('button', { name: 'Open image 1 of 6 full screen' }));
+    expect(within(getDialog()).getByRole('img')).toHaveAccessibleName(
+      'Boisson SolutionX hero section'
+    );
+  });
+
   it('opens an image full screen, pages with the arrow keys and closes on Escape', async () => {
     const user = userEvent.setup();
     renderProject('assurelis');
