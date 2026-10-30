@@ -40,6 +40,9 @@ const ConsultationCalendar = ({
   footer,
 }: ConsultationCalendarProps) => {
   const selected = value ? fromIsoDate(value) : undefined;
+  // Open on the first bookable day's month: near a month's end the current one may have none
+  // left, and the grid would show nothing to pick (or to focus).
+  const [firstBookable] = [...bookableDates].sort();
   const rootRef = useRef<HTMLDivElement>(null);
 
   // Opened from the date field: move focus to the day the arrow keys start from (the selected
@@ -58,7 +61,7 @@ const ConsultationCalendar = ({
         className="consultation-calendar"
         selected={selected}
         onSelect={(day) => onSelect(toIsoDate(day))}
-        defaultMonth={selected ?? fromIsoDate(min)}
+        defaultMonth={selected ?? fromIsoDate(firstBookable ?? min)}
         startMonth={fromIsoDate(min)}
         endMonth={fromIsoDate(max)}
         disabled={(day) => !bookableDates.has(toIsoDate(day))}
